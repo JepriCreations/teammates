@@ -8,6 +8,9 @@ import { routes } from '@/constants/routes'
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
   const isAuthPage = req.nextUrl.pathname.startsWith(routes.LOGIN)
+  const isPrivatePage = req.nextUrl.pathname.startsWith(
+    routes.PROJECTS || routes.ACCOUNT
+  )
 
   const supabase = createMiddlewareClient<Database>({ req, res })
   const {
@@ -22,16 +25,20 @@ export async function middleware(req: NextRequest) {
     return null
   }
 
-  //   if (!session) {
-  //     let from = req.nextUrl.pathname
-  //     if (req.nextUrl.search) {
-  //       from += req.nextUrl.search
-  //     }
+  if (!session && isPrivatePage) {
+    let from = req.nextUrl.pathname
+    if (req.nextUrl.search) {
+      from += req.nextUrl.search
+    }
 
-  //     return NextResponse.redirect(
-  //       new URL(`${routes.LOGIN}?from=${encodeURIComponent(from)}`, req.url)
-  //     )
-  //   }
+    return NextResponse.redirect(
+      new URL(`${routes.LOGIN}?from=${encodeURIComponent(from)}`, req.url)
+    )
+  }
 
   return res
+}
+
+export const config = {
+  matcher: ['/account', '/projects/:path*', '/login'],
 }
