@@ -4,13 +4,18 @@ import { createServerClient } from '@/lib/supabase-server'
 export const fetchProjects = async () => {
   const supabase = createServerClient()
 
-  const projectInfo = 'id, updated_at, name, summary, categories, icon_url'
-  const rolesInfo = 'name, exp_level, rewards, work_mode, status'
   const { data: projects, error } = await supabase
     .from('projects')
-    .select(`${projectInfo}, roles(${rolesInfo})'`)
+    .select(
+      `id, updated_at, name, summary, categories, icon_url, 
+      roles(name, exp_level, rewards, work_mode, status)`
+    )
+    .eq('roles.status', 'open')
 
-  //  TODO: Handle error
+  if (error) {
+    //  TODO: Handle error
+    return []
+  }
 
-  return projects
+  return projects?.filter((project) => project.roles.length > 0)
 }

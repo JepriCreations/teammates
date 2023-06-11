@@ -1,5 +1,8 @@
 import { fetchProjects } from '@/lib/fetching/projects'
 
+// TODO: modify the revalidation time
+export const revalidate = 60
+
 export default async function Home() {
   const projects = await fetchProjects()
 

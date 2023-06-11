@@ -1,11 +1,14 @@
-'use client'
-import { useAuth } from '@/components/providers/supabase-auth-provider'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Logo } from './logo'
+import { createServerClient } from '@/lib/supabase-server'
+import { LogoutButton } from './logout-button'
 
-export const Appbar = () => {
-  const { signOut, user } = useAuth()
+export const Appbar = async () => {
+  const supabase = createServerClient()
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
 
   return (
     <div className="flex items-center justify-between gap-3 px-8 py-3">
@@ -22,10 +25,8 @@ export const Appbar = () => {
       </div>
       <div className="grow" />
       <div className="flex gap-3">
-        {user ? (
-          <Button variant="destructive" onClick={signOut}>
-            Logout
-          </Button>
+        {session ? (
+          <LogoutButton />
         ) : (
           <Button asChild>
             <Link href="/login">Login</Link>

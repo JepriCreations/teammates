@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useEffect } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Session } from '@supabase/supabase-js'
 import useSWR from 'swr'
@@ -13,6 +13,7 @@ interface ContextI {
   user: Profile | null | undefined
   error: any
   isLoading: boolean
+  isAuthenticating: boolean
   signOut: () => Promise<void>
   signInWithGithub: () => Promise<string | undefined>
 }
@@ -20,6 +21,7 @@ const Context = createContext<ContextI>({
   user: null,
   error: false,
   isLoading: true,
+  isAuthenticating: false,
   signOut: async () => {},
   signInWithGithub: async () => undefined,
 })
@@ -32,6 +34,7 @@ export const SupabaseAuthProvider = ({
   children: React.ReactNode
 }) => {
   const { supabase } = useSupabase()
+  const [isAuthenticating, setIsAuthenticating] = useState(false)
   const router = useRouter()
 
   const getProfile = async (): Promise<Profile | null> => {
@@ -66,24 +69,21 @@ export const SupabaseAuthProvider = ({
 
   // Sign-In with Github
   const signInWithGithub = async () => {
-    console.log('Signing with github')
+    setIsAuthenticating(true)
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
       options,
     })
-
     if (error) {
       console.log({ error })
       return error.message
     }
-
-    router.refresh()
   }
 
   // Sign Out
   const signOut = async () => {
+    setIsAuthenticating(true)
     await supabase.auth.signOut()
-    router.refresh()
   }
 
   // Refresh the Page to Sync Server and Client
@@ -94,6 +94,7 @@ export const SupabaseAuthProvider = ({
       if (session?.access_token !== serverSession?.access_token) {
         router.refresh()
       }
+      setIsAuthenticating(false)
     })
 
     return () => {
@@ -105,6 +106,7 @@ export const SupabaseAuthProvider = ({
     user,
     error,
     isLoading,
+    isAuthenticating,
     signOut,
     signInWithGithub,
   }

@@ -33,9 +33,12 @@ export const projectSquema = z.object({
     .refine(
       (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
       '.jpg, .jpeg, .png and .webp files are accepted.'
-    ),
+    )
+    .optional(),
   description: z.string(),
   contact: contactSquema.partial().required({ email: true }),
   public: z.boolean(),
   location: locationSquema,
 })
+
+// TODO: remove the optional for the project Icon

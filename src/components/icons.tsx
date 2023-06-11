@@ -1,11 +1,11 @@
 import * as React from 'react'
 
-export interface IconProps {
+export interface IconWraperProps extends React.SVGAttributes<SVGElement> {
   size?: number | string
   children: React.ReactNode
 }
 
-export const Icon = (props: IconProps) => (
+export const Icon = (props: IconWraperProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={props.size ?? 24}
@@ -18,9 +18,27 @@ export const Icon = (props: IconProps) => (
   </svg>
 )
 
-export interface IconContentProps extends Omit<IconProps, 'children'> {}
+export interface IconProps extends Omit<IconWraperProps, 'children'> {}
 
-export const GithubIcon = (props: IconContentProps) => (
+export const LoadingIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <circle
+      className="opacity-25"
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentColor"
+      strokeWidth="4"
+    ></circle>
+    <path
+      className="opacity-75"
+      fill="currentColor"
+      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+    ></path>
+  </Icon>
+)
+
+export const GithubIcon = (props: IconProps) => (
   <Icon {...props}>
     <path
       d="M12 2.25c-5.38 0-9.75 4.37-9.75 9.75s4.37 9.75 9.75 9.75 9.75-4.37 9.75-9.75S17.38 2.25 12 2.25Zm2.23 17.69v-2.3c0-.84-.29-1.39-.61-1.67 2-.22 4.11-.98 4.11-4.44 0-.98-.35-1.78-.93-2.41.1-.23.41-1.15-.08-2.39 0 0-.76-.24-2.48.93-.72-.2-1.49-.3-2.25-.31-.77.01-1.54.11-2.25.31-1.72-1.17-2.48-.93-2.48-.93-.49 1.24-.18 2.16-.09 2.39-.57.63-.92 1.43-.92 2.41 0 3.45 2.1 4.22 4.1 4.45-.26.22-.49.62-.57 1.2-.52.23-1.82.63-2.62-.75 0 0-.48-.86-1.38-.92 0 0-.88-.01-.06.54 0 0 .59.28 1 1.32 0 0 .52 1.61 3.03 1.06v1.51c-3.47-.98-6.02-4.16-6.02-7.94 0-4.55 3.7-8.25 8.25-8.25s8.25 3.7 8.25 8.25c0 3.78-2.55 6.96-6.02 7.94h.02Z"
@@ -29,7 +47,7 @@ export const GithubIcon = (props: IconContentProps) => (
   </Icon>
 )
 
-export const GoogleIcon = (props: IconContentProps) => (
+export const GoogleIcon = (props: IconProps) => (
   <Icon {...props}>
     <path
       d="M21.8055 10.0415H21V10H12V14H17.6515C16.827 16.3285 14.6115 18 12 18C8.6865 18 6 15.3135 6 12C6 8.6865 8.6865 6 12 6C13.5295 6 14.921 6.577 15.9805 7.5195L18.809 4.691C17.023 3.0265 14.634 2 12 2C6.4775 2 2 6.4775 2 12C2 17.5225 6.4775 22 12 22C17.5225 22 22 17.5225 22 12C22 11.3295 21.931 10.675 21.8055 10.0415Z"
@@ -50,7 +68,7 @@ export const GoogleIcon = (props: IconContentProps) => (
   </Icon>
 )
 
-export const AppleIcon = (props: IconContentProps) => (
+export const AppleIcon = (props: IconProps) => (
   <Icon {...props}>
     <path
       d="M16.54 12.01C16.54 12.09 16.4 14.47 19 15.7C18.51 17.18 16.85 20.47 14.91 20.49C13.79 20.49 13.13 19.77 11.87 19.77C10.61 19.77 9.85001 20.47 8.85001 20.49C6.93001 20.55 5.08999 16.93 4.57999 15.46C4.19999 14.34 4.01001 13.25 4.01001 12.2C4.01001 8.64001 6.37001 6.88001 8.60001 6.85001C9.68001 6.85001 11.05 7.64001 11.64 7.64001C12.21 7.64001 13.75 6.7 15.17 6.81C16.66 6.93 17.8 7.52001 18.55 8.60001C17.21 9.42001 16.55 10.53 16.56 12.01H16.54ZM14.31 5.41C15.41 4.11 15.31 2.92 15.27 2.5C14.3 2.56 13.18 3.15999 12.54 3.89999C11.84 4.69999 11.42 5.68001 11.51 6.79001C12.56 6.87001 13.52 6.33 14.3 5.41H14.31Z"
@@ -59,7 +77,7 @@ export const AppleIcon = (props: IconContentProps) => (
   </Icon>
 )
 
-export const TwitterIcon = (props: IconContentProps) => (
+export const TwitterIcon = (props: IconProps) => (
   <Icon {...props}>
     <path
       d="M19.94 7.99002C19.95 8.16002 19.95 8.34002 19.95 8.52002C19.95 13.86 15.83 20.01 8.28999 20.01C5.96999 20.01 3.81 19.35 2 18.2C2.33 18.24 2.65001 18.25 2.99001 18.25C4.91001 18.25 6.67 17.61 8.08 16.53C6.28 16.49 4.77 15.33 4.25 13.73C4.5 13.77 4.76 13.79 5.02 13.79C5.39 13.79 5.76001 13.74 6.10001 13.65C4.22001 13.27 2.81 11.65 2.81 9.69002V9.64001C3.36 9.94001 3.99 10.13 4.66 10.15C3.56 9.42001 2.83 8.19001 2.83 6.79001C2.83 6.04001 3.03 5.35002 3.39 4.75002C5.41 7.20002 8.44 8.80001 11.84 8.98001C11.78 8.68001 11.74 8.37001 11.74 8.06001C11.74 5.83001 13.57 4.02002 15.84 4.02002C17.02 4.02002 18.09 4.51001 18.83 5.29001C19.76 5.12001 20.64 4.78002 21.43 4.32002C21.13 5.26002 20.48 6.05001 19.63 6.54001C20.45 6.45001 21.25 6.23001 21.99 5.92001C21.43 6.72001 20.73 7.43001 19.93 8.01001L19.94 7.99002Z"
@@ -68,7 +86,7 @@ export const TwitterIcon = (props: IconContentProps) => (
   </Icon>
 )
 
-export const FacebookIcon = (props: IconContentProps) => (
+export const FacebookIcon = (props: IconProps) => (
   <Icon {...props}>
     <path
       d="M22 12C22 6.47719 17.5228 2 12 2C6.47719 2 2 6.47711 2 12C2 16.9913 5.65687 21.1284 10.4375 21.8785V14.8906H7.89844V12H10.4375V9.79688C10.4375 7.29063 11.9305 5.90625 14.2146 5.90625C15.3088 5.90625 16.4531 6.10156 16.4531 6.10156V8.5625H15.1922C13.9498 8.5625 13.5625 9.33336 13.5625 10.1242V12H16.3359L15.8926 14.8906H13.5625V21.8785C18.3431 21.1284 22 16.9913 22 12Z"
@@ -81,7 +99,7 @@ export const FacebookIcon = (props: IconContentProps) => (
   </Icon>
 )
 
-export const LinkedinIcon = (props: IconContentProps) => (
+export const LinkedinIcon = (props: IconProps) => (
   <Icon {...props}>
     <path
       d="M17.3125 2H6.6875C4.09867 2 2 4.09867 2 6.6875V17.3125C2 19.9013 4.09867 22 6.6875 22H17.3125C19.9013 22 22 19.9013 22 17.3125V6.6875C22 4.09867 19.9013 2 17.3125 2Z"
