@@ -16,7 +16,7 @@ export async function middleware(req: NextRequest) {
 
   if (isAuthPage) {
     if (session) {
-      return NextResponse.redirect(new URL(routes.PROJECTS, req.url))
+      return NextResponse.redirect(new URL(routes.HOME, req.url))
     }
 
     return null
