@@ -66,12 +66,14 @@ export const SupabaseAuthProvider = ({
 
   // Sign-In with Github
   const signInWithGithub = async () => {
+    console.log('Signing with github')
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
       options,
     })
 
     if (error) {
+      console.log({ error })
       return error.message
     }
 

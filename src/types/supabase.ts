@@ -129,6 +129,7 @@ export interface Database {
           description: string | null
           icon_url: string | null
           id: string
+          location: Json | null
           name: string | null
           public: boolean | null
           summary: string | null
@@ -142,6 +143,7 @@ export interface Database {
           description?: string | null
           icon_url?: string | null
           id?: string
+          location?: Json | null
           name?: string | null
           public?: boolean | null
           summary?: string | null
@@ -155,6 +157,7 @@ export interface Database {
           description?: string | null
           icon_url?: string | null
           id?: string
+          location?: Json | null
           name?: string | null
           public?: boolean | null
           summary?: string | null
@@ -174,31 +177,31 @@ export interface Database {
           description: string | null
           exp_level: string | null
           id: string
-          location: Json | null
           name: string
           project_id: string
           rewards: string[] | null
           status: string | null
+          work_mode: string | null
         }
         Insert: {
           description?: string | null
           exp_level?: string | null
           id?: string
-          location?: Json | null
           name: string
           project_id: string
           rewards?: string[] | null
           status?: string | null
+          work_mode?: string | null
         }
         Update: {
           description?: string | null
           exp_level?: string | null
           id?: string
-          location?: Json | null
           name?: string
           project_id?: string
           rewards?: string[] | null
           status?: string | null
+          work_mode?: string | null
         }
         Relationships: [
           {
