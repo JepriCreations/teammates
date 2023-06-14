@@ -1,0 +1,15 @@
+{
+  "Auth": {
+    "discover": "Discover projects",
+    "welcome": "Welcome",
+    "subtitle": "Unlock the Power of Collaboration and Connect with Your Dream Team!",
+    "login_with": "Sign in with",
+    "an_account_will_be_created": "An account will be created if you don't have one.",
+    "privacy": "Privacy policy",
+    "illustrations_by": "Illustrations by %0"
+  },
+  "Site": {
+    "title": "Find the next project to be part of.",
+    "subtitle": "The powerhouse platform for connecting visionaries and Cultivating Success. Step into a world of collaboration and innovation."
+  }
+}

@@ -1,44 +1,24 @@
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
-import { NextResponse } from 'next/server'
-
 import type { NextRequest } from 'next/server'
-import type { Database } from '@/types/supabase'
-import { routes } from '@/constants/routes'
+import { intlMiddleware } from '@/middlewares/intlMiddleware'
+import { authMiddleware } from '@/middlewares/authMiddleware'
 
 export async function middleware(req: NextRequest) {
-  const res = NextResponse.next()
-  const isAuthPage = req.nextUrl.pathname.startsWith(routes.LOGIN)
-  const isPrivatePage = req.nextUrl.pathname.startsWith(
-    routes.PROJECTS || routes.ACCOUNT
-  )
+  // Call the intlMiddleware first
+  const intlResponse = await intlMiddleware(req)
 
-  const supabase = createMiddlewareClient<Database>({ req, res })
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-
-  if (isAuthPage) {
-    if (session) {
-      return NextResponse.redirect(new URL(routes.HOME, req.url))
-    }
-
-    return null
+  // If intlMiddleware fails return
+  if (!intlResponse.ok) {
+    return intlResponse
   }
 
-  if (!session && isPrivatePage) {
-    let from = req.nextUrl.pathname
-    if (req.nextUrl.search) {
-      from += req.nextUrl.search
-    }
+  // Call the authMiddleware
+  const authResponse = await authMiddleware(req)
 
-    return NextResponse.redirect(
-      new URL(`${routes.LOGIN}?from=${encodeURIComponent(from)}`, req.url)
-    )
-  }
-
-  return res
+  // Return the response from authMiddleware
+  return authResponse
 }
 
 export const config = {
-  matcher: ['/account', '/projects/:path*', '/login'],
+  // Paths where middleware should not be initialized
+  matcher: ['/((?!api|_next|.*\\..*).*)'],
 }

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
@@ -35,11 +34,11 @@ const buttonVariants = cva(
 const ButtonContainerVariants = cva('min-w-fit', {
   variants: {
     variant: {
-      default: 'bg-foreground',
+      default: 'bg-black',
       secondary: 'bg-transparent',
       ghost: 'bg-transparent',
       link: 'bg-transparent',
-      destructive: 'bg-foreground',
+      destructive: 'bg-black',
     },
     fullWidth: {
       true: 'w-full',
@@ -77,7 +76,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : 'button'
+    let Comp: React.ElementType = 'button'
+    let childrenProps: { [x: string]: any } = {}
+
+    if (asChild) {
+      const child = React.Children.toArray(children)[0]
+      if (React.isValidElement(child)) {
+        Comp = child.type as React.ElementType
+        childrenProps = child.props
+      }
+    }
 
     return (
       <div
@@ -90,16 +98,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(buttonVariants({ variant, size, className }))}
           ref={ref}
           disabled={disabled}
-          {...props}
+          {...(asChild ? { ...childrenProps } : { ...props })}
         >
           <div className="flex items-center gap-3">
-            {(() => {
-              if (loading)
-                return <LoadingIcon className="h-5 w-5 animate-spin" />
-              if (ButtonIcon) return <ButtonIcon />
-              return null
-            })()}
-            {children}
+            {loading ? (
+              <LoadingIcon className="h-5 w-5 animate-spin" />
+            ) : (
+              ButtonIcon && <ButtonIcon />
+            )}
+            {asChild ? childrenProps.children : children}
           </div>
         </Comp>
       </div>

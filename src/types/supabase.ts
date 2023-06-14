@@ -122,46 +122,43 @@ export interface Database {
       }
       projects: {
         Row: {
-          categories: string[] | null
-          contact: Json | null
-          created_at: string | null
+          categories: string[]
+          created_at: string
           created_by: string
-          description: string | null
+          description: string
           icon_url: string | null
           id: string
           location: Json | null
-          name: string | null
-          public: boolean | null
-          summary: string | null
-          updated_at: string | null
+          name: string
+          public: boolean
+          summary: string
+          updated_at: string
         }
         Insert: {
-          categories?: string[] | null
-          contact?: Json | null
-          created_at?: string | null
+          categories: string[]
+          created_at?: string
           created_by: string
-          description?: string | null
+          description?: string
           icon_url?: string | null
           id?: string
           location?: Json | null
-          name?: string | null
-          public?: boolean | null
-          summary?: string | null
-          updated_at?: string | null
+          name?: string
+          public?: boolean
+          summary?: string
+          updated_at?: string
         }
         Update: {
-          categories?: string[] | null
-          contact?: Json | null
-          created_at?: string | null
+          categories?: string[]
+          created_at?: string
           created_by?: string
-          description?: string | null
+          description?: string
           icon_url?: string | null
           id?: string
           location?: Json | null
-          name?: string | null
-          public?: boolean | null
-          summary?: string | null
-          updated_at?: string | null
+          name?: string
+          public?: boolean
+          summary?: string
+          updated_at?: string
         }
         Relationships: [
           {
@@ -174,34 +171,34 @@ export interface Database {
       }
       roles: {
         Row: {
-          description: string | null
-          exp_level: string | null
+          description: string
+          exp_level: string
           id: string
           name: string
           project_id: string
-          rewards: string[] | null
-          status: string | null
-          work_mode: string | null
+          rewards: string[]
+          status: string
+          work_mode: string
         }
         Insert: {
-          description?: string | null
-          exp_level?: string | null
+          description?: string
+          exp_level: string
           id?: string
-          name: string
+          name?: string
           project_id: string
-          rewards?: string[] | null
-          status?: string | null
-          work_mode?: string | null
+          rewards: string[]
+          status: string
+          work_mode: string
         }
         Update: {
-          description?: string | null
-          exp_level?: string | null
+          description?: string
+          exp_level?: string
           id?: string
           name?: string
           project_id?: string
-          rewards?: string[] | null
-          status?: string | null
-          work_mode?: string | null
+          rewards?: string[]
+          status?: string
+          work_mode?: string
         }
         Relationships: [
           {

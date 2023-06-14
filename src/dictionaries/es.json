@@ -1,0 +1,15 @@
+{
+  "Auth": {
+    "discover": "Desubrir proyectos",
+    "welcome": "Te damos la bienvenida",
+    "subtitle": "¡Descubre el poder de la colaboración y conecta con tu equipo soñado!",
+    "login_with": "Inicia sesión con",
+    "an_account_will_be_created": "Se creará una cuenta si no tienes una.",
+    "privacy": "Política de privacidad",
+    "illustrations_by": "Ilustraciones por %0"
+  },
+  "Site": {
+    "title": "Encuentra el siguiente proyecto del que formar parte.",
+    "subtitle": "La plataforma de referencia para conectar visionarios y cultivar el éxito. Adéntrate en un mundo de colaboración e innovación."
+  }
+}

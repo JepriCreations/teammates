@@ -8,9 +8,9 @@
     --foreground: 0 0% 0%;
 
     --hover: 0 0% 95%;
-    --border: 0 0% 0%
+    --border: 0 0% 0%;
 
-    --muted: 240 6% 90%;
+    --muted: var(--foreground) / 0.6;
     --muted-foreground: 240 5% 65%;
 
     --popover: 0 0% 100%;
@@ -116,12 +116,12 @@
   h1 {
     font-size: theme(fontSize.4xl);
     font-weight: theme(fontWeight.bold);
-    letter-spacing: theme(spacing.0)
+    letter-spacing: theme(spacing.0);
   }
 }
 
 @layer utilities {
   .secondary {
-    color: theme(textColor.foreground / 60%)
+    color: theme(textColor.foreground / 60%);
   }
 }
