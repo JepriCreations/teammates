@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Session } from '@supabase/supabase-js'
 import useSWR from 'swr'
 
-import { Profile } from '@/types/collections.d'
+import { Profile } from '@/types/collections'
 
 import { useSupabase } from './supabase-provider'
 

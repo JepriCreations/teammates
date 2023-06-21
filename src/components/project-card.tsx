@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { routes } from '@/constants/routes'
 
-import { ExperienceLevel, Rewards, Role, WorkMode } from '@/types/collections.d'
+import { ExperienceLevel, Rewards, Role, WorkMode } from '@/types/collections'
 import { formatDate } from '@/lib/utils'
 import {
   ArrowUpRightIcon,

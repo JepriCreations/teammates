@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "gen-types": "supabase gen types typescript --linked > src/types/supabase.d.ts"
+    "gen-types": "supabase gen types typescript --linked > src/types/supabase.ts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "1.0.2",
