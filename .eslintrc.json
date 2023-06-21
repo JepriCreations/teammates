@@ -16,5 +16,11 @@
       "callees": ["cn"],
       "config": "./tailwind.config.js"
     }
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser"
+    }
+  ]
 }

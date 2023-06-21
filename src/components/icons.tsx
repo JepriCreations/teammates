@@ -1,5 +1,6 @@
-import { ExperienceLevel } from '@/types/collections'
 import * as React from 'react'
+
+import { ExperienceLevel } from '@/types/collections.d'
 
 export interface IconWraperProps extends React.SVGAttributes<SVGElement> {
   size?: number | string

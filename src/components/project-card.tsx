@@ -1,5 +1,9 @@
-import { routes } from '@/constants/routes'
+import Image from 'next/image'
 import Link from 'next/link'
+import { routes } from '@/constants/routes'
+
+import { ExperienceLevel, Rewards, Role, WorkMode } from '@/types/collections.d'
+import { formatDate } from '@/lib/utils'
 import {
   ArrowUpRightIcon,
   ContractIcon,
@@ -8,9 +12,6 @@ import {
   PresentialIcon,
   RemoteIcon,
 } from '@/components/icons'
-import { formatDate } from '@/lib/utils'
-import Image from 'next/image'
-import { ExperienceLevel, Rewards, Role, WorkMode } from '@/types/collections'
 
 interface ProjectCardProps {
   id: string
