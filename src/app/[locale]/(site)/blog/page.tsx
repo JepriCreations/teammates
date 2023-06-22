@@ -1,3 +1,3 @@
 export default async function Blog() {
-  return <div>Blog</div>
+  return <section className="container">Blog</section>
 }

@@ -58,7 +58,7 @@ export const ProjectCard = ({
   }
 
   return (
-    <div id="card-shadow" className="bg-black">
+    <div id="card-shadow" className="bg-foreground">
       <Link href={routes.PROJECT(id)} className="group">
         <div
           id="content-container"

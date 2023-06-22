@@ -8,7 +8,7 @@ export default function SiteLayout({ children }: SiteLayoutProps) {
   return (
     <>
       <Appbar />
-      {children}
+      <main className="pt-16">{children}</main>
     </>
   )
 }

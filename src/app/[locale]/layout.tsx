@@ -11,6 +11,7 @@ import { BreakpointIndicator } from '@/components/breakpoint-indicator'
 import { DictionaryProvider } from '@/components/providers/dictionary-provider'
 import { SupabaseAuthProvider } from '@/components/providers/supabase-auth-provider'
 import { SupabaseProvider } from '@/components/providers/supabase-provider'
+import { ThemeProvider } from '@/components/providers/theme-provider'
 
 export const metadata: Metadata = {
   title: {
@@ -51,15 +52,18 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={cn(fontSans.variable)}
     >
+      <head />
       <body className="min-h-[100dvh] overflow-x-hidden bg-background font-sans antialiased">
-        <DictionaryProvider dict={dict}>
-          <SupabaseProvider>
-            <SupabaseAuthProvider serverSession={session}>
-              {children}
-            </SupabaseAuthProvider>
-          </SupabaseProvider>
-        </DictionaryProvider>
-        <BreakpointIndicator />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <DictionaryProvider dict={dict}>
+            <SupabaseProvider>
+              <SupabaseAuthProvider serverSession={session}>
+                {children}
+              </SupabaseAuthProvider>
+            </SupabaseProvider>
+          </DictionaryProvider>
+          <BreakpointIndicator />
+        </ThemeProvider>
       </body>
     </html>
   )

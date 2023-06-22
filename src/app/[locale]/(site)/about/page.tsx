@@ -1,3 +1,3 @@
 export default async function About() {
-  return <div>About</div>
+  return <section className="container">About</section>
 }

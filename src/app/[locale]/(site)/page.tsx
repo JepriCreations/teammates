@@ -13,16 +13,20 @@ export default async function Home({ params: { locale } }: HomeProps) {
   const projects = await fetchProjects()
 
   return (
-    <main className="mx-auto max-w-4xl p-3 pt-24">
-      <div className="text-center">
-        <h1 className="mb-4 font-bold leading-snug">{dict.Site.title}</h1>
-        <p className="mx-auto max-w-lg text-base">{dict.Site.subtitle}</p>
-      </div>
-      <section className="mt-8">
-        {projects.map((project) => (
-          <ProjectCard key={project.id} {...project} />
-        ))}
+    <>
+      <section className="container mx-auto pt-16">
+        <div className="text-center">
+          <h1 className="mb-4 font-bold leading-snug">{dict.Site.title}</h1>
+          <p className="mx-auto max-w-lg text-base text-muted-foreground">
+            {dict.Site.subtitle}
+          </p>
+        </div>
+        <section className="my-8">
+          {projects.map((project) => (
+            <ProjectCard key={project.id} {...project} />
+          ))}
+        </section>
       </section>
-    </main>
+    </>
   )
 }

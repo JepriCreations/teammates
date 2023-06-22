@@ -4,28 +4,31 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
+    --black: 0 0% 0%;
+    --white: 0 0% 100%;
+
+    --background: var(--white);
+    --foreground: var(--black);
 
     --hover: 0 0% 95%;
-    --border: 0 0% 0%;
+    --border: var(--black);
 
     --muted: 0 0% 85%;
     --muted-foreground: var(--foreground) / 0.6;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 0%;
+    --popover: var(--white);
+    --popover-foreground: var(--black);
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 0%;
+    --card: var(--white);
+    --card-foreground: var(--black);
 
-    --primary: 0 0% 100%;
-    --primary-foreground: 0 0% 0%;
+    --primary: var(--white);
+    --primary-foreground: var(--black);
 
-    --secondary: 0 0% 20%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: var(--white);
+    --secondary-foreground: var(--black);
 
-    --accent: 104, 82%, 52%;
+    --accent: 133 100% 61%;
     --accent-foreground: 0 0% 0%;
 
     --destructive: 0 99% 67%;
@@ -46,29 +49,35 @@
   }
 
   .dark {
-    --background: 220 9% 7%;
-    --foreground: 216 12% 84%;
+    --black: 251 24% 9%;
+    --white: 214 30% 91%;
 
-    --muted: 240 5% 34%;
-    --muted-foreground: 240 5% 65%;
+    --background: var(--black);
+    --foreground: var(--white);
 
-    --accent: 162 48% 45%;
-    --accent-foreground: 168 49% 10%;
+    --hover: 251 15% 14%;
+    --border: var(--white);
 
-    --popover: 240 10% 4%;
-    --popover-foreground: 240 5% 84%;
+    --muted: 249 26% 5%;
+    --muted-foreground: var(--foreground) / 0.6;
 
-    --card: 230 8% 16%;
-    --card-foreground: 216 12% 84%;
+    --popover: var(--black);
+    --popover-foreground: var(--white);
 
-    --primary: 263 49% 67%;
-    --primary-foreground: 267 40% 23%;
+    --card: var(--black);
+    --card-foreground: var(--white);
 
-    --secondary: 188 83% 43%;
-    --secondary-foreground: 196 68% 15%;
+    --primary: var(--black);
+    --primary-foreground: var(--white);
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 100% 83%;
+    --secondary: var(--black);
+    --secondary-foreground: var(--white);
+
+    --accent: 133 100% 61%;
+    --accent-foreground: 0 0% 0%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 71% 22%;
 
     --success: 162 48% 45%;
     --success-foreground: 156 72% 67%;
@@ -87,10 +96,19 @@
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: theme(colors.border);
   }
   body {
     font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    color: theme(colors.foreground);
   }
 
   ::selection {

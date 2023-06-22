@@ -12,7 +12,7 @@ const buttonVariants = cva(
         default:
           'bg-primary text-foreground hover:bg-hover focus:bg-hover active:translate-x-0 active:translate-y-0 disabled:translate-x-0 disabled:translate-y-0 -translate-x-0.5 -translate-y-0.5 border border-border disabled:bg-muted',
         secondary:
-          'bg-secondary text-secondary-foreground font-normal active:translate-x-0 active:translate-y-0 disabled:translate-x-0 disabled:translate-y-0 -translate-x-0.5 -translate-y-0.5 border border-border hover:bg-neutral-600 focus:bg-neutral-600',
+          'bg-secondary text-secondary-foreground border border-border hover:bg-hover focus:bg-hover active:scale-95',
         ghost:
           'hover:bg-foreground/5 active:scale-95 focus:bg-foreground/5 disabled:bg-muted',
         link: 'underline-offset-4 hover:underline text-foreground active:scale-95 focus:underline disabled:text-muted-foreground',
@@ -35,11 +35,11 @@ const buttonVariants = cva(
 const ButtonContainerVariants = cva('min-w-fit', {
   variants: {
     variant: {
-      default: 'bg-black',
-      secondary: 'bg-black',
+      default: 'bg-foreground',
+      secondary: 'bg-transparent',
       ghost: 'bg-transparent',
       link: 'bg-transparent',
-      destructive: 'bg-black',
+      destructive: 'bg-foreground',
     },
     fullWidth: {
       true: 'w-full',
