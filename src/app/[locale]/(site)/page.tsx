@@ -16,12 +16,14 @@ export default async function Home({ params: { locale } }: HomeProps) {
     <>
       <section className="container mx-auto pt-16">
         <div className="text-center">
-          <h1 className="mb-4 font-bold leading-snug">{dict.Site.title}</h1>
+          <h1 className="mx-auto mb-4 max-w-3xl font-bold leading-snug">
+            {dict.Site.title}
+          </h1>
           <p className="mx-auto max-w-lg text-base text-muted-foreground">
             {dict.Site.subtitle}
           </p>
         </div>
-        <section className="my-8">
+        <section className="mx-auto my-8 max-w-4xl">
           {projects.map((project) => (
             <ProjectCard key={project.id} {...project} />
           ))}

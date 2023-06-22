@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import {
   AppleIcon,
   FacebookIcon,
@@ -9,7 +10,6 @@ import {
   TwitterIcon,
 } from '@/components/icons'
 import { useAuth } from '@/components/providers/supabase-auth-provider'
-import { Button } from '@/components/ui/button'
 
 export const SignInForm = () => {
   const { signInWithGithub, isAuthenticating } = useAuth()

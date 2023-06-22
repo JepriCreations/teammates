@@ -39,7 +39,11 @@ export default async function Login({ params: { locale } }: LoginProps) {
       </div>
       <div className="text-sm">
         {t('illustrations_by', [
-          <a href="https://popsy.co" target="_blank">
+          <a
+            href="https://popsy.co"
+            target="_blank"
+            className="hover:text-orange-400"
+          >
             popsy.co
           </a>,
         ])}
@@ -49,21 +53,42 @@ export default async function Login({ params: { locale } }: LoginProps) {
         alt="entrepeneur"
         width={461 / 1.3}
         height={552 / 1.3}
-        className="absolute z-0 translate-x-[350px]"
+        className="absolute z-0 translate-x-[350px] dark:hidden"
+      />
+      <Image
+        src="/images/il-login-1_dark.png"
+        alt="entrepeneur"
+        width={461 / 1.3}
+        height={552 / 1.3}
+        className="absolute z-0 hidden translate-x-[350px] dark:block"
       />
       <Image
         src="/images/il-login-2.png"
         alt="entrepeneur"
         width={238 / 1.3}
         height={380 / 1.3}
-        className="absolute z-0 translate-x-[-350px] translate-y-[-120px]"
+        className="absolute z-0 translate-x-[-350px] translate-y-[-120px] dark:hidden"
+      />
+      <Image
+        src="/images/il-login-2_dark.png"
+        alt="entrepeneur"
+        width={238 / 1.3}
+        height={380 / 1.3}
+        className="absolute z-0 hidden translate-x-[-350px] translate-y-[-120px] dark:block"
       />
       <Image
         src="/images/il-login-3.png"
         alt="entrepeneur"
         width={167 / 1.3}
         height={173 / 1.3}
-        className="absolute z-0 translate-x-[-300px] translate-y-[220px]"
+        className="absolute z-0 translate-x-[-300px] translate-y-[220px] dark:hidden"
+      />
+      <Image
+        src="/images/il-login-3_dark.png"
+        alt="entrepeneur"
+        width={167 / 1.3}
+        height={173 / 1.3}
+        className="absolute z-0 hidden translate-x-[-300px] translate-y-[220px] dark:block"
       />
     </main>
   )
