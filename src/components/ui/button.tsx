@@ -5,18 +5,19 @@ import { cn } from '@/lib/utils'
 import { IconProps, LoadingIcon } from '@/components/icons'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center w-full gap-3 text-base font-semibold transition-all focus-visible:outline-none focus-visible:ring-0 disabled:pointer-events-none',
+  'inline-flex items-center justify-center w-full gap-3 text-base font-semibold outline-none transition-all focus-visible:outline-none focus-visible:ring-0 disabled:pointer-events-none',
   {
     variants: {
       variant: {
         default:
-          'bg-background text-foreground hover:bg-hover focus:bg-hover disabled:bg-background/95 active:translate-x-0 active:translate-y-0 disabled:translate-x-0 disabled:translate-y-0 -translate-x-0.5 -translate-y-0.5 border border-border',
+          'bg-primary text-foreground hover:bg-hover focus:bg-hover active:translate-x-0 active:translate-y-0 disabled:translate-x-0 disabled:translate-y-0 -translate-x-0.5 -translate-y-0.5 border border-border disabled:bg-muted',
         secondary:
-          'bg-background border-2 border-border text-foreground hover:bg-foreground/5 rounded-full active:scale-95',
-        ghost: 'hover:bg-foreground/5 active:scale-95 focus:bg-foreground/5',
-        link: 'underline-offset-4 hover:underline text-foreground active:scale-95 focus:underline',
+          'bg-secondary text-secondary-foreground font-normal active:translate-x-0 active:translate-y-0 disabled:translate-x-0 disabled:translate-y-0 -translate-x-0.5 -translate-y-0.5 border border-border hover:bg-neutral-600 focus:bg-neutral-600',
+        ghost:
+          'hover:bg-foreground/5 active:scale-95 focus:bg-foreground/5 disabled:bg-muted',
+        link: 'underline-offset-4 hover:underline text-foreground active:scale-95 focus:underline disabled:text-muted-foreground',
         destructive:
-          'bg-destructive text-foreground hover:bg-destructive/90 focus:bg-destructive/90 active:translate-x-0 active:translate-y-0 disabled:translate-x-0 disabled:translate-y-0 -translate-x-0.5 -translate-y-0.5 border border-border',
+          'bg-destructive text-destructive-foreground active:translate-x-0 active:translate-y-0 disabled:translate-x-0 disabled:translate-y-0 -translate-x-0.5 -translate-y-0.5 border border-border hover:bg-red-600 focus:bg-red-600',
       },
       size: {
         default: 'h-10 px-4 py-2',
@@ -35,7 +36,7 @@ const ButtonContainerVariants = cva('min-w-fit', {
   variants: {
     variant: {
       default: 'bg-black',
-      secondary: 'bg-transparent',
+      secondary: 'bg-black',
       ghost: 'bg-transparent',
       link: 'bg-transparent',
       destructive: 'bg-black',
@@ -100,7 +101,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           disabled={disabled}
           {...(asChild ? { ...childrenProps } : { ...props })}
         >
-          <div className="flex items-center gap-3">
+          <div className="relative flex items-center gap-3">
             {loading ? (
               <LoadingIcon className="h-5 w-5 animate-spin" />
             ) : (

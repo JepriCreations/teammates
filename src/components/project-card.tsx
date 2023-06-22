@@ -62,7 +62,7 @@ export const ProjectCard = ({
       <Link href={routes.PROJECT(id)} className="group">
         <div
           id="content-container"
-          className="relative translate-x-0 translate-y-0 border border-border bg-background p-4 transition group-hover:-translate-x-1 group-hover:-translate-y-1 group-active:translate-x-0 group-active:translate-y-0"
+          className="relative translate-x-0 translate-y-0 border border-border bg-card p-4 transition group-hover:-translate-x-1 group-hover:-translate-y-1 group-active:translate-x-0 group-active:translate-y-0"
         >
           <div className="mb-2 flex items-center gap-3">
             <div className="relative h-10 w-10 border border-border bg-foreground/10">
@@ -77,16 +77,18 @@ export const ProjectCard = ({
               )}
             </div>
             <div className="flex flex-col gap-1">
-              <p className="text-lg leading-none">{name}</p>
-              <span className="text-sm leading-none text-muted">
+              <p className="text-lg leading-none text-card-foreground">
+                {name}
+              </p>
+              <span className="text-sm leading-none text-muted-foreground">
                 {categories.join(' & ')}
               </span>
             </div>
           </div>
 
-          <p className="mb-4">{summary}</p>
+          <p className="mb-4 text-card-foreground">{summary}</p>
 
-          <div className="flex items-end justify-between">
+          <div className="flex items-end justify-between text-card-foreground">
             <div id="roles-container" className="flex gap-3">
               {roles.map((role) => (
                 <div
@@ -106,7 +108,7 @@ export const ProjectCard = ({
                 </div>
               ))}
             </div>
-            <span className="text-sm leading-none text-muted">
+            <span className="text-sm leading-none text-muted-foreground">
               {formatDate(updated_at)}
             </span>
           </div>

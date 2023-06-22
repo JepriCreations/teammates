@@ -18,11 +18,11 @@ const config = {
     },
     extend: {
       colors: {
-        ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         hover: 'hsl(var(--hover))',
         border: 'hsl(var(--border))',
+        ring: 'hsl(var(--ring))',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
@@ -58,7 +58,6 @@ const config = {
         popover: {
           DEFAULT: 'hsl(var(--popover))',
           foreground: 'hsl(var(--popover-foreground))',
-          border: 'hsl(var(--popover-border))',
         },
         card: {
           DEFAULT: 'hsl(var(--card))',

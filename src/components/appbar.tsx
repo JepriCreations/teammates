@@ -1,8 +1,29 @@
-import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { Logo } from './logo'
-import { createServerClient } from '@/lib/supabase-server'
 import { routes } from '@/constants/routes'
+
+import { createServerClient } from '@/lib/supabase-server'
+import { Button } from '@/components/ui/button'
+
+import { Logo } from './logo'
+import { NavLink } from './nav-link'
+
+const menu = [
+  {
+    id: 'discover',
+    title: 'Discover',
+    slug: routes.HOME,
+  },
+  {
+    id: 'blog',
+    title: 'Blog',
+    slug: routes.BLOG,
+  },
+  {
+    id: 'about',
+    title: 'About',
+    slug: routes.ABOUT,
+  },
+]
 
 export const Appbar = async () => {
   const supabase = createServerClient()
@@ -19,9 +40,11 @@ export const Appbar = async () => {
         <Logo height={24} withText={false} />
       </div>
       <div className="ml-6 flex gap-6 font-medium">
-        <a>Discover</a>
-        <a>Blog</a>
-        <a>About</a>
+        {menu.map(({ id, title, slug }) => (
+          <NavLink key={id} slug={slug}>
+            {title}
+          </NavLink>
+        ))}
       </div>
       <div className="grow" />
       <div className="flex gap-3">

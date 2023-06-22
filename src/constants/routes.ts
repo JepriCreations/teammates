@@ -6,6 +6,8 @@ export const routes = {
   NEW_PROJECT: '/projects/new',
   CONTACT: '/contact',
   PRIVACY: '/privacy',
+  BLOG: '/blog',
+  ABOUT: '/about',
   PROJECT: (id: string) => `/project/${id}`,
 
   // Externals
