@@ -90,36 +90,29 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
     font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 
   ::selection {
-    @apply bg-accent;
+    background-color: theme(backgroundColor.accent.DEFAULT);
   }
 
   ::-moz-selection {
-    @apply bg-accent;
+    background-color: theme(backgroundColor.accent.DEFAULT);
   }
 
   .dark ::selection {
-    @apply bg-accent;
+    background-color: theme(backgroundColor.accent.DEFAULT);
   }
 
   .dark ::-moz-selection {
     /* Code for Firefox */
-    @apply bg-accent;
+    background-color: theme(backgroundColor.accent.DEFAULT);
   }
 
   h1 {
     font-size: theme(fontSize.4xl);
     font-weight: theme(fontWeight.bold);
     letter-spacing: theme(spacing.0);
-  }
-}
-
-@layer utilities {
-  .secondary {
-    color: theme(textColor.foreground / 60%);
   }
 }

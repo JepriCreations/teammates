@@ -1,14 +1,16 @@
 import '@/styles/globals.css'
+
 import { Metadata } from 'next'
 
 import { siteConfig } from '@/config/site'
-import { fontSans } from '@/lib/fonts'
-import { cn } from '@/lib/utils'
-import { createServerClient } from '@/lib/supabase-server'
-import { SupabaseProvider } from '@/components/providers/supabase-provider'
-import { SupabaseAuthProvider } from '@/components/providers/supabase-auth-provider'
 import { getDictionary } from '@/lib/dictionaries'
+import { fontSans } from '@/lib/fonts'
+import { createServerClient } from '@/lib/supabase-server'
+import { cn } from '@/lib/utils'
+import { BreakpointIndicator } from '@/components/breakpoint-indicator'
 import { DictionaryProvider } from '@/components/providers/dictionary-provider'
+import { SupabaseAuthProvider } from '@/components/providers/supabase-auth-provider'
+import { SupabaseProvider } from '@/components/providers/supabase-provider'
 
 export const metadata: Metadata = {
   title: {
@@ -49,7 +51,7 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={cn(fontSans.variable)}
     >
-      <body className="min-h-[100dvh] bg-background font-sans antialiased">
+      <body className="min-h-[100dvh] overflow-x-hidden bg-background font-sans antialiased">
         <DictionaryProvider dict={dict}>
           <SupabaseProvider>
             <SupabaseAuthProvider serverSession={session}>
@@ -57,6 +59,7 @@ export default async function RootLayout({
             </SupabaseAuthProvider>
           </SupabaseProvider>
         </DictionaryProvider>
+        <BreakpointIndicator />
       </body>
     </html>
   )

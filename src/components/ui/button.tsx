@@ -20,9 +20,9 @@ const buttonVariants = cva(
           'bg-destructive text-destructive-foreground active:translate-x-0 active:translate-y-0 disabled:translate-x-0 disabled:translate-y-0 -translate-x-0.5 -translate-y-0.5 border border-border hover:bg-red-600 focus:bg-red-600',
       },
       size: {
-        default: 'h-10 px-4 py-2',
-        sm: 'h-9 px-3',
-        lg: 'h-11 px-8',
+        default: 'px-4 py-2',
+        sm: 'py-1 px-3',
+        lg: 'py-3 px-8',
       },
     },
     defaultVariants: {
@@ -55,6 +55,7 @@ const ButtonContainerVariants = cva('min-w-fit', {
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
+  wrapperClassName?: string
   asChild?: boolean
   fullWidth?: boolean
   loading?: boolean
@@ -64,6 +65,7 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
+      wrapperClassName,
       className,
       variant = 'default',
       fullWidth = false,
@@ -91,7 +93,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <div
         className={cn(
-          ButtonContainerVariants({ variant, fullWidth }),
+          ButtonContainerVariants({
+            variant,
+            fullWidth,
+            className: wrapperClassName,
+          }),
           disabled && 'opacity-50'
         )}
       >

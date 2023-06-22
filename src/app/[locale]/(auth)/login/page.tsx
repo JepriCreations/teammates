@@ -1,10 +1,11 @@
+import Image from 'next/image'
 import Link from 'next/link'
+import { routes } from '@/constants/routes'
+
+import { getDictionary } from '@/lib/dictionaries'
+import { Button } from '@/components/ui/button'
 import { Logo } from '@/components/logo'
 import { SignInForm } from '@/components/sign-in-form'
-import { Button } from '@/components/ui/button'
-import { routes } from '@/constants/routes'
-import Image from 'next/image'
-import { getDictionary } from '@/lib/dictionaries'
 
 interface LoginProps {
   params: { locale: string }
@@ -22,10 +23,12 @@ export default async function Login({ params: { locale } }: LoginProps) {
       </div>
       <div className="relative z-10 border border-border bg-background p-14 text-center shadow-xl">
         <h1>{dict.welcome}</h1>
-        <p className="secondary max-w-sm text-lg">{dict.subtitle}</p>
+        <p className="max-w-sm text-lg text-muted-foreground">
+          {dict.subtitle}
+        </p>
         <p className="my-8 font-medium">{dict.login_with}</p>
         <SignInForm />
-        <p className="secondary mt-11 max-w-sm text-lg">
+        <p className="mt-11 max-w-sm text-lg text-muted-foreground">
           {dict.an_account_will_be_created}
         </p>
       </div>

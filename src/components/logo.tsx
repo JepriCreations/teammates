@@ -1,9 +1,16 @@
+import { cn } from '@/lib/utils'
+
 interface LogoProps {
   height?: number
   withText?: boolean
+  className?: string
 }
 
-export const Logo = ({ height = 32, withText = true }: LogoProps) => {
+export const Logo = ({
+  height = 32,
+  withText = true,
+  className,
+}: LogoProps) => {
   const width = withText ? (height * 152) / 32 : height
   const viewBox = withText ? '0 0 152 32' : '0 0 32 32'
   return (
@@ -12,7 +19,7 @@ export const Logo = ({ height = 32, withText = true }: LogoProps) => {
       height={height}
       viewBox={viewBox}
       fill="none"
-      className="text-foreground"
+      className={cn('text-foreground', className)}
     >
       {withText && (
         <>

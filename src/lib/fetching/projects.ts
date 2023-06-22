@@ -1,4 +1,5 @@
 import 'server-only'
+
 import { createServerClient } from '@/lib/supabase-server'
 
 export const fetchProjects = async () => {
@@ -11,6 +12,7 @@ export const fetchProjects = async () => {
       roles(name, exp_level, rewards, work_mode, status)`
     )
     .eq('roles.status', 'open')
+    .order('updated_at', { ascending: false })
 
   if (error) {
     //  TODO: Handle error
