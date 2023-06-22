@@ -11,5 +11,11 @@
   "Site": {
     "title": "Encuentra el siguiente proyecto del que formar parte.",
     "subtitle": "La plataforma de referencia para conectar visionarios y cultivar el éxito. Adéntrate en un mundo de colaboración e innovación."
+  },
+  "Theme": {
+    "toggle_theme": "Cambiar tema",
+    "dark": "Oscuro",
+    "light": "Claro",
+    "system": "Sistema"
   }
 }

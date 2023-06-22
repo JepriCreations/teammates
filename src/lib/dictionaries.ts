@@ -1,7 +1,9 @@
 import 'server-only'
+
+import reactStringReplace from 'react-string-replace'
+
 import en from '../dictionaries/en.json'
 import es from '../dictionaries/es.json'
-import reactStringReplace from 'react-string-replace'
 
 type Dictionary = Record<string, any>
 
@@ -12,7 +14,7 @@ const dictionaries: Dictionary = {
 
 export const getDictionary = async (locale: string, key?: string) => {
   const localeDict = await dictionaries[locale]()
-  let dict = key ? localeDict[key] : localeDict
+  const dict = key ? localeDict[key] : localeDict
 
   const t = (key: string, replacements?: React.ReactNode[]) => {
     let translation = dict[key]
