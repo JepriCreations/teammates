@@ -16,7 +16,7 @@ export default async function Login({ params: { locale } }: LoginProps) {
   return (
     <main className="relative z-10 mx-auto flex min-h-[100dvh] max-w-5xl flex-col items-center justify-center pb-20">
       <div className="mb-14 flex w-full items-center justify-between p-6">
-        <Logo />
+        <Logo height={32} />
         <Button asChild>
           <Link href={routes.HOME}>{dict.discover}</Link>
         </Button>

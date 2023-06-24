@@ -33,8 +33,8 @@ export const ProjectCard = ({
   roles,
 }: ProjectCardProps) => {
   const workModeIcon = {
-    [WorkMode.Presential]: <PresentialIcon size={18} />,
-    [WorkMode.Remote]: <RemoteIcon size={18} />,
+    [WorkMode.Presential]: <PresentialIcon className="h-4 w-4" />,
+    [WorkMode.Remote]: <RemoteIcon className="h-4 w-4" />,
   }
 
   const rewardIcon = (rewards: Rewards[]) => {
@@ -42,16 +42,16 @@ export const ProjectCard = ({
       rewards.includes(Rewards.Percent) &&
       rewards.includes(Rewards.Contract)
     ) {
-      return <PercentCircleIcon size={18} />
+      return <PercentCircleIcon className="h-4 w-4" />
     }
     //   TODO: Change Combo Icon
 
     if (rewards.includes(Rewards.Percent)) {
-      return <PercentCircleIcon size={18} />
+      return <PercentCircleIcon className="h-4 w-4" />
     }
 
     if (rewards.includes(Rewards.Contract)) {
-      return <ContractIcon size={18} />
+      return <ContractIcon className="h-4 w-4" />
     }
 
     return null
@@ -98,11 +98,11 @@ export const ProjectCard = ({
                   <span className="mr-2">{role.name}</span>
                   {workModeIcon[role.work_mode as WorkMode]}
                   <ExperienceLevelIcon
-                    size={18}
                     level={
                       (role.exp_level as ExperienceLevel) ??
                       ExperienceLevel.Entry
                     }
+                    className="h-4 w-4"
                   />
                   {rewardIcon(role.rewards as Rewards[])}
                 </div>

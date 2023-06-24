@@ -16,28 +16,40 @@ export const SignInForm = () => {
 
   return (
     <div className="mx-auto grid max-w-xs grid-cols-2 gap-5">
-      <Button className="justify-start" fullWidth icon={GoogleIcon}>
+      <Button className="justify-start" fullWidth icon={<GoogleIcon />}>
         Google
       </Button>
-      <Button className="justify-start" fullWidth icon={AppleIcon}>
+      <Button className="justify-start" fullWidth icon={<AppleIcon />}>
         Apple ID
       </Button>
-      <Button className="justify-start" fullWidth icon={TwitterIcon}>
+      <Button
+        className="justify-start"
+        fullWidth
+        icon={<TwitterIcon className="text-blue-400" />}
+      >
         Twitter
       </Button>
-      <Button className="justify-start" fullWidth icon={FacebookIcon}>
+      <Button
+        className="justify-start"
+        fullWidth
+        icon={<FacebookIcon className="text-blue-500" />}
+      >
         Facebook
       </Button>
       <Button
         className="justify-start"
         fullWidth
         onClick={signInWithGithub}
-        icon={GithubIcon}
+        icon={<GithubIcon />}
         loading={isAuthenticating}
       >
         Github
       </Button>
-      <Button className="justify-start" fullWidth icon={LinkedinIcon}>
+      <Button
+        className="justify-start"
+        fullWidth
+        icon={<LinkedinIcon className="text-blue-600 dark:text-foreground" />}
+      >
         Linkedin
       </Button>
     </div>

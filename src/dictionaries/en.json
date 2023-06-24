@@ -1,4 +1,10 @@
 {
+  "Theme": {
+    "toggle_theme": "Toggle theme",
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System"
+  },
   "Auth": {
     "discover": "Discover projects",
     "welcome": "Welcome",
@@ -12,10 +18,11 @@
     "title": "Find the next project to be part of.",
     "subtitle": "The powerhouse platform for connecting visionaries and Cultivating Success. Step into a world of collaboration and innovation."
   },
-  "Theme": {
-    "toggle_theme": "Toggle theme",
-    "dark": "Dark",
-    "light": "Light",
-    "system": "System"
+  "Menus": {
+    "discover": "Discover",
+    "blog": "Blog",
+    "about": "About",
+    "dashboard": "Dashboard",
+    "login": "Login"
   }
 }
