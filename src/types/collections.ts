@@ -14,6 +14,12 @@ export enum WorkMode {
 export enum Rewards {
   Percent = 'percent',
   Contract = 'contract',
+  Credit = 'credit',
+}
+
+export enum Roles {
+  ContentCreator = 'content_creator',
+  Designer = 'designer',
 }
 
 export type Profile = Database['public']['Tables']['profiles']['Row'] & {

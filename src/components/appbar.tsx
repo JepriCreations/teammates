@@ -55,9 +55,14 @@ export const Appbar = async ({ locale }: AppbarProps) => {
           {/* Visible only in more than 640px width devices */}
 
           <ul className="hidden grow gap-6 font-medium sm:flex">
-            {menuItems.map(({ id, title, slug }) => (
+            {menuItems.map(({ id, title, slug }, index) => (
               <li key={id}>
-                <NavLink slug={slug}>{title}</NavLink>
+                <NavLink
+                  slug={slug}
+                  className="animate-in fade-in-50 slide-in-from-left"
+                >
+                  {title}
+                </NavLink>
               </li>
             ))}
           </ul>

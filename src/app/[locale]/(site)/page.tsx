@@ -25,7 +25,7 @@ export default async function Home({ params: { locale } }: HomeProps) {
         </div>
         <section className="mx-auto my-8 max-w-4xl">
           {projects.map((project) => (
-            <ProjectCard key={project.id} {...project} />
+            <ProjectCard key={project.id} dict={dict} {...project} />
           ))}
         </section>
       </section>

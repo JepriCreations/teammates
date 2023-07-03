@@ -63,16 +63,12 @@ export const SupabaseAuthProvider = ({
     isLoading,
   } = useSWR(serverSession ? 'profile-context' : null, getProfile)
 
-  const options = {
-    redirectTo: `${location.origin}/auth/callback`,
-  }
-
   // Sign-In with Github
   const signInWithGithub = async () => {
     setIsAuthenticating(true)
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
-      options,
+      options: { redirectTo: `${location.origin}/auth/callback` },
     })
     if (error) {
       console.log({ error })

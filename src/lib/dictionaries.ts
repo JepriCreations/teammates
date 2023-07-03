@@ -5,7 +5,8 @@ import reactStringReplace from 'react-string-replace'
 import en from '../dictionaries/en.json'
 import es from '../dictionaries/es.json'
 
-type Dictionary = Record<string, any>
+// type Dictionary = Record<string, any>
+export type Dictionary = Partial<typeof en> & Record<string, any>
 
 const dictionaries: Dictionary = {
   en: () => Promise.resolve(en),

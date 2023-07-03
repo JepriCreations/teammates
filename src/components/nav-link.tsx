@@ -1,16 +1,24 @@
 'use client'
 
-import Link from 'next/link'
+import Link, { LinkProps } from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import { cn } from '@/lib/utils'
 
-interface NavLinkProps {
+interface NavLinkProps extends Omit<LinkProps, 'href' | 'className'> {
   slug: string
   children: React.ReactNode
+  className?: string
+  style?: React.CSSProperties
 }
 
-export const NavLink = ({ slug, children }: NavLinkProps) => {
+export const NavLink = ({
+  slug,
+  className,
+  style,
+  children,
+  ...rest
+}: NavLinkProps) => {
   const currentRoute = usePathname()
   const currentSlug = currentRoute.split('/')[2] ?? ''
   const isActive = currentSlug === slug.replace('/', '')
@@ -19,9 +27,12 @@ export const NavLink = ({ slug, children }: NavLinkProps) => {
     <Link
       href={slug}
       className={cn(
+        className,
         'relative block opacity-50 transition-opacity before:absolute before:-bottom-1 before:left-0 before:h-[5px] before:w-5 before:origin-left before:scale-x-0 before:bg-accent before:opacity-0 before:transition-transform hover:opacity-100',
         isActive && 'before:scale-x-1 opacity-100 before:opacity-100'
       )}
+      style={style}
+      {...rest}
     >
       {children}
     </Link>

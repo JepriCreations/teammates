@@ -2,8 +2,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { routes } from '@/constants/routes'
 
-import { ExperienceLevel, Rewards, Role, WorkMode } from '@/types/collections'
+import {
+  ExperienceLevel,
+  Rewards,
+  Role,
+  Roles,
+  WorkMode,
+} from '@/types/collections'
+import { Dictionary } from '@/lib/dictionaries'
 import { formatDate } from '@/lib/utils'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import {
   ArrowUpRightIcon,
   ContractIcon,
@@ -21,6 +29,7 @@ interface ProjectCardProps {
   updated_at: string
   icon_url: string | null
   roles: Partial<Role>[]
+  dict: Dictionary
 }
 
 export const ProjectCard = ({
@@ -31,6 +40,7 @@ export const ProjectCard = ({
   updated_at,
   icon_url,
   roles,
+  dict,
 }: ProjectCardProps) => {
   const workModeIcon = {
     [WorkMode.Presential]: <PresentialIcon className="h-4 w-4" />,
@@ -62,9 +72,9 @@ export const ProjectCard = ({
       <Link href={routes.PROJECT(id)} className="group">
         <div
           id="content-container"
-          className="relative translate-x-0 translate-y-0 border border-border bg-card p-4 transition group-hover:-translate-x-1 group-hover:-translate-y-1 group-active:translate-x-0 group-active:translate-y-0"
+          className="relative translate-x-0 translate-y-0 border border-border bg-card transition group-hover:-translate-x-1 group-hover:-translate-y-1 group-active:translate-x-0 group-active:translate-y-0"
         >
-          <div className="mb-2 flex items-center gap-3">
+          <div className="m-4 mb-2 flex items-center gap-3">
             <div className="relative h-10 w-10 border border-border bg-foreground/10">
               {icon_url && (
                 <Image
@@ -86,29 +96,36 @@ export const ProjectCard = ({
             </div>
           </div>
 
-          <p className="mb-4 text-card-foreground">{summary}</p>
+          <p className="m-4 text-card-foreground">{summary}</p>
 
-          <div className="flex items-end justify-between text-card-foreground">
-            <div id="roles-container" className="flex gap-3">
-              {roles.map((role) => (
-                <div
-                  key={`${name}-${role.name}`}
-                  className="flex items-center gap-2 rounded-full border border-border px-4 py-1"
-                >
-                  <span className="mr-2">{role.name}</span>
-                  {workModeIcon[role.work_mode as WorkMode]}
-                  <ExperienceLevelIcon
-                    level={
-                      (role.exp_level as ExperienceLevel) ??
-                      ExperienceLevel.Entry
-                    }
-                    className="h-4 w-4"
-                  />
-                  {rewardIcon(role.rewards as Rewards[])}
-                </div>
-              ))}
-            </div>
-            <span className="text-sm leading-none text-muted-foreground">
+          <div className="mb-4 flex flex-col items-end gap-3 text-card-foreground sm:flex-row sm:justify-between">
+            <ScrollArea className="relative max-w-full grow">
+              <div id="roles-container" className="flex gap-3 px-4">
+                {roles.map((role) => (
+                  <div
+                    key={`${name}-${role.name}`}
+                    className="flex items-center gap-2 rounded-full border border-border px-4 py-1"
+                  >
+                    <span className="mr-2 grow truncate">
+                      {dict.Roles?.[role.name! as Roles]}
+                    </span>
+                    {workModeIcon[role.work_mode as WorkMode]}
+                    <ExperienceLevelIcon
+                      level={
+                        (role.exp_level as ExperienceLevel) ??
+                        ExperienceLevel.Entry
+                      }
+                      className="h-4 w-4"
+                    />
+                    {rewardIcon(role.rewards as Rewards[])}
+                  </div>
+                ))}
+              </div>
+              <ScrollBar orientation="horizontal" />
+              <div className="absolute inset-y-0 left-0 w-4 bg-gradient-to-r from-card via-card" />
+              <div className="absolute inset-y-0 right-0 w-4 bg-gradient-to-l from-card via-card" />
+            </ScrollArea>
+            <span className="mx-4 text-sm leading-none text-muted-foreground">
               {formatDate(updated_at)}
             </span>
           </div>

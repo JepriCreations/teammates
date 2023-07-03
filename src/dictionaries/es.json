@@ -24,5 +24,9 @@
     "about": "Acerca de",
     "dashboard": "Panel de control",
     "login": "Iniciar sesión"
+  },
+  "Roles": {
+    "content_creator": "Creador de contenido",
+    "designer": "Diseñador"
   }
 }

@@ -32,7 +32,7 @@ export const NavMenuButton = ({ mainMenu }: NavMenuButtonProps) => {
       </SheetTrigger>
       <SheetContent position="left" size="full">
         <SheetHeader className="mb-3">
-          <SheetTitle className="px-2 text-start text-3xl">Menu</SheetTitle>
+          <SheetTitle className="pr-2 text-start text-3xl">Menu</SheetTitle>
         </SheetHeader>
         <ul className="flex flex-col gap-5">
           {mainMenu?.map(({ id, title, slug }) => (
