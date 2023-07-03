@@ -28,9 +28,11 @@ const Context = createContext<ContextI>({
 
 export const SupabaseAuthProvider = ({
   serverSession,
+  locale,
   children,
 }: {
   serverSession?: Session | null
+  locale?: string
   children: React.ReactNode
 }) => {
   const { supabase } = useSupabase()
@@ -68,8 +70,11 @@ export const SupabaseAuthProvider = ({
     setIsAuthenticating(true)
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
-      options: { redirectTo: `${location.origin}/auth/callback` },
+      options: {
+        redirectTo: `${location.origin}/${locale}/auth/callback`,
+      },
     })
+
     if (error) {
       console.log({ error })
       return error.message

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+
 import { getLocale, supportedLocales } from './utils'
 
 export async function intlMiddleware(req: NextRequest) {

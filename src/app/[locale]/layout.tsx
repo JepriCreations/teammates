@@ -57,7 +57,10 @@ export default async function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <DictionaryProvider dict={dict}>
             <SupabaseProvider>
-              <SupabaseAuthProvider serverSession={session}>
+              <SupabaseAuthProvider
+                serverSession={session}
+                locale={params.locale}
+              >
                 {children}
               </SupabaseAuthProvider>
             </SupabaseProvider>
