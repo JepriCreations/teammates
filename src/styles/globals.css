@@ -121,11 +121,13 @@
 
   .dark ::selection {
     background-color: theme(backgroundColor.accent.DEFAULT);
+    color: theme(colors.background);
   }
 
   .dark ::-moz-selection {
     /* Code for Firefox */
     background-color: theme(backgroundColor.accent.DEFAULT);
+    color: theme(colors.background);
   }
 
   h1 {
