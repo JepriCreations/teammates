@@ -1,7 +1,7 @@
 import { ExperienceLevel } from '@/types/collections'
 import { cn } from '@/lib/utils'
 
-const ExperienceLevelIcon = ({
+export const ExperienceLevelIcon = ({
   className,
   level,
   ...props
@@ -35,5 +35,3 @@ const ExperienceLevelIcon = ({
     />
   </svg>
 )
-
-export default ExperienceLevelIcon

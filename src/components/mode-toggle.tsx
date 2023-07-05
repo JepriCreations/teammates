@@ -10,23 +10,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { LaptopIcon, MoonIcon, SunIcon } from '@/components/icons'
 import { useDictionary } from '@/components/providers/dictionary-provider'
 
-import { LaptopIcon, MoonIcon, SunIcon } from './icons'
-
 export function ModeToggle() {
-  const { setTheme, resolvedTheme: theme } = useTheme()
+  const { setTheme } = useTheme()
   const { dict } = useDictionary('Theme')
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="p-2">
-          {theme === 'dark' ? (
-            <MoonIcon className="animate-in zoom-in-50 spin-in-45" />
-          ) : (
-            <SunIcon className="animate-in zoom-in-50 spin-in-45" />
-          )}
+          <MoonIcon className="hidden animate-in zoom-in-50 spin-in-45 dark:block" />
+          <SunIcon className="block animate-in zoom-in-50 spin-in-45 dark:hidden" />
           <span className="sr-only">{dict.toggle_theme}</span>
         </Button>
       </DropdownMenuTrigger>

@@ -2,14 +2,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { routes } from '@/constants/routes'
 
-import {
-  ExperienceLevel,
-  Rewards,
-  Role,
-  Roles,
-  WorkMode,
-} from '@/types/collections'
-import { Dictionary } from '@/lib/dictionaries'
+import { ExperienceLevel, Rewards, Role, WorkMode } from '@/types/collections'
+import { Translator } from '@/lib/dictionaries'
 import { formatDate } from '@/lib/utils'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import {
@@ -29,7 +23,7 @@ interface ProjectCardProps {
   updated_at: string
   icon_url: string | null
   roles: Partial<Role>[]
-  dict: Dictionary
+  t: Translator
 }
 
 export const ProjectCard = ({
@@ -40,7 +34,7 @@ export const ProjectCard = ({
   updated_at,
   icon_url,
   roles,
-  dict,
+  t,
 }: ProjectCardProps) => {
   const workModeIcon = {
     [WorkMode.Presential]: <PresentialIcon className="h-4 w-4" />,
@@ -107,7 +101,7 @@ export const ProjectCard = ({
                     className="flex items-center gap-2 rounded-full border border-border px-4 py-1"
                   >
                     <span className="mr-2 grow truncate">
-                      {dict.Roles?.[role.name! as Roles]}
+                      {t(`Roles.${role.name}`)}
                     </span>
                     {workModeIcon[role.work_mode as WorkMode]}
                     <ExperienceLevelIcon

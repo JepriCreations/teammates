@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import { routes } from '@/constants/routes'
+import { Session } from '@supabase/supabase-js'
 
-import { getDictionary } from '@/lib/dictionaries'
-import { createServerClient } from '@/lib/supabase-server'
 import { Button } from '@/components/ui/button'
 import { Logo } from '@/components/logo'
 import { ModeToggle } from '@/components/mode-toggle'
@@ -28,31 +27,26 @@ const menu = (dict: { [x: string]: string }) => [
 ]
 
 interface AppbarProps {
-  locale: string
+  dict: { [x: string]: string }
+  session: Session | null
 }
 
-export const Appbar = async ({ locale }: AppbarProps) => {
-  const supabase = createServerClient()
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  const { dict } = await getDictionary(locale, 'Menus')
+export const Appbar = ({ dict, session }: AppbarProps) => {
   const menuItems = menu(dict)
 
   return (
     <div className="container fixed inset-x-0 top-0 z-40">
       <header className="width-before-scroll-bar relative bg-background py-3">
         <nav className="flex items-center gap-3">
-          {/* Visible only in small devices */}
+          {/* Visible only in small devices ----*/}
           <div className="mr-3 sm:hidden">
             <NavMenuButton mainMenu={menuItems} />
           </div>
+          {/*---- Visible only in small devices */}
 
-          <div className="mr-6">
+          <Link href={routes.HOME} className="mr-6">
             <Logo height={24} />
-          </div>
-
-          {/* Visible only in more than 640px width devices */}
+          </Link>
 
           <ul className="hidden grow gap-6 font-medium sm:flex">
             {menuItems.map(({ id, title, slug }, index) => (

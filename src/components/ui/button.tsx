@@ -108,7 +108,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           {...(asChild ? { ...childrenProps } : { ...props })}
         >
           <div className="relative flex items-center gap-3">
-            {loading ? <LoadingIcon className="h-5 w-5 animate-spin" /> : icon}
+            {loading ? <LoadingIcon className="h-6 w-6 animate-spin" /> : icon}
             {asChild ? childrenProps.children : children}
           </div>
         </Comp>
