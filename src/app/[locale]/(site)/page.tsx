@@ -9,7 +9,7 @@ interface HomeProps {
   params: { locale: string }
 }
 export default async function Home({ params: { locale } }: HomeProps) {
-  const { dict } = await getDictionary(locale)
+  const { t } = await getDictionary(locale)
   const projects = await fetchProjects()
 
   return (
@@ -17,15 +17,15 @@ export default async function Home({ params: { locale } }: HomeProps) {
       <section className="container mx-auto pt-16">
         <div className="text-center">
           <h1 className="mx-auto mb-4 max-w-3xl font-bold leading-snug">
-            {dict.Site.title}
+            {t('Site.title')}
           </h1>
           <p className="mx-auto max-w-lg text-base text-muted-foreground">
-            {dict.Site.subtitle}
+            {t('Site.subtitle')}
           </p>
         </div>
         <section className="mx-auto my-8 max-w-4xl">
           {projects.map((project) => (
-            <ProjectCard key={project.id} dict={dict} {...project} />
+            <ProjectCard key={project.id} t={t} {...project} />
           ))}
         </section>
       </section>

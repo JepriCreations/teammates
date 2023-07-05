@@ -4,6 +4,7 @@ export const routes = {
   ACCOUNT: '/account',
   PROJECTS: '/projects',
   NEW_PROJECT: '/projects/new',
+  PREFERENCES: '/preferences',
   CONTACT: '/contact',
   PRIVACY: '/privacy',
   BLOG: '/blog',

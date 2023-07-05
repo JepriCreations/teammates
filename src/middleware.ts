@@ -1,6 +1,6 @@
-import type { NextRequest } from 'next/server'
-import { intlMiddleware } from '@/middlewares/intlMiddleware'
+import { type NextRequest } from 'next/server'
 import { authMiddleware } from '@/middlewares/authMiddleware'
+import { intlMiddleware } from '@/middlewares/intlMiddleware'
 
 export async function middleware(req: NextRequest) {
   // Call the intlMiddleware first
@@ -20,5 +20,5 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   // Paths where middleware should not be initialized
-  matcher: ['/((?!api|_next|.*\\..*).*)'],
+  matcher: ['/((?!_next).*)'],
 }

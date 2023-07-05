@@ -1,5 +1,5 @@
-import { routes } from '@/constants/routes'
 import { NextRequest } from 'next/server'
+import { routes } from '@/constants/routes'
 
 export const supportedLocales = ['en', 'es']
 export const defaultLocale = 'en'

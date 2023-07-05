@@ -1,8 +1,10 @@
-import { NextResponse, NextRequest } from 'next/server'
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
-import { getLocale, privatesRoutes } from './utils'
-import type { Database } from '@/types/supabase'
+import { NextRequest, NextResponse } from 'next/server'
 import { routes } from '@/constants/routes'
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
+
+import type { Database } from '@/types/supabase'
+
+import { getLocale, privatesRoutes } from './utils'
 
 export async function authMiddleware(req: NextRequest) {
   const locale = getLocale(req)
@@ -33,7 +35,6 @@ export async function authMiddleware(req: NextRequest) {
         new URL(`/${locale + routes.PROJECTS}`, req.url)
       )
     }
-    return null
   }
 
   //   console.log({ pathname, session, isPrivatePage })
@@ -52,5 +53,20 @@ export async function authMiddleware(req: NextRequest) {
     )
   }
 
-  return res
+  /**
+   * Retrieve the pathname and route to use in server side components using next/headers
+   */
+  const requestHeaders = new Headers(req.headers)
+  requestHeaders.set('x-url', req.nextUrl.pathname)
+
+  const parts = req.nextUrl.pathname.split('/')
+  const route = parts.slice(2).join('/')
+  requestHeaders.set('x-route', '/' + route)
+
+  return NextResponse.next({
+    request: {
+      // Apply new request headers
+      headers: requestHeaders,
+    },
+  })
 }

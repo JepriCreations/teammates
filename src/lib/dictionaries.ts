@@ -5,8 +5,8 @@ import reactStringReplace from 'react-string-replace'
 import en from '../dictionaries/en.json'
 import es from '../dictionaries/es.json'
 
-// type Dictionary = Record<string, any>
 export type Dictionary = Partial<typeof en> & Record<string, any>
+export type Translator = (key: string, replacements?: React.ReactNode[]) => any
 
 const dictionaries: Dictionary = {
   en: () => Promise.resolve(en),
@@ -15,10 +15,26 @@ const dictionaries: Dictionary = {
 
 export const getDictionary = async (locale: string, key?: string) => {
   const localeDict = await dictionaries[locale]()
+  const defaultLocaleDict =
+    locale !== 'en' ? await dictionaries['en']() : localeDict
   const dict = key ? localeDict[key] : localeDict
+  const defaultDict = key ? defaultLocaleDict[key] : defaultLocaleDict
 
-  const t = (key: string, replacements?: React.ReactNode[]) => {
-    let translation = dict[key]
+  const t: Translator = (key: string, replacements?: React.ReactNode[]) => {
+    const parts = key.split('.')
+    let translation = dict
+    let defaultTranslation = defaultDict
+
+    for (const part of parts) {
+      translation = translation[part]
+      defaultTranslation = defaultTranslation[part]
+      // If undefined, use the default dictionary
+      if (!translation) {
+        translation = defaultTranslation
+        break
+      }
+    }
+
     if (replacements && replacements.length > 0) {
       replacements.forEach((replacement, index) => {
         const placeholder = `%${index}`
@@ -29,6 +45,7 @@ export const getDictionary = async (locale: string, key?: string) => {
         )
       })
     }
+
     return translation
   }
 

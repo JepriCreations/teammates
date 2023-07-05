@@ -28,5 +28,11 @@
   "Roles": {
     "content_creator": "Content creator",
     "designer": "Designer"
+  },
+  "Dashboard": {
+    "projects": "Projects",
+    "account": "Account",
+    "all_projects": "All projects",
+    "preferences": "Preferences"
   }
 }
