@@ -35,6 +35,8 @@
     "new_project": "New Project",
     "active": "active",
     "disabled": "disabled",
+    "public": "public",
+    "hidden": "hidden",
     "create_new_project": "Create new project",
     "add_available_roles": "Add available roles"
   },

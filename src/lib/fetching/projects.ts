@@ -68,7 +68,7 @@ export const fetchUserProject = async () => {
   const { data, error } = await supabase
     .from('projects')
     .select(
-      `id, updated_at, name, public,
+      `id, updated_at, name, public, views,
       roles(status)`
     )
     .eq('created_by', user.id)

@@ -3,7 +3,7 @@ export type Json =
   | number
   | boolean
   | null
-  | { [key: string]: Json }
+  | { [key: string]: Json | undefined }
   | Json[]
 
 export interface Database {
@@ -128,11 +128,13 @@ export interface Database {
           description: string
           icon_url: string | null
           id: string
+          links: Json[]
           location: Json | null
           name: string
           public: boolean
           summary: string
           updated_at: string
+          views: number
         }
         Insert: {
           categories: string[]
@@ -141,11 +143,13 @@ export interface Database {
           description?: string
           icon_url?: string | null
           id?: string
+          links?: Json[]
           location?: Json | null
           name?: string
           public?: boolean
           summary?: string
           updated_at?: string
+          views?: number
         }
         Update: {
           categories?: string[]
@@ -154,11 +158,13 @@ export interface Database {
           description?: string
           icon_url?: string | null
           id?: string
+          links?: Json[]
           location?: Json | null
           name?: string
           public?: boolean
           summary?: string
           updated_at?: string
+          views?: number
         }
         Relationships: [
           {
@@ -171,6 +177,7 @@ export interface Database {
       }
       roles: {
         Row: {
+          created_at: string
           description: string
           exp_level: string
           id: string
@@ -181,6 +188,7 @@ export interface Database {
           work_mode: string
         }
         Insert: {
+          created_at?: string
           description?: string
           exp_level: string
           id?: string
@@ -191,6 +199,7 @@ export interface Database {
           work_mode: string
         }
         Update: {
+          created_at?: string
           description?: string
           exp_level?: string
           id?: string
