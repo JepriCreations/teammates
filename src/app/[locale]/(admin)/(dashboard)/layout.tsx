@@ -1,7 +1,9 @@
 import { headers } from 'next/headers'
+import Link from 'next/link'
 import { routes } from '@/constants/routes'
 
 import { getDictionary } from '@/lib/dictionaries'
+import { DashboardAppbar } from '@/components/dashboard/appbar'
 import { Sidebar } from '@/components/sidebar'
 
 interface DashboardLayoutProps {
@@ -13,19 +15,25 @@ export default async function SiteLayout({
   children,
   params,
 }: DashboardLayoutProps) {
-  const { dict } = await getDictionary(params.locale)
+  const { t } = await getDictionary(params.locale)
   const headersList = headers()
   const route = headersList.get('x-route') || ''
 
   const getTitle = (route: string): string => {
-    if (route.startsWith(routes.PROJECTS)) return dict.Dashboard.all_projects
+    if (route.startsWith(routes.PROJECTS)) return t('Dashboard.all_projects')
     return ''
   }
 
   return (
     <main className="flex min-h-[100dvh]">
-      <Sidebar title={getTitle(route)} dict={dict} route={route} />
-      <div className="grow">{children}</div>
+      <Sidebar title={getTitle(route)} t={t} route={route} />
+      <div className="grow">
+        <DashboardAppbar>
+          <div className="grow" />
+          <Link href={routes.HOME}>Discover Projects</Link>
+        </DashboardAppbar>
+        {children}
+      </div>
     </main>
   )
 }

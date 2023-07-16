@@ -15,11 +15,11 @@ export default async function SiteLayout({
   const {
     data: { session },
   } = await supabase.auth.getSession()
-  const { dict } = await getDictionary(locale, 'Menus')
+  const { t } = await getDictionary(locale, 'Menus')
 
   return (
     <>
-      <Appbar dict={dict} session={session} />
+      <Appbar t={t} session={session} />
       <main className="pt-16">{children}</main>
     </>
   )

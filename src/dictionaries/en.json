@@ -25,14 +25,35 @@
     "dashboard": "Dashboard",
     "login": "Login"
   },
-  "Roles": {
-    "content_creator": "Content creator",
-    "designer": "Designer"
-  },
   "Dashboard": {
     "projects": "Projects",
     "account": "Account",
     "all_projects": "All projects",
     "preferences": "Preferences"
+  },
+  "Projects": {
+    "new_project": "New Project",
+    "active": "active",
+    "disabled": "disabled",
+    "create_new_project": "Create new project",
+    "add_available_roles": "Add available roles"
+  },
+  "Levels": {
+    "entry": "Entry",
+    "intermediate": "Intermediate",
+    "expert": "Expert"
+  },
+  "Workmode": {
+    "remote": "Remote",
+    "presential": "Presential"
+  },
+  "Rewards": {
+    "percent": "Percent",
+    "contract": "Contract",
+    "credit": "Credit"
+  },
+  "Roles": {
+    "content_creator": "Content creator",
+    "designer": "Designer"
   }
 }

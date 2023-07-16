@@ -11,7 +11,7 @@ interface LoginProps {
   params: { locale: string }
 }
 export default async function Login({ params: { locale } }: LoginProps) {
-  const { dict, t } = await getDictionary(locale, 'Auth')
+  const { t } = await getDictionary(locale, 'Auth')
 
   return (
     <>
@@ -19,21 +19,21 @@ export default async function Login({ params: { locale } }: LoginProps) {
         <div className="mx-auto flex w-full max-w-5xl items-center justify-between p-6">
           <Logo height={32} />
           <Button asChild>
-            <Link href={routes.HOME}>{dict.discover}</Link>
+            <Link href={routes.HOME}>{t('discover')}</Link>
           </Button>
         </div>
       </div>
       <main className="mx-auto flex min-h-[100dvh] max-w-5xl flex-col items-center justify-center py-20">
         <div className="relative">
           <div className="relative z-10 border border-border bg-background p-14 text-center shadow-xl">
-            <h1>{dict.welcome}</h1>
+            <h1>{t('welcome')}</h1>
             <p className="max-w-sm text-lg text-muted-foreground">
-              {dict.subtitle}
+              {t('subtitle')}
             </p>
-            <p className="my-8 font-medium">{dict.login_with}</p>
+            <p className="my-8 font-medium">{t('login_with')}</p>
             <SignInForm />
             <p className="mt-11 max-w-sm text-lg text-muted-foreground">
-              {dict.an_account_will_be_created}
+              {t('an_account_will_be_created')}
             </p>
           </div>
           <Image
@@ -61,7 +61,7 @@ export default async function Login({ params: { locale } }: LoginProps) {
         <div className="mb-2 mt-11 flex items-center gap-3">
           <p>teammates.mov</p>
           <div>|</div>
-          <Link href={routes.PRIVACY}>{dict.privacy}</Link>
+          <Link href={routes.PRIVACY}>{t('privacy')}</Link>
         </div>
         <div className="text-sm">
           {t('illustrations_by', [

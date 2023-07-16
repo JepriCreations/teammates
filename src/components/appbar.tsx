@@ -2,37 +2,35 @@ import Link from 'next/link'
 import { routes } from '@/constants/routes'
 import { Session } from '@supabase/supabase-js'
 
+import { Translator } from '@/lib/dictionaries'
 import { Button } from '@/components/ui/button'
 import { Logo } from '@/components/logo'
 import { ModeToggle } from '@/components/mode-toggle'
 import { NavLink } from '@/components/nav-link'
 import { NavMenuButton } from '@/components/nav-menu-button'
 
-const menu = (dict: { [x: string]: string }) => [
+const menu = [
   {
     id: 'discover',
-    title: dict['discover'],
     slug: routes.HOME,
   },
   {
     id: 'blog',
-    title: dict['blog'],
     slug: routes.BLOG,
   },
   {
     id: 'about',
-    title: dict['about'],
     slug: routes.ABOUT,
   },
 ]
 
 interface AppbarProps {
-  dict: { [x: string]: string }
+  t: Translator
   session: Session | null
 }
 
-export const Appbar = ({ dict, session }: AppbarProps) => {
-  const menuItems = menu(dict)
+export const Appbar = ({ t, session }: AppbarProps) => {
+  const menuItems = menu.map((item) => ({ ...item, title: t(item.id) }))
 
   return (
     <div className="container fixed inset-x-0 top-0 z-40">
@@ -49,10 +47,10 @@ export const Appbar = ({ dict, session }: AppbarProps) => {
           </Link>
 
           <ul className="hidden grow gap-6 font-medium sm:flex">
-            {menuItems.map(({ id, title, slug }, index) => (
+            {menuItems.map(({ id, title, slug }) => (
               <li key={id}>
                 <NavLink
-                  slug={slug}
+                  href={slug}
                   className="animate-in fade-in-50 slide-in-from-left"
                 >
                   {title}
@@ -65,11 +63,11 @@ export const Appbar = ({ dict, session }: AppbarProps) => {
             <ModeToggle />
             {session ? (
               <Button asChild>
-                <Link href={routes.PROJECTS}>{dict['dashboard']}</Link>
+                <Link href={routes.PROJECTS}>{t('dashboard')}</Link>
               </Button>
             ) : (
               <Button asChild>
-                <Link href={routes.LOGIN}>{dict['login']}</Link>
+                <Link href={routes.LOGIN}>{t('login')}</Link>
               </Button>
             )}
           </div>

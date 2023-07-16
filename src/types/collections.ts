@@ -7,8 +7,8 @@ export enum ExperienceLevel {
 }
 
 export enum WorkMode {
-  Presential = 'presential',
   Remote = 'remote',
+  Presential = 'presential',
 }
 
 export enum Rewards {
@@ -22,8 +22,16 @@ export enum Roles {
   Designer = 'designer',
 }
 
+export enum RoleStatus {
+  Open = 'open',
+  Closed = 'closed',
+}
+
 export type Profile = Database['public']['Tables']['profiles']['Row'] & {
   avatar: string | undefined | null
 }
 
 export type Role = Database['public']['Tables']['roles']['Row']
+export type Project = Database['public']['Tables']['projects']['Row']
+
+export type ProjectInsert = Database['public']['Tables']['projects']['Insert']

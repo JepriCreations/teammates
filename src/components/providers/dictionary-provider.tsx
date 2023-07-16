@@ -3,6 +3,8 @@
 import { createContext, useContext } from 'react'
 import reactStringReplace from 'react-string-replace'
 
+import { Translator } from '@/lib/dictionaries'
+
 interface ContextI {
   [x: string]: any
 }
@@ -11,13 +13,32 @@ const Context = createContext<ContextI>({})
 
 export const DictionaryProvider = ({
   dict,
+  defaultDict,
   children,
 }: {
-  dict: { [x: string]: any }
+  dict: any
+  defaultDict: any
   children: React.ReactNode
 }) => {
-  const t = (key: string, replacements?: React.ReactNode[]) => {
-    let translation = dict[key]
+  const t: Translator = (
+    key: string,
+    replacements?: React.ReactNode[],
+    dictKey?: string
+  ) => {
+    const parts = key.split('.')
+    let translation = dictKey ? dict[dictKey] : dict
+    let defaultTranslation = dictKey ? defaultDict[dictKey] : defaultDict
+
+    for (const part of parts) {
+      translation = translation[part]
+      defaultTranslation = defaultTranslation[part]
+      // If undefined, use the default dictionary
+      if (!translation) {
+        translation = defaultTranslation
+        break
+      }
+    }
+
     if (replacements && replacements.length > 0) {
       replacements.forEach((replacement, index) => {
         const placeholder = `%${index}`
@@ -28,18 +49,21 @@ export const DictionaryProvider = ({
         )
       })
     }
+
     return translation
   }
 
-  return <Context.Provider value={{ dict, t }}>{children}</Context.Provider>
+  return <Context.Provider value={{ t }}>{children}</Context.Provider>
 }
 
-export const useDictionary = (key: string) => {
-  let context = useContext(Context)
+export const useDictionary = (dictKey?: string) => {
+  const context = useContext(Context)
   if (context === undefined) {
     throw new Error('useDictionary must be used inside DictionaryProvider')
-  } else {
-    const dict = key ? context.dict[key] : context.dict
-    return { ...context, dict }
+  }
+
+  return {
+    t: (key: string, replacements?: React.ReactNode[]) =>
+      context.t(key, replacements, dictKey),
   }
 }

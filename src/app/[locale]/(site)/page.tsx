@@ -1,6 +1,9 @@
+import { Suspense } from 'react'
+
 import { getDictionary } from '@/lib/dictionaries'
-import { fetchProjects } from '@/lib/fetching/projects'
-import { ProjectCard } from '@/components/project-card'
+
+import ProjectsFeed, { LoadingProjects } from './_feed/projects-feed'
+import Side from './_side/side'
 
 // Revalidate every day
 export const revalidate = 86400
@@ -10,7 +13,6 @@ interface HomeProps {
 }
 export default async function Home({ params: { locale } }: HomeProps) {
   const { t } = await getDictionary(locale)
-  const projects = await fetchProjects()
 
   return (
     <>
@@ -23,10 +25,13 @@ export default async function Home({ params: { locale } }: HomeProps) {
             {t('Site.subtitle')}
           </p>
         </div>
-        <section className="mx-auto my-8 max-w-4xl">
-          {projects.map((project) => (
-            <ProjectCard key={project.id} t={t} {...project} />
-          ))}
+        <section className="mx-auto my-8 grid max-w-4xl grid-cols-1 gap-6 sm:grid-cols-4">
+          <div className="grid grid-cols-1 gap-3 sm:col-span-3">
+            <Suspense fallback={<LoadingProjects />}>
+              <ProjectsFeed locale={locale} />
+            </Suspense>
+          </div>
+          <Side />
         </section>
       </section>
     </>

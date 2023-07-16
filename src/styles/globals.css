@@ -28,11 +28,11 @@
     --secondary: var(--white);
     --secondary-foreground: var(--black);
 
-    --accent: 133 100% 61%;
+    --accent: 136 89% 85%;
     --accent-foreground: 0 0% 0%;
 
     --destructive: 0 99% 67%;
-    --destructive-foreground: 0 0% 0%;
+    --destructive-foreground: 0 86% 59%;
 
     --success: 162 48% 45%;
     --success-foreground: 161 94% 30%;
@@ -43,7 +43,7 @@
     --warning: 38 92% 50%;
     --warning-foreground: 32 95% 44%;
 
-    --ring: var(--primary) / 0.3;
+    --ring: var(--accent) / 0.8;
 
     --radius: 0.5rem;
   }
@@ -58,7 +58,7 @@
     --hover: 251 15% 14%;
     --border: var(--white);
 
-    --muted: 249 26% 5%;
+    --muted: 248 8% 23%;
     --muted-foreground: var(--foreground) / 0.6;
 
     --popover: var(--black);
@@ -73,11 +73,11 @@
     --secondary: var(--black);
     --secondary-foreground: var(--white);
 
-    --accent: 133 100% 61%;
+    --accent: 136 89% 85%;
     --accent-foreground: 0 0% 0%;
 
     --destructive: 0 72% 51%;
-    --destructive-foreground: 0 71% 22%;
+    --destructive-foreground: 0 100% 70%;
 
     --success: 162 48% 45%;
     --success-foreground: 156 72% 67%;
@@ -88,7 +88,7 @@
     --warning: 38 92% 50%;
     --warning-foreground: 48 96% 89%;
 
-    --ring: var(--primary) / 0.3;
+    --ring: var(--accent) / 0.8;
 
     --radius: 0.5rem;
   }
@@ -100,34 +100,6 @@
   }
   body {
     font-feature-settings: 'rlig' 1, 'calt' 1;
-  }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p {
-    color: theme(colors.foreground);
-  }
-
-  ::selection {
-    background-color: theme(backgroundColor.accent.DEFAULT);
-  }
-
-  ::-moz-selection {
-    background-color: theme(backgroundColor.accent.DEFAULT);
-  }
-
-  .dark ::selection {
-    background-color: theme(backgroundColor.accent.DEFAULT);
-    color: theme(colors.background);
-  }
-
-  .dark ::-moz-selection {
-    /* Code for Firefox */
-    background-color: theme(backgroundColor.accent.DEFAULT);
-    color: theme(colors.background);
   }
 
   h1 {

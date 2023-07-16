@@ -4,7 +4,7 @@ import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 
 import type { Database } from '@/types/supabase'
 
-import { getLocale, privatesRoutes } from './utils'
+import { getLocale, privatesRoutes, supportedLocales } from './utils'
 
 export async function authMiddleware(req: NextRequest) {
   const locale = getLocale(req)
@@ -14,14 +14,16 @@ export async function authMiddleware(req: NextRequest) {
   const matcher = [...privatesRoutes, routes.LOGIN]
 
   const depensOnSession = matcher.some((path) =>
-    pathname.startsWith(`/${locale}` + path)
+    supportedLocales.some((loc) => pathname.startsWith(`/${loc}` + path))
   )
 
   if (!depensOnSession) return res
 
-  const isAuthPage = pathname.startsWith(`/${locale}` + routes.LOGIN)
+  const isAuthPage = supportedLocales.some((loc) =>
+    pathname.startsWith(`/${loc}` + routes.LOGIN)
+  )
   const isPrivatePage = privatesRoutes.some((path) => {
-    return pathname.startsWith(`/${locale}` + path)
+    return supportedLocales.some((loc) => pathname.startsWith(`/${loc}` + path))
   })
 
   const supabase = createMiddlewareClient<Database>({ req, res })
@@ -36,8 +38,6 @@ export async function authMiddleware(req: NextRequest) {
       )
     }
   }
-
-  //   console.log({ pathname, session, isPrivatePage })
 
   if (!session && isPrivatePage) {
     let from = pathname

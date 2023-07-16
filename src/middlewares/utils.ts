@@ -3,7 +3,11 @@ import { routes } from '@/constants/routes'
 
 export const supportedLocales = ['en', 'es']
 export const defaultLocale = 'en'
-export const privatesRoutes = [routes.PROJECTS, routes.PROJECT, routes.ACCOUNT]
+export const privatesRoutes = [
+  routes.PROJECTS,
+  routes.ACCOUNT,
+  routes.NEW_PROJECT,
+]
 
 export const getLocale = (request: NextRequest) => {
   // Get the user's preferred locale from the browser's Accept-Language header

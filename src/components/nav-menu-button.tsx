@@ -37,7 +37,7 @@ export const NavMenuButton = ({ mainMenu }: NavMenuButtonProps) => {
         <ul className="flex flex-col gap-5">
           {mainMenu?.map(({ id, title, slug }) => (
             <li key={id} className="block w-fit text-2xl">
-              <NavLink slug={slug}>{title}</NavLink>
+              <NavLink href={slug}>{title}</NavLink>
             </li>
           ))}
         </ul>

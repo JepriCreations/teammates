@@ -6,7 +6,11 @@ import en from '../dictionaries/en.json'
 import es from '../dictionaries/es.json'
 
 export type Dictionary = Partial<typeof en> & Record<string, any>
-export type Translator = (key: string, replacements?: React.ReactNode[]) => any
+export type Translator = (
+  key: string,
+  replacements?: React.ReactNode[],
+  dict?: any
+) => any
 
 const dictionaries: Dictionary = {
   en: () => Promise.resolve(en),
@@ -26,12 +30,13 @@ export const getDictionary = async (locale: string, key?: string) => {
     let defaultTranslation = defaultDict
 
     for (const part of parts) {
-      translation = translation[part]
+      translation = translation?.[part]
       defaultTranslation = defaultTranslation[part]
+
       // If undefined, use the default dictionary
       if (!translation) {
         translation = defaultTranslation
-        break
+        continue
       }
     }
 
@@ -49,5 +54,5 @@ export const getDictionary = async (locale: string, key?: string) => {
     return translation
   }
 
-  return { dict, t }
+  return { dict, defaultDict, t }
 }

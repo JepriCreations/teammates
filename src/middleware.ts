@@ -20,5 +20,5 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   // Paths where middleware should not be initialized
-  matcher: ['/((?!_next).*)'],
+  matcher: ['/((?!_next|api).*)'],
 }

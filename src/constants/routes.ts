@@ -3,7 +3,7 @@ export const routes = {
   LOGIN: '/login',
   ACCOUNT: '/account',
   PROJECTS: '/projects',
-  NEW_PROJECT: '/projects/new',
+  NEW_PROJECT: '/new',
   PREFERENCES: '/preferences',
   CONTACT: '/contact',
   PRIVACY: '/privacy',

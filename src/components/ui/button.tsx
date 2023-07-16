@@ -16,6 +16,8 @@ const buttonVariants = cva(
         ghost:
           'hover:bg-foreground/5 active:scale-95 focus:bg-foreground/5 disabled:bg-muted',
         link: 'underline-offset-4 hover:underline text-foreground active:scale-95 focus:underline disabled:text-muted-foreground',
+        outline:
+          'bg-primary text-foregorund hover:bg-hover focus:bg-hover border border-border disabled:bg-muted',
         destructive:
           'bg-destructive text-destructive-foreground active:translate-x-0 active:translate-y-0 disabled:translate-x-0 disabled:translate-y-0 -translate-x-0.5 -translate-y-0.5 border border-border hover:bg-red-600 focus:bg-red-600',
       },
@@ -38,6 +40,7 @@ const ButtonContainerVariants = cva('min-w-fit', {
       default: 'bg-foreground',
       secondary: 'bg-transparent',
       ghost: 'bg-transparent',
+      outline: 'bg-transparent',
       link: 'bg-transparent',
       destructive: 'bg-foreground',
     },
@@ -70,7 +73,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       variant = 'default',
       fullWidth = false,
       loading = false,
-      size,
+      size = 'default',
       children,
       asChild = false,
       disabled,
@@ -102,12 +105,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         )}
       >
         <Comp
-          className={cn(buttonVariants({ variant, size, className }))}
+          className={cn(
+            buttonVariants({ variant, size, className }),
+            icon && size === 'default' && 'pl-2'
+          )}
           ref={ref}
           disabled={disabled}
           {...(asChild ? { ...childrenProps } : { ...props })}
         >
-          <div className="relative flex items-center gap-3">
+          <div className="relative flex w-full items-center gap-3">
             {loading ? <LoadingIcon className="h-6 w-6 animate-spin" /> : icon}
             {asChild ? childrenProps.children : children}
           </div>

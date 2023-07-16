@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { routes } from '@/constants/routes'
 
-import { Dictionary } from '@/lib/dictionaries'
+import { Translator } from '@/lib/dictionaries'
 import { cn } from '@/lib/utils'
 import { Logo } from '@/components/logo'
 
@@ -9,20 +9,20 @@ import { LogoutButton } from './logout-button'
 
 interface SidebarProps {
   title?: string
-  dict: Dictionary
   route: string
+  t: Translator
 }
 
-export const Sidebar = ({ title, dict, route }: SidebarProps) => {
+export const Sidebar = ({ title, t, route }: SidebarProps) => {
   return (
-    <div className="w-80 border-r border-border">
+    <div className="w-64 shrink-0 border-r border-border">
       <section className="flex h-16 items-center gap-3 border-b border-border px-5">
         <Logo withText={false} />
         {title && <p className="text-2xl">{title}</p>}
       </section>
       <section className="border-b border-border p-4">
         <p className="mb-2 text-sm text-muted-foreground">
-          {dict.Dashboard?.projects}
+          {t('Dashboard.projects')}
         </p>
         <Link
           href={routes.PROJECTS}
@@ -31,12 +31,12 @@ export const Sidebar = ({ title, dict, route }: SidebarProps) => {
             route.startsWith(routes.PROJECTS) && 'opacity-100'
           )}
         >
-          {dict.Dashboard?.all_projects}
+          {t('Dashboard.all_projects')}
         </Link>
       </section>
       <section className="border-b border-border p-4">
         <p className="mb-2 text-sm text-muted-foreground">
-          {dict.Dashboard?.account}
+          {t('Dashboard.account')}
         </p>
         <Link
           href={routes.PREFERENCES}
@@ -45,7 +45,7 @@ export const Sidebar = ({ title, dict, route }: SidebarProps) => {
             route.startsWith(routes.PREFERENCES) && 'opacity-100'
           )}
         >
-          {dict.Dashboard?.preferences}
+          {t('Dashboard.preferences')}
         </Link>
       </section>
       <section className="p-4">
