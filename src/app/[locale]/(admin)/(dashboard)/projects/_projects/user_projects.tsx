@@ -1,6 +1,6 @@
 import { getDictionary } from '@/lib/dictionaries'
 import { PostgressError } from '@/lib/errors'
-import { fetchUserProject } from '@/lib/fetching/projects'
+import { fetchUserProjects } from '@/lib/fetching/projects'
 import {
   ProjectCard,
   ProjectCardSkeleton,
@@ -11,7 +11,7 @@ interface ProjectsFeedProps {
 }
 export default async function UserProjects({ locale }: ProjectsFeedProps) {
   const { t } = await getDictionary(locale, 'Projects')
-  const { data, error } = await fetchUserProject()
+  const { data, error } = await fetchUserProjects()
 
   return error ? (
     <ErrorHandler error={error} />

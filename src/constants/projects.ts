@@ -24,3 +24,11 @@ export const REWARDS = (t: Translator) =>
     value: mode,
     label: t(`Rewards.${mode}`),
   }))
+
+export const categories = (t: Translator) =>
+  [
+    { value: 'technology', label: 'Technology' },
+    { value: 'cience', label: 'Cience' },
+    { value: 'literature', label: 'Literature' },
+    { value: 'art', label: 'Art' },
+  ] as const

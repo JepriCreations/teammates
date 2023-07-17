@@ -8,8 +8,7 @@ import { fontSans } from '@/lib/fonts'
 import { createServerClient } from '@/lib/supabase-server'
 import { cn } from '@/lib/utils'
 import { Toaster } from '@/components/ui/toaster'
-import { BreakpointIndicator } from '@/components/breakpoint-indicator'
-import { DevThemeTogle } from '@/components/dev-theme-toggle'
+import { DevToolbar } from '@/components/dev-toolbar'
 import { DictionaryProvider } from '@/components/providers/dictionary-provider'
 import { SupabaseAuthProvider } from '@/components/providers/supabase-auth-provider'
 import { SupabaseProvider } from '@/components/providers/supabase-provider'
@@ -67,8 +66,7 @@ export default async function RootLayout({
               </SupabaseAuthProvider>
             </SupabaseProvider>
           </DictionaryProvider>
-          <BreakpointIndicator />
-          <DevThemeTogle />
+          <DevToolbar />
           <Toaster />
         </ThemeProvider>
       </body>

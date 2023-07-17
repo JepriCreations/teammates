@@ -78,14 +78,14 @@ const defaultValues = {
 }
 
 const rewardsDescriptions = (t: Translator) => ({
-  [Rewards.Percent]: 'An agreed percent of the company.',
-  [Rewards.Contract]: 'A contract position at the company.',
-  [Rewards.Credit]: 'Clearly credits to the aport.',
+  [Rewards.Percent]: t('Rewards.percent_description'),
+  [Rewards.Contract]: t('Rewards.contract_description'),
+  [Rewards.Credit]: t('Rewards.credit_description'),
 })
 
 export const RolesForm = () => {
   const { toast } = useToast()
-  const { t } = useDictionary()
+  const { t } = useDictionary('Roles')
   const { projectId } = useNewProjectFormState()
   const [error, setError] = useState(null)
   const { isPending, addRoles } = useRoles()
@@ -152,7 +152,7 @@ export const RolesForm = () => {
                             >
                               <div className="flex grow items-center justify-between">
                                 {fieldValue?.length
-                                  ? t(`Roles.${fieldValue}`)
+                                  ? t(fieldValue)
                                   : 'Select a role'}
                                 <AngleDownSmallIcon className="ml-2 h-5 w-5 shrink-0 opacity-50" />
                               </div>
@@ -365,9 +365,7 @@ export const RolesForm = () => {
             )}
             {roles.map(({ name, exp_level, work_mode, rewards }, index) => (
               <TableRow key={`role-${name}-${index}`}>
-                <TableCell className="w-[25%] font-medium">
-                  {t(`Roles.${name}`)}
-                </TableCell>
+                <TableCell className="w-[25%] font-medium">{t(name)}</TableCell>
                 <TableCell>{t(`Levels.${exp_level}`)}</TableCell>
                 <TableCell>{t(`Workmode.${work_mode}`)}</TableCell>
                 <TableCell className="text-right">

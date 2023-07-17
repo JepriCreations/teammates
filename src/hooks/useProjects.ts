@@ -1,19 +1,20 @@
 import { useState } from 'react'
 import { z } from 'zod'
 
+import { ProjectUpdate } from '@/types/collections'
 import { PostgressError } from '@/lib/errors'
-import { projectSquema } from '@/lib/validations/project'
+import { createProjectSquema } from '@/lib/validations/project'
 import { useSupabase } from '@/components/providers/supabase-provider'
 
 export const useProjects = () => {
   const { supabase } = useSupabase()
   const [isPending, setIsPending] = useState(false)
 
-  const create = async (data: z.infer<typeof projectSquema>) => {
+  const create = async (values: z.infer<typeof createProjectSquema>) => {
     try {
       setIsPending(true)
-      const { file, ...values } = data
-      const bucketPath = `public/${values.name
+      const { file, ...rest } = values
+      const bucketPath = `public/${rest.name
         .toLocaleLowerCase()
         .replaceAll(' ', '')
         .trim()}`
@@ -34,7 +35,7 @@ export const useProjects = () => {
       const resp = await fetch(`${location.origin}/api/projects`, {
         method: 'POST',
         body: JSON.stringify({
-          ...values,
+          ...rest,
           icon_url: fileUrl.publicUrl,
           public: false,
         }),
@@ -61,5 +62,61 @@ export const useProjects = () => {
     }
   }
 
-  return { create, isPending }
+  const update = async (
+    values: ProjectUpdate & { file?: File },
+    projectId: string
+  ) => {
+    try {
+      setIsPending(true)
+      const { file, ...rest } = values
+      let valuesToUpdate = Object.assign({}, rest)
+
+      if (file && rest.name) {
+        const bucketPath = `public/${rest.name
+          .toLocaleLowerCase()
+          .replaceAll(' ', '')
+          .trim()}`
+
+        const { error: storageError } = await supabase.storage
+          .from('icons')
+          .update(bucketPath, file, {
+            cacheControl: '3600',
+            upsert: true,
+          })
+
+        if (storageError) throw storageError
+
+        const { data: fileUrl } = supabase.storage
+          .from('icons')
+          .getPublicUrl(bucketPath)
+
+        valuesToUpdate = Object.assign({ icon_url: fileUrl.publicUrl }, rest)
+      }
+
+      const resp = await fetch(`${location.origin}/api/projects/${projectId}`, {
+        method: 'PATCH',
+        body: JSON.stringify(valuesToUpdate),
+      })
+        .then((resp) => resp.json())
+        .then(
+          (resp: {
+            error: PostgressError | null
+            data: { success: boolean } | null
+          }) => resp
+        )
+
+      if (resp.error) {
+        throw resp.error
+      }
+
+      return { error: null, data: resp.data }
+    } catch (error: any) {
+      console.log({ error })
+      return { error, data: null }
+    } finally {
+      setIsPending(false)
+    }
+  }
+
+  return { create, update, isPending }
 }

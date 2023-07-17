@@ -19,7 +19,7 @@ const buttonVariants = cva(
         outline:
           'bg-primary text-foregorund hover:bg-hover focus:bg-hover border border-border disabled:bg-muted',
         destructive:
-          'bg-destructive text-destructive-foreground active:translate-x-0 active:translate-y-0 disabled:translate-x-0 disabled:translate-y-0 -translate-x-0.5 -translate-y-0.5 border border-border hover:bg-red-600 focus:bg-red-600',
+          'bg-destructive text-foreground active:translate-x-0 active:translate-y-0 disabled:translate-x-0 disabled:translate-y-0 -translate-x-0.5 -translate-y-0.5 border border-border hover:bg-red-600 focus:bg-red-600',
       },
       size: {
         default: 'px-4 py-2',

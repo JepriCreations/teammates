@@ -14,7 +14,7 @@ export default async function Projects({ params: { locale } }: ProjectsProps) {
   const { t } = await getDictionary(locale, 'Projects')
 
   return (
-    <div className="p-6">
+    <main className="p-6">
       <Button asChild>
         <Link href={routes.NEW_PROJECT}>{t('new_project')}</Link>
       </Button>
@@ -25,6 +25,6 @@ export default async function Projects({ params: { locale } }: ProjectsProps) {
           </Suspense>
         </div>
       </section>
-    </div>
+    </main>
   )
 }

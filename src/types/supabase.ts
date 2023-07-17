@@ -178,6 +178,7 @@ export interface Database {
       roles: {
         Row: {
           created_at: string
+          created_by: string
           description: string
           exp_level: string
           id: string
@@ -189,6 +190,7 @@ export interface Database {
         }
         Insert: {
           created_at?: string
+          created_by: string
           description?: string
           exp_level: string
           id?: string
@@ -200,6 +202,7 @@ export interface Database {
         }
         Update: {
           created_at?: string
+          created_by?: string
           description?: string
           exp_level?: string
           id?: string
@@ -210,6 +213,12 @@ export interface Database {
           work_mode?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "roles_created_by_fkey"
+            columns: ["created_by"]
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "roles_project_id_fkey"
             columns: ["project_id"]

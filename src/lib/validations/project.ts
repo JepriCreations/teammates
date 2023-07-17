@@ -96,7 +96,6 @@ const locationSquema = z.object({
 
 export const fileSchema = z
   .any()
-  // .instanceof(File)
   .refine((file) => file, { message: 'An icon is required.' })
   .refine((file) => file && file?.size <= MAX_FILE_SIZE, {
     message: 'File size must be less than or equal to 500kb',
@@ -124,10 +123,16 @@ export const projectSquema = z.object({
   description: z.string().min(1, {
     message: 'This value is required.',
   }),
-  file: fileSchema,
   location: locationSquema,
   links: z.array(linkObjectSchema),
 })
+
+export const createProjectSquema = projectSquema.merge(
+  z.object({ file: fileSchema })
+)
+export const updateProjectSquema = projectSquema.merge(
+  z.object({ file: fileSchema.optional() })
+)
 
 export const roleSquema = z.object({
   name: z.nativeEnum(Roles),

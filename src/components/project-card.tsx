@@ -73,6 +73,7 @@ export const ProjectCard = ({
               alt={name}
               fill
               className="object-contain"
+              sizes="(max-width: 40px) 100vw"
             />
           )}
         </div>

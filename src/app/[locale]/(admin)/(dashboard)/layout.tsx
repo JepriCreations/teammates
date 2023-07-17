@@ -30,7 +30,7 @@ export default async function SiteLayout({
       <div className="grow">
         <DashboardAppbar>
           <div className="grow" />
-          <Link href={routes.HOME}>Discover Projects</Link>
+          <Link href={routes.HOME}>{t('Auth.discover')}</Link>
         </DashboardAppbar>
         {children}
       </div>
