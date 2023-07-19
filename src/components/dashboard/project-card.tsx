@@ -12,7 +12,7 @@ interface ProjectCardProps {
   name: string
   public: boolean
   updated_at: string
-  views: number
+  views: { total_views: number | null }[]
   roles: { status: string }[]
   t: Translator
 }
@@ -31,13 +31,13 @@ export const ProjectCard = ({
   ).length
 
   return (
-    <LinkCard href={`${routes.PROJECTS}/${id}`}>
+    <LinkCard href={routes.DASHBOARD + routes.PROJECT(id)}>
       <div className="px-4 py-3">
         <div className="flex items-start justify-between gap-6">
           <p className="grow truncate text-lg">{name}</p>
           <span className="flex shrink-0 origin-top-right items-center gap-2 rounded-full bg-foreground/5 px-2 py-1 text-sm transition-slide group-hover:scale-0 group-hover:opacity-0 dark:bg-foreground/10">
             <ViewsIcon size={16} />
-            {views}
+            {views[0]?.total_views ?? 0}
           </span>
         </div>
         <p className="text-sm text-muted-foreground">{`${openRoles} open roles`}</p>

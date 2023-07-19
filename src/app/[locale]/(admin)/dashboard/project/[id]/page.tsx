@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 
-import ProjectData, { LoadingProject } from './_project/project_data'
+import Statistics, { LoadingStatistics } from './_statistics/page'
 
 interface ProjectProps {
   params: { id: string; locale: string }
@@ -11,8 +11,8 @@ export default async function Project({
 }: ProjectProps) {
   return (
     <main>
-      <Suspense fallback={<LoadingProject />}>
-        <ProjectData locale={locale} id={id} />
+      <Suspense fallback={<LoadingStatistics />}>
+        <Statistics locale={locale} id={id} />
       </Suspense>
     </main>
   )

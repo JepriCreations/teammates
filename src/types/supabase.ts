@@ -120,6 +120,31 @@ export interface Database {
           }
         ]
       }
+      project_views: {
+        Row: {
+          count: number
+          date: string
+          project_id: string
+        }
+        Insert: {
+          count: number
+          date?: string
+          project_id: string
+        }
+        Update: {
+          count?: number
+          date?: string
+          project_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_views_project_id_fkey"
+            columns: ["project_id"]
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       projects: {
         Row: {
           categories: string[]
@@ -134,7 +159,6 @@ export interface Database {
           public: boolean
           summary: string
           updated_at: string
-          views: number
         }
         Insert: {
           categories: string[]
@@ -149,7 +173,6 @@ export interface Database {
           public?: boolean
           summary?: string
           updated_at?: string
-          views?: number
         }
         Update: {
           categories?: string[]
@@ -164,7 +187,6 @@ export interface Database {
           public?: boolean
           summary?: string
           updated_at?: string
-          views?: number
         }
         Relationships: [
           {
@@ -229,7 +251,20 @@ export interface Database {
       }
     }
     Views: {
-      [_ in never]: never
+      project_views_statistics: {
+        Row: {
+          project_id: string | null
+          total_views: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_views_project_id_fkey"
+            columns: ["project_id"]
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Functions: {
       delete_avatar: {

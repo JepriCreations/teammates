@@ -71,8 +71,9 @@ export const fetchUserProjects = async () => {
   const { data, error } = await supabase
     .from('projects')
     .select(
-      `id, updated_at, name, public, views,
-      roles(status)`
+      `id, updated_at, name, public,
+      roles(status),
+      views:project_views_statistics(total_views)`
     )
     .eq('created_by', user.id)
     .order('created_at', { ascending: false })
@@ -94,7 +95,7 @@ export const fetchUserProject = async (projectId: string) => {
 
   const { data, error } = await supabase
     .from('projects')
-    .select('*, roles(*)')
+    .select('*')
     .eq('id', projectId)
     .single()
 
@@ -104,6 +105,83 @@ export const fetchUserProject = async (projectId: string) => {
       error: new PostgressError('Has been an error retrieving the project.', {
         details: error.message,
       }),
+    }
+  }
+
+  return { data, error: null }
+}
+
+export const fetchProjectName = async (projectId: string) => {
+  const supabase = createServerClient()
+
+  const { data, error } = await supabase
+    .from('projects')
+    .select('name')
+    .eq('id', projectId)
+    .single()
+
+  if (error) {
+    return {
+      data: null,
+      error: new PostgressError('Has been an error retrieving the project.', {
+        details: error.message,
+      }),
+    }
+  }
+
+  return { data, error: null }
+}
+
+export const fetchProjectStatistics = async (projectId: string) => {
+  const supabase = createServerClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect(routes.HOME)
+  }
+
+  const totalViewsPromise = supabase
+    .from('projects')
+    .select('views:project_views_statistics(total_views)')
+    .match({ id: projectId, created_by: user.id })
+    .single()
+
+  const viewsByDatePromise = supabase
+    .from('project_views')
+    .select('date, count, projects(created_by)')
+    .eq('project_id', projectId)
+    .eq('projects.created_by', user.id)
+
+  const [totalViews, viewsByDate] = await Promise.all([
+    totalViewsPromise,
+    viewsByDatePromise,
+  ])
+
+  const error = totalViews.error || viewsByDate.error
+  const data = {
+    total_views: totalViews.data?.views[0]?.total_views ?? 0,
+    views: viewsByDate.data?.map(({ date, count }) => ({ date, count })),
+  }
+
+  if (error) {
+    return {
+      data: null,
+      error: new PostgressError(
+        'Has been an error retrieving the project statistics.',
+        {
+          details: error.message,
+        }
+      ),
+    }
+  }
+
+  if (!data) {
+    return {
+      data: null,
+      error: new PostgressError('Unautorized'),
     }
   }
 

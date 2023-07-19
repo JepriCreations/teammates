@@ -117,7 +117,9 @@ export const ProjectForm = ({
 
     toast({
       title: t('General.success'),
-      description: isUpdating ? t('success_update') : t('success_create'),
+      description: isUpdating
+        ? t('Projects.success_update')
+        : t('Projects.success_create'),
       severity: 'success',
     })
 
@@ -482,7 +484,7 @@ export const ProjectForm = ({
         {error && (
           <section className="p-3">
             <Alert variant="destructive">
-              <AlertTitle>{t('Projects.errors.title')}</AlertTitle>
+              <AlertTitle>{t('General.ups')}</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           </section>

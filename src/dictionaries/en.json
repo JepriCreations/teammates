@@ -1,6 +1,7 @@
 {
   "General": {
     "success": "'Success!",
+    "ups": "Upps! This is embarrasing.",
     "optional": "optional",
     "cancel": "Cancel",
     "saving": "Saving",
@@ -34,10 +35,14 @@
     "login": "Login"
   },
   "Dashboard": {
+    "overview": "Overview",
     "projects": "Projects",
+    "profile": "Profile",
     "account": "Account",
-    "all_projects": "All projects",
-    "preferences": "Preferences"
+    "preferences": "Preferences",
+    "statistics": "Statistics",
+    "details": "Project details",
+    "roles": "Roles"
   },
   "Projects": {
     "new_project": "New Project",
@@ -49,7 +54,6 @@
     "new_project_description": "Unlock the power of collaboration: find like-minded teammates to elevate your project and make your vision a resounding success.",
     "add_available_roles": "Add available roles",
     "add_available_roles_description": "Identify the key roles needed for your project's success, ranging from developers to designers, marketers, and more.",
-    "statistics": "Statistics",
     "views": "Views",
     "success_update": "The project has been updated.",
     "success_create": "The project has been created.",
@@ -73,13 +77,32 @@
     "city": "City",
     "city_description": "Specialy usefull when you project require teammates near you.",
     "links": "Links",
+    "project_details": "Project details",
+    "project_status": "Project status",
     "errors": {
       "saving": "Has been an error while saving data.",
-      "updating": "Has been an error while updating the project.",
-      "title": "Upps! This is embarrasing."
+      "updating": "Has been an error while updating the project."
     }
   },
   "Roles": {
+    "role": "Role",
+    "the_roles_has_been_added": "The roles has been added to the project.",
+    "select_a_role": "Select a role",
+    "search_role": "Search role...",
+    "no_role_found": "No role found",
+    "experience_level": "Experience level",
+    "select_level": "Select a level",
+    "work_mode": "Work mode",
+    "role_description": "Role description",
+    "rewards": "Rewards",
+    "add_role": "Add role",
+    "no_roles_created": "No roles created yet.",
+    "omit": "Omit for now",
+    "save_roles": "Save roles",
+    "errors": {
+      "saving": "Has been an error while saving the new roles.",
+      "removing": "Has been an error while removing the role."
+    },
     "Levels": {
       "entry": "Entry",
       "intermediate": "Intermediate",

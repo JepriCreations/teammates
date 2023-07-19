@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
 
 interface LogoProps {
-  height?: number
+  height?: number | string
   withText?: boolean
   className?: string
 }
@@ -11,7 +11,7 @@ export const Logo = ({
   withText = true,
   className,
 }: LogoProps) => {
-  const width = withText ? (height * 109) / 24 : height
+  const width = withText ? (parseFloat(String(height)) * 109) / 24 : height
   const viewBox = withText ? '0 0 109 24' : '0 0 24 24'
   return (
     <svg

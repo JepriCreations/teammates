@@ -55,6 +55,9 @@ export async function authMiddleware(req: NextRequest) {
 
   /**
    * Retrieve the pathname and route to use in server side components using next/headers
+   * On server component:
+   * const headersList = headers() (from "next/headers")
+   * const route = headersList.get('x-route') || ''
    */
   const requestHeaders = new Headers(req.headers)
   requestHeaders.set('x-url', req.nextUrl.pathname)

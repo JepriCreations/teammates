@@ -25,6 +25,13 @@
     "dashboard": "Panel de control",
     "login": "Iniciar sesión"
   },
+  "Dashboard": {
+    "overview": "Vista general",
+    "projects": "Proyectos",
+    "profile": "Perfil",
+    "account": "Cuenta",
+    "preferences": "Configuración"
+  },
   "Roles": {
     "content_creator": "Creador de contenido",
     "designer": "Diseñador"

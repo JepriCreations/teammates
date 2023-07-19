@@ -55,11 +55,11 @@ export const PostForm = (data: ProjectFormType) => {
   return (
     <>
       <div className="m-6">
-        <p className="text-xl font-semibold">Project details</p>
+        <p className="text-xl font-semibold">{t('project_details')}</p>
       </div>
       <section className="grid grid-cols-3 border-b border-muted p-6">
         <div>
-          <p>Project status</p>
+          <p>{t('project_status')}</p>
         </div>
         <div className="col-span-2 flex items-center gap-3">
           <p>{publish ? t('public') : t('hidden')}</p>

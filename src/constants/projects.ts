@@ -10,19 +10,19 @@ export const ROLES = (t: Translator) =>
 export const EXPERIENCE_LEVEL = (t: Translator) =>
   Object.values(ExperienceLevel).map((level) => ({
     value: level,
-    label: t(`Levels.${level}`),
+    label: t(`Roles.Levels.${level}`),
   }))
 
 export const WORK_MODE = (t: Translator) =>
   Object.values(WorkMode).map((mode) => ({
     value: mode,
-    label: t(`Workmode.${mode}`),
+    label: t(`Roles.Workmode.${mode}`),
   }))
 
 export const REWARDS = (t: Translator) =>
   Object.values(Rewards).map((mode) => ({
     value: mode,
-    label: t(`Rewards.${mode}`),
+    label: t(`Roles.Rewards.${mode}`),
   }))
 
 export const categories = (t: Translator) =>

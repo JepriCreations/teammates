@@ -78,14 +78,14 @@ const defaultValues = {
 }
 
 const rewardsDescriptions = (t: Translator) => ({
-  [Rewards.Percent]: t('Rewards.percent_description'),
-  [Rewards.Contract]: t('Rewards.contract_description'),
-  [Rewards.Credit]: t('Rewards.credit_description'),
+  [Rewards.Percent]: t('Roles.Rewards.percent_description'),
+  [Rewards.Contract]: t('Roles.Rewards.contract_description'),
+  [Rewards.Credit]: t('Roles.Rewards.credit_description'),
 })
 
 export const RolesForm = () => {
   const { toast } = useToast()
-  const { t } = useDictionary('Roles')
+  const { t } = useDictionary()
   const { projectId } = useNewProjectFormState()
   const [error, setError] = useState(null)
   const { isPending, addRoles } = useRoles()
@@ -106,11 +106,11 @@ export const RolesForm = () => {
     if (projectId) {
       const { error } = await addRoles(roles, projectId)
       if (error) {
-        setError(error?.message ?? 'Error saving data.')
+        setError(error?.message ?? t('Roles.errors.saving'))
       }
       toast({
-        title: 'Success!',
-        description: 'The roles has been added to the project.',
+        title: t('General.success'),
+        description: t('Roles.the_roles_has_been_added'),
         severity: 'success',
       })
       router.replace(routes.PROJECTS)
@@ -136,7 +136,7 @@ export const RolesForm = () => {
                 name="name"
                 render={({ field: { value: fieldValue, ...field } }) => (
                   <FormItem>
-                    <FormLabel>Role</FormLabel>
+                    <FormLabel>{t('Roles.role')}</FormLabel>
                     <FormControl>
                       <Popover>
                         <PopoverTrigger asChild>
@@ -152,8 +152,8 @@ export const RolesForm = () => {
                             >
                               <div className="flex grow items-center justify-between">
                                 {fieldValue?.length
-                                  ? t(fieldValue)
-                                  : 'Select a role'}
+                                  ? t(`Roles.${fieldValue}`)
+                                  : t('Roles.select_a_role')}
                                 <AngleDownSmallIcon className="ml-2 h-5 w-5 shrink-0 opacity-50" />
                               </div>
                             </Button>
@@ -161,8 +161,12 @@ export const RolesForm = () => {
                         </PopoverTrigger>
                         <PopoverContent align="end" className="p-0">
                           <Command>
-                            <CommandInput placeholder="Search role..." />
-                            <CommandEmpty>No role found.</CommandEmpty>
+                            <CommandInput
+                              placeholder={t('Roles.search_role')}
+                            />
+                            <CommandEmpty>
+                              {t('Roles.no_role_found')}
+                            </CommandEmpty>
                             <CommandGroup>
                               <ScrollArea className="h-64 w-full">
                                 {ROLES(t).map(({ value, label }) => (
@@ -200,7 +204,7 @@ export const RolesForm = () => {
                 name="exp_level"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Experience level</FormLabel>
+                    <FormLabel>{t('Roles.experience_level')}</FormLabel>
                     <FormControl>
                       <Select
                         onValueChange={(value) =>
@@ -210,10 +214,10 @@ export const RolesForm = () => {
                       >
                         <SelectTrigger>
                           {field.value ? (
-                            <span>{t(`Levels.${field.value}`)}</span>
+                            <span>{t(`Roles.Levels.${field.value}`)}</span>
                           ) : (
                             <span className="text-muted-foreground">
-                              Select a level
+                              {t('Roles.select_level')}
                             </span>
                           )}
                         </SelectTrigger>
@@ -236,7 +240,7 @@ export const RolesForm = () => {
               name="work_mode"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Work mode</FormLabel>
+                  <FormLabel>{t('Roles.work_mode')}</FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={(value) =>
@@ -269,7 +273,7 @@ export const RolesForm = () => {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Role description</FormLabel>
+                  <FormLabel>{t('Roles.role_description')}</FormLabel>
                   <FormControl>
                     <Textarea className="min-h-[150px]" {...field} />
                   </FormControl>
@@ -282,7 +286,7 @@ export const RolesForm = () => {
               name="rewards"
               render={() => (
                 <FormItem>
-                  <FormLabel>Rewards</FormLabel>
+                  <FormLabel>{t('Roles.rewards')}</FormLabel>
                   {REWARDS(t).map((reward) => (
                     <FormField
                       key={reward.value}
@@ -339,7 +343,7 @@ export const RolesForm = () => {
                 wrapperClassName="ml-auto"
                 icon={<AddIcon />}
               >
-                Add role
+                {t('Roles.add_role')}
               </Button>
             </footer>
           </form>
@@ -349,27 +353,29 @@ export const RolesForm = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[30%]">Role</TableHead>
-              <TableHead>Experience level</TableHead>
-              <TableHead>Work mode</TableHead>
-              <TableHead className="text-right">Rewards</TableHead>
+              <TableHead className="w-[30%]">{t('Roles.role')}</TableHead>
+              <TableHead>{t('Roles.experience_level')}</TableHead>
+              <TableHead>{t('Roles.work_mode')}</TableHead>
+              <TableHead className="text-right">{t('Roles.rewards')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {roles.length === 0 && (
               <TableRow>
                 <TableCell className="w-[30%] font-medium">
-                  No roles created yet.
+                  {t('Roles.no_roles_created')}
                 </TableCell>
               </TableRow>
             )}
             {roles.map(({ name, exp_level, work_mode, rewards }, index) => (
               <TableRow key={`role-${name}-${index}`}>
                 <TableCell className="w-[25%] font-medium">{t(name)}</TableCell>
-                <TableCell>{t(`Levels.${exp_level}`)}</TableCell>
-                <TableCell>{t(`Workmode.${work_mode}`)}</TableCell>
+                <TableCell>{t(`Roles.Levels.${exp_level}`)}</TableCell>
+                <TableCell>{t(`Roles.Workmode.${work_mode}`)}</TableCell>
                 <TableCell className="text-right">
-                  {rewards.map((reward) => t(`Rewards.${reward}`)).join(', ')}
+                  {rewards
+                    .map((reward) => t(`Roles.Rewards.${reward}`))
+                    .join(', ')}
                 </TableCell>
                 <TableCell className="w-fit">
                   <Button
@@ -394,7 +400,7 @@ export const RolesForm = () => {
       {error && (
         <section className="p-3">
           <Alert variant="destructive">
-            <AlertTitle>Upps! This is embarrasing.</AlertTitle>
+            <AlertTitle>{t('General.ups')}</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         </section>
@@ -402,14 +408,14 @@ export const RolesForm = () => {
 
       <section className="flex justify-end gap-6 p-6">
         <Button onClick={onOmit} variant="ghost" disabled={isPending}>
-          Omit for now
+          {t('Roles.omit')}
         </Button>
         <Button
           onClick={onSubmit}
           loading={isPending}
           disabled={!Boolean(roles.length)}
         >
-          {isPending ? 'Saving...' : 'Save roles'}
+          {isPending ? `${t('General.saving')}...` : t('Roles.save_roles')}
         </Button>
       </section>
     </>
