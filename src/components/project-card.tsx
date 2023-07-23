@@ -17,7 +17,7 @@ import { LinkCard } from './link-card'
 import { Skeleton } from './ui/skeleton'
 
 interface ProjectCardProps {
-  id: string
+  slug: string
   name: string
   summary: string
   categories: string[]
@@ -28,7 +28,7 @@ interface ProjectCardProps {
 }
 
 export const ProjectCard = ({
-  id,
+  slug,
   name,
   summary,
   categories,
@@ -63,7 +63,7 @@ export const ProjectCard = ({
   }
 
   return (
-    <LinkCard href={routes.PROJECT(id)}>
+    <LinkCard href={routes.PROJECT(slug)}>
       <div className="m-4 mb-2 flex items-center gap-3">
         <div className="relative h-10 w-10 border border-border bg-foreground/10">
           {icon_url && (

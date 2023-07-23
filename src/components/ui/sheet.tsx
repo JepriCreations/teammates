@@ -175,11 +175,7 @@ const SheetContent = React.forwardRef<
     >
       {children}
       <SheetPrimitive.Close asChild>
-        <Button
-          icon={<CloseIcon />}
-          wrapperClassName="absolute right-4 top-4"
-          className="p-2"
-        >
+        <Button icon={<CloseIcon />} className="absolute right-4 top-4 p-2">
           <span className="sr-only">Close</span>
         </Button>
       </SheetPrimitive.Close>

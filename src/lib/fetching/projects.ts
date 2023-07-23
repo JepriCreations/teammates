@@ -13,7 +13,7 @@ export const fetchProjects = async () => {
   const { data: projects, error } = await supabase
     .from('projects')
     .select(
-      `id, updated_at, name, summary, categories, icon_url, public,
+      `id, slug, updated_at, name, summary, categories, icon_url, public,
       roles(name, exp_level, rewards, work_mode, status)`
     )
     .match({ public: true, 'roles.status': RoleStatus.Open })
@@ -34,7 +34,7 @@ export const fetchProjects = async () => {
   }
 }
 
-export const fetchProject = async (id: string) => {
+export const fetchProjectBySlug = async (slug: string) => {
   const supabase = createServerClient()
 
   const { data, error } = await supabase
@@ -43,7 +43,7 @@ export const fetchProject = async (id: string) => {
       `id, updated_at, name, summary, categories, icon_url, 
   roles(name, exp_level, rewards, work_mode, status)`
     )
-    .eq('id', id)
+    .eq('slug', slug)
     .single()
 
   if (error) {
@@ -93,10 +93,18 @@ export const fetchUserProjects = async () => {
 export const fetchUserProject = async (projectId: string) => {
   const supabase = createServerClient()
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect(routes.HOME)
+  }
+
   const { data, error } = await supabase
     .from('projects')
     .select('*')
-    .eq('id', projectId)
+    .match({ id: projectId, created_by: user.id })
     .single()
 
   if (error) {
@@ -186,4 +194,35 @@ export const fetchProjectStatistics = async (projectId: string) => {
   }
 
   return { data, error: null }
+}
+
+export const fetchProjectRoles = async (projectId: string) => {
+  const supabase = createServerClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect(routes.HOME)
+  }
+
+  const { data, error } = await supabase
+    .from('projects')
+    .select('roles(*)')
+    .eq('id', projectId)
+    .neq('roles.status', RoleStatus.Archived)
+    .single()
+
+  if (error) {
+    return {
+      data: null,
+      error: new PostgressError('Has been an error retrieving the project.', {
+        details: error.message,
+      }),
+    }
+  }
+
+  const roles = data.roles
+  return { data: roles, error: null }
 }

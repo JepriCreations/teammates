@@ -31,7 +31,7 @@ export const ProjectCard = ({
   ).length
 
   return (
-    <LinkCard href={routes.DASHBOARD + routes.PROJECT(id)}>
+    <LinkCard href={routes.STATISTICS(id)}>
       <div className="px-4 py-3">
         <div className="flex items-start justify-between gap-6">
           <p className="grow truncate text-lg">{name}</p>

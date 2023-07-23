@@ -22,3 +22,15 @@ export function capitalize(input: string): string {
   }
   return words.join(' ')
 }
+
+export function slugify(input: string): string {
+  const lowercase = input.toLowerCase().trim()
+
+  // Remove special characters and symbols
+  const removedSpecialChars = lowercase.replace(/[^\w\s]/gi, '')
+
+  // Replace spaces with dashes
+  const slug = removedSpecialChars.replace(/\s+/g, '-')
+
+  return slug
+}

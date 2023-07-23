@@ -13,7 +13,7 @@ export const routes = {
   PRIVACY: '/privacy',
   BLOG: '/blog',
   ABOUT: '/about',
-  PROJECT: (id: string) => `/project/${id}`,
+  PROJECT: (name: string) => `/projects/${name}`,
 
   // Externals
   GITHUB: 'https://github.com/jepricreations/teammates',

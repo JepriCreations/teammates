@@ -25,17 +25,15 @@ export default async function ProjectLayout({
     <div className="flex min-h-[100dvh]">
       <ProjectSideBar projectId={params.id} />
       <div className="grow">
-        <header>
-          <DashboardAppbar className="h-14 justify-between">
-            <div className="flex items-center">
-              <Button asChild variant="link">
-                <Link href={routes.PROJECTS}>{t('Dashboard.projects')}</Link>
-              </Button>
-              <AngleRightSmallIcon className="text-muted-foreground" />
-              <p className="px-4 font-medium">{data?.name}</p>
-            </div>
-          </DashboardAppbar>
-        </header>
+        <DashboardAppbar className="h-14 justify-between">
+          <div className="flex items-center">
+            <Button asChild variant="link">
+              <Link href={routes.PROJECTS}>{t('Dashboard.projects')}</Link>
+            </Button>
+            <AngleRightSmallIcon className="text-muted-foreground" />
+            <p className="px-4 font-medium">{data?.name}</p>
+          </div>
+        </DashboardAppbar>
         {children}
       </div>
     </div>

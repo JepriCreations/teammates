@@ -157,6 +157,7 @@ export interface Database {
           location: Json | null
           name: string
           public: boolean
+          slug: string
           summary: string
           updated_at: string
         }
@@ -171,6 +172,7 @@ export interface Database {
           location?: Json | null
           name?: string
           public?: boolean
+          slug?: string
           summary?: string
           updated_at?: string
         }
@@ -185,6 +187,7 @@ export interface Database {
           location?: Json | null
           name?: string
           public?: boolean
+          slug?: string
           summary?: string
           updated_at?: string
         }

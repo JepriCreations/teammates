@@ -17,7 +17,6 @@ export const useRoles = () => {
 
       const values = data.map((role) => ({
         ...role,
-        status: RoleStatus.Open,
         project_id,
       }))
 
@@ -44,5 +43,38 @@ export const useRoles = () => {
     }
   }
 
-  return { addRoles, isPending }
+  const updateRoleStatus = async ({
+    role_id,
+    status,
+  }: {
+    role_id: string
+    status: RoleStatus
+  }) => {
+    try {
+      setIsPending(true)
+
+      const resp = await fetch(`${location.origin}/api/roles`, {
+        method: 'PATCH',
+        body: JSON.stringify({ role_id, status }),
+      })
+        .then((resp) => resp.json())
+        .then(
+          (resp: {
+            error: PostgressError | null
+            data: { id: string } | null
+          }) => resp
+        )
+      if (resp.error) {
+        throw resp.error
+      }
+
+      return { error: null, data: resp.data }
+    } catch (error: any) {
+      return { error, data: null }
+    } finally {
+      setIsPending(false)
+    }
+  }
+
+  return { addRoles, updateRoleStatus, isPending }
 }

@@ -4,93 +4,99 @@
 
 @layer base {
   :root {
-    --black: 0 0% 0%;
-    --white: 0 0% 100%;
+    --black: 100 5% 11%;
+    --white: 30 27% 94%;
 
     --background: var(--white);
     --foreground: var(--black);
 
-    --hover: 0 0% 95%;
-    --border: var(--black);
+    --hover: 30 15% 90%;
+    --border: var(--foreground) / 0.3;
 
     --muted: 0 0% 85%;
     --muted-foreground: var(--foreground) / 0.6;
 
-    --popover: var(--white);
-    --popover-foreground: var(--black);
+    --popover: 45 30% 92%;
+    --popover-foreground: 60 10% 10%;
 
-    --card: var(--white);
-    --card-foreground: var(--black);
+    --card: 44 65% 97%;
+    --card-foreground: var(--foreground);
 
     --primary: var(--white);
-    --primary-foreground: var(--black);
+    --primary-foreground: var(--foreground);
 
-    --secondary: var(--white);
-    --secondary-foreground: var(--black);
+    --secondary: 96 15% 46%;
+    --secondary-foreground: 34 23% 94%;
 
-    --accent: 136 89% 85%;
-    --accent-foreground: 0 0% 0%;
+    --accent: 64 38% 50%;
+    --accent-foreground: 34 23% 94%;
 
-    --destructive: 0 99% 67%;
-    --destructive-foreground: 0 86% 59%;
+    --destructive: 0 75% 42%;
+    --destructive-foreground: 0 0% 100%;
 
-    --success: 162 48% 45%;
-    --success-foreground: 161 94% 30%;
+    --success: 119 85% 79%;
+    --success-foreground: 129 100% 6%;
 
-    --error: 0 84% 60%;
-    --error-foreground: 0 86% 59%;
+    --info: 203 100% 88%;
+    --info-foreground: 198 100% 8%;
 
-    --warning: 38 92% 50%;
-    --warning-foreground: 32 95% 44%;
+    --error: 6 100% 92%;
+    --error-foreground: 358 100% 13%;
 
-    --ring: var(--accent) / 0.8;
+    --warning: 40 100% 81%;
+    --warning-foreground: 41 100% 7%;
 
-    --radius: 0.5rem;
+    --ring: var(--accent) / 0.5;
+
+    --radius: 0rem;
   }
 
   .dark {
-    --black: 251 24% 9%;
-    --white: 214 30% 91%;
+    --black: 60 15% 7%;
+    --white: 34 23% 94%;
 
     --background: var(--black);
     --foreground: var(--white);
 
-    --hover: 251 15% 14%;
-    --border: var(--white);
+    --hover: 100 4% 15%;
+    --border: var(--foreground) / 0.3;
 
-    --muted: 248 8% 23%;
+    --muted: 0 0% 24%;
     --muted-foreground: var(--foreground) / 0.6;
 
-    --popover: var(--black);
-    --popover-foreground: var(--white);
+    --popover: 60 8% 12%;
+    --popover-foreground: 44 9% 77%;
 
-    --card: var(--black);
-    --card-foreground: var(--white);
+    --card: 60 6% 15%;
+    --card-foreground: var(--foreground);
 
     --primary: var(--black);
-    --primary-foreground: var(--white);
+    --primary-foreground: var(--foreground);
 
-    --secondary: var(--black);
-    --secondary-foreground: var(--white);
+    --secondary: 117 31% 88%;
+    --secondary-foreground: 60 6% 21%;
 
-    --accent: 136 89% 85%;
-    --accent-foreground: 0 0% 0%;
+    --accent: 66 67% 76%;
+    --accent-foreground: 60 6% 21%;
 
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 100% 70%;
+    --destructive: 357 100% 21%;
+    --destructive-foreground: 6 100% 84%;
 
-    --success: 162 48% 45%;
-    --success-foreground: 156 72% 67%;
+    --success: 83 100% 15%;
+    --success-foreground: 85 81% 73%;
 
-    --error: 0 84% 60%;
-    --error-foreground: 0 100% 83%;
+    --info: 195 100% 20%;
+    --info-foreground: 203 100% 88%;
 
-    --warning: 38 92% 50%;
-    --warning-foreground: 48 96% 89%;
+    --error: 356 100% 29%;
+    --error-foreground: 6 100% 92%;
 
-    --ring: var(--accent) / 0.8;
+    --warning: 44 100% 18%;
+    --warning-foreground: 40 100% 81%;
 
-    --radius: 0.5rem;
+    --ring: var(--accent) / 0.5;
+
+    --radius: 0rem;
   }
 }
 
@@ -106,5 +112,13 @@
     font-size: theme(fontSize.4xl);
     font-weight: theme(fontWeight.bold);
     letter-spacing: theme(spacing.0);
+  }
+
+  h2 {
+    font-size: theme(fontSize.2xl);
+    font-weight: theme(fontWeight.semibold);
+    letter-spacing: theme(spacing.0);
+    margin-top: theme(spacing.2);
+    margin-bottom: theme(spacing.2);
   }
 }

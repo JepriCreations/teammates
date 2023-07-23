@@ -28,15 +28,15 @@ export function ModeToggle() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme('light')}>
-          <SunIcon className="mr-2 h-4 w-4" />
+          <SunIcon className="mr-3 h-5 w-5" />
           <span className="leading-none">{t('light')}</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('dark')}>
-          <MoonIcon className="mr-2 h-4 w-4" />
+          <MoonIcon className="mr-3 h-5 w-5" />
           <span className="leading-none">{t('dark')}</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('system')}>
-          <LaptopIcon className="mr-2 h-4 w-4" />
+          <LaptopIcon className="mr-3 h-5 w-5" />
           <span className="leading-none">{t('system')}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

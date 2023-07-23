@@ -1,10 +1,10 @@
-import { fetchProject } from '@/lib/fetching/projects'
+import { fetchProjectBySlug } from '@/lib/fetching/projects'
 
 interface ProjectProps {
-  params: { id: string }
+  params: { slug: string }
 }
 export default async function ProjectPage({ params }: ProjectProps) {
-  const { data, error } = await fetchProject(params.id)
+  const { data, error } = await fetchProjectBySlug(params.slug)
   return (
     <main className="p-16">
       <pre>{JSON.stringify(data, undefined, 2)}</pre>

@@ -25,6 +25,7 @@ export enum Roles {
 export enum RoleStatus {
   Open = 'open',
   Closed = 'closed',
+  Archived = 'archived',
 }
 
 export type Profile = Database['public']['Tables']['profiles']['Row'] & {

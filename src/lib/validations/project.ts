@@ -148,14 +148,14 @@ export const roleSquema = z.object({
   work_mode: z.nativeEnum(WorkMode),
 })
 export const rolesInsertSquema = z.object({
-  status: z.nativeEnum(RoleStatus),
   project_id: z.string().uuid(),
 })
 
 export const rolesSquema = z.array(roleSquema.merge(rolesInsertSquema))
 
-export const projectInsertSquema = z.object({
+export const serverProjectInsertSquema = z.object({
   name: z.string().min(3).max(32),
+  slug: z.string().min(1),
   summary: z.string().min(15).max(SUMMARY_MAX_LENGTH),
   categories: z.string().array().min(1).max(MAX_CATEGORIES),
   description: z.string().min(15),

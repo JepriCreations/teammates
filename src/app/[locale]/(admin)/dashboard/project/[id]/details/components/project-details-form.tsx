@@ -3,20 +3,18 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { Project, Role } from '@/types/collections'
+import { Project } from '@/types/collections'
 import { useProjects } from '@/hooks/useProjects'
 import { useToast } from '@/hooks/useToast'
 import { Switch } from '@/components/ui/switch'
+import { ProjectForm } from '@/components/forms/new-project/project-form'
 import { useDictionary } from '@/components/providers/dictionary-provider'
 
-import { ProjectForm } from '../new-project/project-form'
-import { RolesForm } from './roles-form'
-
-interface ProjectFormType extends Project {
-  roles: Role[]
+interface ProjectDetailsFormProps {
+  data: Project
 }
 
-export const PostForm = (data: ProjectFormType) => {
+export const ProjectDetailsForm = ({ data }: ProjectDetailsFormProps) => {
   const { t } = useDictionary('Projects')
   const router = useRouter()
   const { toast } = useToast()
@@ -40,7 +38,7 @@ export const PostForm = (data: ProjectFormType) => {
 
   const updatePublicState = async (value: boolean) => {
     setPublish(value)
-    const { error } = await update({ public: value }, data.id)
+    const { error } = await update({ id: data.id, public: value })
     if (error) {
       setPublish((prev) => !prev)
       return toast({
@@ -54,9 +52,6 @@ export const PostForm = (data: ProjectFormType) => {
 
   return (
     <>
-      <div className="m-6">
-        <p className="text-xl font-semibold">{t('project_details')}</p>
-      </div>
       <section className="grid grid-cols-3 border-b border-muted p-6">
         <div>
           <p>{t('project_status')}</p>
@@ -71,12 +66,6 @@ export const PostForm = (data: ProjectFormType) => {
         action="update"
         projectData={{ id: data.id, icon_url: data.icon_url }}
       />
-      <section className="border-y border-border p-6">
-        <div className="mb-6">
-          <p className="text-xl font-semibold">Roles</p>
-        </div>
-        <RolesForm data={data.roles} />
-      </section>
     </>
   )
 }

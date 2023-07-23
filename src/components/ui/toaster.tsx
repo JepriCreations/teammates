@@ -11,9 +11,9 @@ import {
   ToastViewport,
 } from '@/components/ui/toast'
 import {
-  BellExclamationIcon,
-  CheckIcon,
-  CloseIcon,
+  ErrorIcon,
+  InfoIcon,
+  SuccessIcon,
   WarningIcon,
 } from '@/components/icons'
 
@@ -32,20 +32,20 @@ export function Toaster() {
       }) {
         const icons = {
           success: {
-            icon: <CheckIcon size={20} />,
-            colors: 'bg-green-500/20 text-green-500 dark:text-green-300',
+            icon: <SuccessIcon />,
+            colors: 'bg-success text-success-foreground',
           },
           error: {
-            icon: <CloseIcon size={20} />,
-            colors: 'bg-red-500/20 text-red-500 dark:text-red-300',
+            icon: <ErrorIcon />,
+            colors: 'bg-error text-error-foreground',
           },
           info: {
-            icon: <BellExclamationIcon size={20} />,
-            colors: 'bg-blue-500/20 text-blue-500 dark:text-blue-300',
+            icon: <InfoIcon />,
+            colors: 'bg-info text-info-foreground',
           },
           warning: {
-            icon: <WarningIcon size={20} />,
-            colors: 'bg-amber-500/20 text-amber-500 dark:text-amber-300',
+            icon: <WarningIcon />,
+            colors: 'bg-warning text-warning-foreground',
           },
         } as const
 
@@ -55,7 +55,7 @@ export function Toaster() {
               {severity && (
                 <div
                   className={cn(
-                    'flex h-8 w-8 shrink-0 items-center justify-center',
+                    'flex h-8 w-8 shrink-0 items-center justify-center rounded-full',
                     icons[severity].colors
                   )}
                 >

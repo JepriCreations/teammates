@@ -2,56 +2,26 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { countries } from '@/constants/countries'
-import { categories } from '@/constants/projects'
+import { ERROR_CODES } from '@/constants/errors'
 import { routes } from '@/constants/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Project } from '@/types/collections'
-import { capitalize, cn } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import {
   createProjectSquema,
-  MAX_CATEGORIES,
   projectSquema,
   socials,
-  SUMMARY_MAX_LENGTH,
   updateProjectSquema,
 } from '@/lib/validations/project'
 import { useProjects } from '@/hooks/useProjects'
 import { useToast } from '@/hooks/useToast'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from '@/components/ui/command'
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Textarea } from '@/components/ui/textarea'
-import {
-  AngleDownSmallIcon,
-  CheckIcon,
-  ImageUploadIcon,
-} from '@/components/icons'
+import { Form } from '@/components/ui/form'
+import { ProjectInputs } from '@/components/forms/project-inputs'
 import { useDictionary } from '@/components/providers/dictionary-provider'
 import { useNewProjectFormState } from '@/components/providers/new-project-form-provider'
 
@@ -107,11 +77,22 @@ export const ProjectForm = ({
   const onSubmit = async (values: z.infer<typeof projectSquema>) => {
     const { error, data } =
       isUpdating && projectData?.id
-        ? await update(values, projectData.id)
+        ? await update({ id: projectData.id, ...values })
         : await create(values)
 
     if (error || !data) {
-      setError(error?.message ?? t('Projects.errors.saving'))
+      if (error.code === ERROR_CODES.DUPLICATE_NAME) {
+        form.setError(
+          'name',
+          {
+            type: 'custom',
+            message: t('Projects.errors.duplicate_name'),
+          },
+          { shouldFocus: true }
+        )
+      } else {
+        setError(error?.message ?? t('Projects.errors.saving'))
+      }
       return
     }
 
@@ -136,364 +117,34 @@ export const ProjectForm = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <section className="grid grid-cols-3 border-b border-muted p-6">
-          <div>
-            <p>{t('Projects.basic_info')}</p>
-          </div>
-          <div className="col-span-2 grid grid-cols-1 gap-3">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('Projects.name')}</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="summary"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('Projects.summary')}</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    {t('Projects.summary_description')}
-                    <span
-                      className={cn(
-                        'block',
-                        field.value.length > SUMMARY_MAX_LENGTH && 'text-error'
-                      )}
-                    >
-                      {`${field.value.length} / ${SUMMARY_MAX_LENGTH}`}
-                    </span>
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </section>
-        <section className="grid grid-cols-3 border-b border-muted p-6">
-          <div>
-            <p>{t('Projects.details')}</p>
-          </div>
-          <div className="col-span-2 grid grid-cols-1 gap-3">
-            <div className="flex gap-3">
-              <div className="grow">
-                <FormField
-                  control={form.control}
-                  name="file"
-                  render={({ field: { value, onChange, ...field } }) => (
-                    <FormItem>
-                      <FormLabel>{t('Projects.icon')}</FormLabel>
-                      <FormControl>
-                        <Input
-                          leftSection={<ImageUploadIcon />}
-                          type="file"
-                          accept="image/*"
-                          onChange={(event) => {
-                            const file =
-                              event.target.files && event.target.files[0]
-                            if (file) {
-                              onChange(file)
-                              form.clearErrors(field.name)
-                            } else {
-                              form.resetField(field.name)
-                            }
-                          }}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        {t('Projects.icon_description')}
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="relative mt-[28px] h-20 w-20 shrink-0 overflow-hidden border border-border bg-foreground/10">
-                {(form.getValues('file') !== undefined ||
-                  projectData?.icon_url) && (
-                  /**
-                   * use of <img/> instead of next <Image/> to avoid chaching
-                   * and always show the last updated icon
-                   */
-                  <img
-                    src={
-                      form.getValues('file')
-                        ? URL.createObjectURL(form.getValues('file'))
-                        : projectData?.icon_url || ''
-                    }
-                    alt="preview"
-                    sizes="(max-width: 80px) 100vw"
-                    className="animate-in zoom-in-50"
-                  />
-                )}
-              </div>
-            </div>
-            <FormField
-              control={form.control}
-              name="categories"
-              render={({ field: { value, ...field } }) => (
-                <FormItem>
-                  <FormLabel>{t('Projects.categories')}</FormLabel>
-                  <FormControl>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            fullWidth
-                            className={cn(
-                              'justify-between font-normal aria-[invalid=true]:border-error',
-                              !value && 'text-muted-foreground'
-                            )}
-                          >
-                            <div className="flex grow items-center justify-between">
-                              {value.length
-                                ? value
-                                    .map(
-                                      (category) =>
-                                        categories(t).find(
-                                          (c) => c.value === category
-                                        )?.label
-                                    )
-                                    .join(', ')
-                                : t('Projects.select_categories')}
-                              <AngleDownSmallIcon className="ml-2 h-5 w-5 shrink-0 opacity-50" />
-                            </div>
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent align="end" className="w-[200px] p-0">
-                        <Command>
-                          <CommandInput
-                            placeholder={t('Projects.search_category')}
-                          />
-                          <CommandEmpty>
-                            {t('Projects.no_category_found')}
-                          </CommandEmpty>
-                          <CommandGroup>
-                            {categories(t).map((category) => (
-                              <CommandItem
-                                value={category.value}
-                                key={category.value}
-                                onSelect={(val) => {
-                                  const index = value.indexOf(val)
-                                  if (index !== -1) {
-                                    form.setValue(
-                                      'categories',
-                                      value.filter((v) => v !== val)
-                                    )
-                                  } else {
-                                    if (value.length >= MAX_CATEGORIES) return
-                                    form.clearErrors(field.name)
-                                    form.setValue('categories', [...value, val])
-                                  }
-                                }}
-                              >
-                                <CheckIcon
-                                  className={cn(
-                                    'mr-2 h-4 w-4',
-                                    value.includes(category.value)
-                                      ? 'opacity-100'
-                                      : 'opacity-0'
-                                  )}
-                                />
-                                {category.label}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                  </FormControl>
-                  <FormDescription>
-                    {t('Projects.categories_max')}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('Projects.description')}</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder={t('Projects.description_placeholder')}
-                      className="min-h-[240px]"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </section>
-
-        <section className="grid grid-cols-3 border-b border-muted p-6">
-          <div>
-            <p>{t('Projects.location')}</p>
-          </div>
-          <div className="col-span-2 grid grid-cols-1 gap-3">
-            <FormField
-              control={form.control}
-              name="location.country"
-              render={({ field: { value, ...field } }) => (
-                <FormItem>
-                  <FormLabel>{t('Projects.country')}</FormLabel>
-                  <FormControl>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            fullWidth
-                            className={cn(
-                              'justify-between px-3 font-normal aria-[invalid=true]:border-error',
-                              !value && 'text-muted-foreground'
-                            )}
-                          >
-                            <div className="flex grow items-center justify-between">
-                              {value.length ? value : 'Select a country'}
-                              <AngleDownSmallIcon className="ml-2 h-5 w-5 shrink-0 opacity-50" />
-                            </div>
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent align="end" className="w-[200px] p-0">
-                        <Command>
-                          <CommandInput placeholder="Search country..." />
-                          <CommandEmpty>
-                            {t('Projects.country_not_found')}
-                          </CommandEmpty>
-                          <CommandGroup>
-                            <ScrollArea className="h-72 w-full">
-                              {countries.map((country) => (
-                                <CommandItem
-                                  value={country}
-                                  key={country}
-                                  onSelect={(val) => {
-                                    form.clearErrors(field.name)
-                                    form.setValue(
-                                      'location.country',
-                                      capitalize(val)
-                                    )
-                                  }}
-                                >
-                                  <CheckIcon
-                                    className={cn(
-                                      'mr-2 h-4 w-4',
-                                      country === value
-                                        ? 'opacity-100'
-                                        : 'opacity-0'
-                                    )}
-                                  />
-                                  {country}
-                                </CommandItem>
-                              ))}
-                            </ScrollArea>
-                          </CommandGroup>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="location.city"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('Projects.city')}</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    {t('Projects.city_description')}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </section>
-
-        <section className="grid grid-cols-3 border-b border-muted p-6">
-          <div>
-            <p>{t('Projects.links')}</p>
-            <p className="text-sm text-muted-foreground">{`(${t(
-              'General.optional'
-            )})`}</p>
-          </div>
-          <div className="col-span-2 grid grid-cols-1 gap-3">
-            {socials.map(({ name, icon: Icon }, index) => (
-              <FormField
-                key={name}
-                control={form.control}
-                name="links"
-                render={({ field: { value, onChange, ...field } }) => (
-                  <FormItem>
-                    <FormControl nested index={index}>
-                      <Input
-                        leftSection={<Icon />}
-                        placeholder={name}
-                        value={
-                          value.find((link) => link.name === name)?.link || ''
-                        }
-                        onChange={(event) => {
-                          const { value: val } = event.target
-
-                          let newValue = [...value]
-                          const index = newValue.findIndex(
-                            (i) => i.name === name
-                          )
-                          newValue.splice(index, 1, {
-                            name,
-                            link: !val ? undefined : val,
-                          })
-                          onChange(newValue)
-                        }}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage nested index={index} />
-                  </FormItem>
-                )}
-              />
-            ))}
-          </div>
-        </section>
+        <ProjectInputs
+          form={form}
+          icon_url={projectData?.icon_url ?? ''}
+          disabled={isPending}
+        />
 
         {error && (
           <section className="p-3">
-            <Alert variant="destructive">
+            <Alert variant="error">
               <AlertTitle>{t('General.ups')}</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           </section>
         )}
 
-        <section className="flex justify-end gap-6 p-6">
-          <Button onClick={onCancel} variant="ghost" disabled={isPending}>
-            {t('General.cancel')}
-          </Button>
+        <section
+          className={cn(
+            'flex justify-end gap-6 bg-card p-6',
+            isUpdating &&
+              'sticky bottom-0 bg-background shadow-[0px_-4px_12px_4px_hsl(var(--background))]'
+          )}
+        >
+          {!isUpdating && (
+            <Button onClick={onCancel} variant="ghost" disabled={isPending}>
+              {t('General.cancel')}
+            </Button>
+          )}
+
           <Button
             type="submit"
             loading={isPending}
@@ -503,7 +154,7 @@ export const ProjectForm = ({
               ? t('General.saving') + '...'
               : action === 'create'
               ? t('General.continue')
-              : t('General.saving_changes') + '...'}
+              : t('General.save_changes')}
           </Button>
         </section>
       </form>

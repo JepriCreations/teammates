@@ -5,26 +5,32 @@ import { cn } from '@/lib/utils'
 import { LoadingIcon } from '@/components/icons'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center w-full gap-3 text-base font-semibold outline-none transition-all focus-visible:outline-none focus-visible:ring-0 disabled:pointer-events-none',
+  'flex items-center justify-center gap-3 text-base font-semibold outline-none transition-all focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-60',
   {
     variants: {
       variant: {
         default:
-          'bg-primary text-foreground hover:bg-hover focus:bg-hover active:translate-x-0 active:translate-y-0 disabled:translate-x-0 disabled:translate-y-0 -translate-x-0.5 -translate-y-0.5 border border-border disabled:bg-muted',
+          '-translate-x-0.5 -translate-y-0.5 border border-border bg-primary text-primary-foreground shadow-[2px_2px_0px_hsl(var(--primary-foreground))] hover:bg-hover focus:bg-hover active:translate-x-0 active:translate-y-0 active:shadow-none disabled:translate-x-0 disabled:translate-y-0 disabled:bg-muted disabled:text-muted-foreground disabled:opacity-50 disabled:shadow-none',
+        accent:
+          '-translate-x-0.5 -translate-y-0.5 border border-black bg-accent text-black shadow-[2px_2px_0px_hsl(var(--black))] hover:bg-accent/80 focus:bg-accent/80 active:translate-x-0 active:translate-y-0 active:shadow-none disabled:translate-x-0 disabled:translate-y-0 disabled:bg-muted disabled:text-muted-foreground disabled:opacity-50 disabled:shadow-none dark:disabled:opacity-80',
         secondary:
-          'bg-secondary text-secondary-foreground border border-border hover:bg-hover focus:bg-hover active:scale-95',
+          '-translate-x-0.5 -translate-y-0.5 border border-black bg-secondary text-secondary-foreground shadow-[2px_2px_0px_hsl(var(--black))] hover:bg-secondary/80 focus:bg-secondary/80 active:translate-x-0 active:translate-y-0 active:shadow-none disabled:translate-x-0 disabled:translate-y-0 disabled:bg-muted disabled:text-muted-foreground disabled:opacity-50 disabled:shadow-none dark:disabled:opacity-80',
         ghost:
-          'hover:bg-foreground/5 active:scale-95 focus:bg-foreground/5 disabled:bg-muted',
+          'hover:bg-foreground/5 active:scale-95 focus:bg-foreground/5 disabled:text-muted-foreground disabled:opacity-50',
         link: 'font-normal opacity-60 text-foreground active:scale-95 focus:opacity-100 focus:bg-foreground/5 disabled:text-muted-foreground hover:opacity-100 active:opacity-100',
         outline:
-          'bg-primary text-foregorund hover:bg-hover focus:bg-hover border border-border disabled:bg-muted',
+          'bg-primary border-2 text-foregorund hover:bg-hover bg-transparent hover:bg-foreground/5 focus:bg-hover border-border disabled:text-muted-foreground disabled:opacity-50 aria-[invalid=true]:border-error-foreground',
         destructive:
-          'bg-destructive text-foreground active:translate-x-0 active:translate-y-0 disabled:translate-x-0 disabled:translate-y-0 -translate-x-0.5 -translate-y-0.5 border border-border hover:bg-red-600 focus:bg-red-600',
+          '-translate-x-0.5 -translate-y-0.5 border border-foreground bg-destructive text-destructive-foreground shadow-[2px_2px_0px_hsl(var(--foreground))] hover:bg-destructive/80 focus:bg-destructive/80 active:translate-x-0 active:translate-y-0 active:shadow-none disabled:translate-x-0 disabled:translate-y-0 disabled:shadow-none dark:border-destructive-foreground dark:shadow-[2px_2px_0px_hsl(var(--destructive-foreground))]',
       },
       size: {
-        default: 'px-4 py-2',
+        default: 'px-4 py-2 h-10',
         sm: 'py-1 px-3',
         lg: 'py-3 px-8',
+      },
+      fullWidth: {
+        true: 'w-full',
+        false: 'w-fit',
       },
     },
     defaultVariants: {
@@ -34,31 +40,9 @@ const buttonVariants = cva(
   }
 )
 
-const ButtonContainerVariants = cva('min-w-fit', {
-  variants: {
-    variant: {
-      default: 'bg-foreground',
-      secondary: 'bg-transparent',
-      ghost: 'bg-transparent',
-      outline: 'bg-transparent',
-      link: 'bg-transparent',
-      destructive: 'bg-foreground',
-    },
-    fullWidth: {
-      true: 'w-full',
-      false: 'w-fit',
-    },
-  },
-  defaultVariants: {
-    variant: 'default',
-    fullWidth: false,
-  },
-})
-
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  wrapperClassName?: string
   asChild?: boolean
   fullWidth?: boolean
   loading?: boolean
@@ -68,7 +52,6 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
-      wrapperClassName,
       className,
       variant = 'default',
       fullWidth = false,
@@ -76,7 +59,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       size = 'default',
       children,
       asChild = false,
-      disabled,
       icon,
       ...props
     },
@@ -94,31 +76,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     return (
-      <div
+      <Comp
         className={cn(
-          ButtonContainerVariants({
-            variant,
-            fullWidth,
-            className: wrapperClassName,
-          }),
-          disabled && 'opacity-50'
+          buttonVariants({ variant, size, fullWidth, className }),
+          icon && size === 'default' && 'pl-2'
         )}
+        ref={ref}
+        {...(asChild ? { ...childrenProps } : { ...props })}
       >
-        <Comp
-          className={cn(
-            buttonVariants({ variant, size, className }),
-            icon && size === 'default' && 'pl-2'
-          )}
-          ref={ref}
-          disabled={disabled}
-          {...(asChild ? { ...childrenProps } : { ...props })}
-        >
-          <div className="relative flex w-full items-center gap-3">
-            {loading ? <LoadingIcon className="h-6 w-6 animate-spin" /> : icon}
-            {asChild ? childrenProps.children : children}
-          </div>
-        </Comp>
-      </div>
+        {loading ? <LoadingIcon className="h-6 w-6 animate-spin" /> : icon}
+        {asChild ? childrenProps.children : children}
+      </Comp>
     )
   }
 )

@@ -9,13 +9,13 @@ export const DashboardAppbar = ({
   className,
 }: DashboardAppbarProps) => {
   return (
-    <section
+    <header
       className={cn(
-        'flex h-16 items-center gap-3 border-b border-border px-5',
+        'sticky top-0 z-50 flex h-16 items-center gap-3 border-b border-border bg-background px-5',
         className
       )}
     >
       {children}
-    </section>
+    </header>
   )
 }

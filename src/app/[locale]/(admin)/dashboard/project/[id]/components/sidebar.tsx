@@ -30,7 +30,7 @@ export const ProjectSideBar = ({ projectId }: ProjectSideBarProps) => {
   }
 
   return (
-    <div className="flex w-14 shrink-0 flex-col justify-between overflow-hidden border-r border-border p-2">
+    <div className="sticky top-0 z-40 flex h-[100dvh] w-14 shrink-0 flex-col justify-between overflow-hidden border-r border-border bg-background p-2">
       <section className="flex flex-col space-y-3">
         <Link href={routes.PROJECTS}>
           <div className="h-10 w-10 p-1">
@@ -93,9 +93,9 @@ const ItemTooltip = ({
 }) => {
   return (
     <div>
-      <TooltipProvider delayDuration={300}>
+      <TooltipProvider delayDuration={0}>
         <Tooltip>
-          <TooltipTrigger asChild>{children}</TooltipTrigger>
+          <TooltipTrigger>{children}</TooltipTrigger>
           <TooltipContent side="right">
             <p>{text}</p>
           </TooltipContent>
