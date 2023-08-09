@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { ExperienceLevel, WorkMode } from '@/types/collections'
-import { roleSquema } from '@/lib/validations/project'
+import { roleSchema } from '@/lib/validations/project'
 import { useRoles } from '@/hooks/useRoles'
 import { useToast } from '@/hooks/useToast'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -41,15 +41,15 @@ export const RolesForm = () => {
   const { projectId } = useNewProjectFormState()
   const [error, setError] = useState(null)
   const { isPending, addRoles } = useRoles()
-  const [roles, setRoles] = useState<z.infer<typeof roleSquema>[]>([])
+  const [roles, setRoles] = useState<z.infer<typeof roleSchema>[]>([])
   const router = useRouter()
 
-  const form = useForm<z.infer<typeof roleSquema>>({
-    resolver: zodResolver(roleSquema),
+  const form = useForm<z.infer<typeof roleSchema>>({
+    resolver: zodResolver(roleSchema),
     defaultValues,
   })
 
-  const onSubmitRole = (values: z.infer<typeof roleSquema>) => {
+  const onSubmitRole = (values: z.infer<typeof roleSchema>) => {
     setRoles((prev) => [...prev, values])
     form.reset(defaultValues)
   }
@@ -76,7 +76,7 @@ export const RolesForm = () => {
 
   return (
     <>
-      <section className="relative overflow-hidden border-b border-muted p-6">
+      <section className="relative overflow-hidden border-b border-outline/38 p-6">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmitRole)}
@@ -88,6 +88,7 @@ export const RolesForm = () => {
                 variant="accent"
                 type="submit"
                 className="ml-auto"
+                disabled={isPending}
                 icon={<AddIcon />}
               >
                 {t('Roles.add_role')}
@@ -96,7 +97,7 @@ export const RolesForm = () => {
           </form>
         </Form>
       </section>
-      <section className="relative overflow-hidden border-b border-muted p-6">
+      <section className="relative overflow-hidden border-b border-outline/38 p-6">
         <Table>
           <TableHeader>
             <TableRow>
@@ -116,7 +117,9 @@ export const RolesForm = () => {
             )}
             {roles.map(({ name, exp_level, work_mode, rewards }, index) => (
               <TableRow key={`role-${name}-${index}`}>
-                <TableCell className="w-[25%] font-medium">{t(name)}</TableCell>
+                <TableCell className="w-[25%] font-medium">
+                  {t(`Roles.${name}`)}
+                </TableCell>
                 <TableCell>{t(`Roles.Levels.${exp_level}`)}</TableCell>
                 <TableCell>{t(`Roles.Workmode.${work_mode}`)}</TableCell>
                 <TableCell className="text-right">
@@ -135,7 +138,7 @@ export const RolesForm = () => {
                     }
                     icon={<TrashIcon />}
                     variant="ghost"
-                    className="p-2"
+                    size="icon"
                   />
                 </TableCell>
               </TableRow>

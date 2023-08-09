@@ -16,7 +16,7 @@ export const Barchart = ({ className, data }: BarchartProps) => {
       {data?.map(({ value }, index) => (
         <span
           className={cn(
-            'origin-bottom animate-grown-up bg-accent opacity-0 duration-300',
+            'origin-bottom animate-grown-up bg-primary opacity-0 duration-300',
             className
           )}
           style={{

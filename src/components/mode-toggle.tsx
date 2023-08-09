@@ -20,7 +20,7 @@ export function ModeToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="p-2">
+        <Button variant="ghost" size="icon">
           <MoonIcon className="hidden animate-in zoom-in-50 spin-in-45 dark:block" />
           <SunIcon className="block animate-in zoom-in-50 spin-in-45 dark:hidden" />
           <span className="sr-only">{t('toggle_theme')}</span>

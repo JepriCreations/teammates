@@ -27,7 +27,7 @@ export const NavLink = ({
       href={href}
       className={cn(
         className,
-        'relative block opacity-50 transition-opacity before:absolute before:-bottom-1 before:left-0 before:h-[5px] before:w-5 before:origin-left before:scale-x-0 before:bg-accent before:opacity-0 before:transition-transform hover:opacity-100',
+        'relative block opacity-50 transition-opacity before:absolute before:-bottom-1 before:left-0 before:h-[5px] before:w-5 before:origin-left before:scale-x-0 before:bg-primary before:opacity-0 before:transition-transform hover:opacity-100',
         isActive && 'before:scale-x-1 opacity-100 before:opacity-100'
       )}
       style={style}

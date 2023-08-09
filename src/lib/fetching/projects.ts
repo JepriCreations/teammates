@@ -40,10 +40,11 @@ export const fetchProjectBySlug = async (slug: string) => {
   const { data, error } = await supabase
     .from('projects')
     .select(
-      `id, updated_at, name, summary, categories, icon_url, 
-  roles(name, exp_level, rewards, work_mode, status)`
+      `id, updated_at, name, summary, categories, icon_url, description,
+  roles(name, exp_level, rewards, work_mode, status, description)`
     )
     .eq('slug', slug)
+    .eq('roles.status', RoleStatus.Open)
     .single()
 
   if (error) {
@@ -217,7 +218,7 @@ export const fetchProjectRoles = async (projectId: string) => {
   if (error) {
     return {
       data: null,
-      error: new PostgressError('Has been an error retrieving the project.', {
+      error: new PostgressError('Has been an error retrieving the roles.', {
         details: error.message,
       }),
     }

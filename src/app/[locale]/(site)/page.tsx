@@ -1,9 +1,7 @@
 import { Suspense } from 'react'
 
 import { getDictionary } from '@/lib/dictionaries'
-
-import ProjectsFeed, { LoadingProjects } from './_feed/projects-feed'
-import Side from './_side/side'
+import { LoadingProjects, ProjectsFeed } from '@/components/projects-feed'
 
 // Revalidate every day
 export const revalidate = 86400
@@ -17,21 +15,18 @@ export default async function Home({ params: { locale } }: HomeProps) {
   return (
     <>
       <section className="container mx-auto pt-16">
-        <div className="text-center">
-          <h1 className="mx-auto mb-4 max-w-3xl font-bold leading-snug">
-            {t('title')}
-          </h1>
-          <p className="mx-auto max-w-lg text-base text-muted-foreground">
+        <div className="space-y-6 text-center">
+          <h1 className="balance mx-auto max-w-3xl font-bold">{t('title')}</h1>
+          <p className="mx-auto max-w-lg text-base text-outline">
             {t('subtitle')}
           </p>
         </div>
-        <section className="mx-auto my-8 grid max-w-4xl grid-cols-1 gap-6 sm:grid-cols-4">
+        <section className="mx-auto my-8 max-w-4xl">
           <div className="grid grid-cols-1 gap-3 sm:col-span-3">
             <Suspense fallback={<LoadingProjects />}>
               <ProjectsFeed locale={locale} />
             </Suspense>
           </div>
-          <Side />
         </section>
       </section>
     </>

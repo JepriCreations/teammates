@@ -38,12 +38,14 @@ interface ProjectForm {
   action: 'update' | 'create'
   defaultValues?: z.infer<typeof projectSquema>
   projectData?: Partial<Project>
+  children?: React.ReactNode
 }
 
 export const ProjectForm = ({
   action,
   defaultValues,
   projectData,
+  children,
 }: ProjectForm) => {
   const { t } = useDictionary()
   const { toast } = useToast()
@@ -53,7 +55,7 @@ export const ProjectForm = ({
   const [error, setError] = useState(null)
   const isUpdating = action === 'update'
 
-  const form = useForm<ProjectSchemaType>({
+  const form = useForm<z.infer<typeof createProjectSquema>>({
     resolver: zodResolver(
       isUpdating ? updateProjectSquema : createProjectSquema
     ),
@@ -74,11 +76,17 @@ export const ProjectForm = ({
   // Whatch when the icon changes to show the preview in the thumbnail
   form.watch('file')
 
-  const onSubmit = async (values: z.infer<typeof projectSquema>) => {
-    const { error, data } =
-      isUpdating && projectData?.id
-        ? await update({ id: projectData.id, ...values })
-        : await create(values)
+  const onSubmit = async (values: ProjectSchemaType) => {
+    if (isUpdating) return onUpdate(values)
+
+    const validation = createProjectSquema.safeParse(values)
+    if (validation.success) {
+      return onCreate(validation.data)
+    }
+  }
+
+  const onCreate = async (values: z.infer<typeof createProjectSquema>) => {
+    const { error, data } = await create(values)
 
     if (error || !data) {
       if (error.code === ERROR_CODES.DUPLICATE_NAME) {
@@ -98,15 +106,31 @@ export const ProjectForm = ({
 
     toast({
       title: t('General.success'),
-      description: isUpdating
-        ? t('Projects.success_update')
-        : t('Projects.success_create'),
+      description: t('Projects.success_create'),
       severity: 'success',
     })
 
-    if (!isUpdating && 'id' in data) {
-      onNext(data.id)
+    onNext(data.id)
+  }
+
+  const onUpdate = async (values: z.infer<typeof updateProjectSquema>) => {
+    if (!projectData?.id) return
+
+    const { data } = await update({ id: projectData.id, ...values })
+
+    if (data?.success) {
+      return toast({
+        title: t('General.success'),
+        description: t('Projects.success_update'),
+        severity: 'success',
+      })
     }
+
+    return toast({
+      title: t('General.ups'),
+      description: t('Projects.errors.updating'),
+      severity: 'error',
+    })
   }
 
   const onCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -132,11 +156,13 @@ export const ProjectForm = ({
           </section>
         )}
 
+        {children}
+
         <section
           className={cn(
-            'flex justify-end gap-6 bg-card p-6',
+            'flex justify-end gap-6 p-6',
             isUpdating &&
-              'sticky bottom-0 bg-background shadow-[0px_-4px_12px_4px_hsl(var(--background))]'
+              'sticky bottom-0 bg-surface shadow-[0px_-4px_12px_4px_hsl(var(--surface))]'
           )}
         >
           {!isUpdating && (
@@ -148,7 +174,7 @@ export const ProjectForm = ({
           <Button
             type="submit"
             loading={isPending}
-            disabled={!form.formState.isDirty}
+            disabled={!form.formState.isDirty || isPending}
           >
             {isPending
               ? t('General.saving') + '...'

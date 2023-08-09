@@ -10,11 +10,10 @@ export default async function ProjectRolesPage({
   params: { locale },
 }: ProjectRolesProps) {
   const { t } = await getDictionary(locale, 'Projects')
-
   return (
-    <main className="mx-auto max-w-6xl p-6">
+    <>
       <h1 className="mb-10">{t('project_roles')}</h1>
       {children}
-    </main>
+    </>
   )
 }

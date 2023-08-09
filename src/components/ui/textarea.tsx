@@ -4,15 +4,12 @@ import { cva, VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const textareaVariants = cva(
-  'flex min-h-[80px] w-full items-center border-2 border-border bg-transparent px-4 py-2 outline-none ring-2 ring-transparent ring-offset-0 transition-all file:border-0 file:bg-transparent file:py-2.5 file:text-sm file:font-medium file:text-foreground/60 placeholder:text-muted-foreground focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 aria-[invalid=true]:border-error-foreground aria-[invalid=true]:placeholder:text-error-foreground/80',
+  'flex min-h-[80px] w-full text-body-lg rounded-md items-center border-2 border-outline/38 bg-transparent px-4 py-2 outline-none ring-2 ring-transparent ring-offset-0 transition-all placeholder:text-onSurface/38 focus:ring-primary/38 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-38 aria-[invalid=true]:border-error aria-[invalid=true]:placeholder:text-error/38 aria-[invalid=true]:focus:ring-error/60 [&.invalid]:border-error [&.invalid]:placeholder:text-error/38 [&.invalid]:focus:ring-error/60',
   {
     variants: {
       variant: {
-        default: 'ring-offset-background',
-        card: 'ring-offset-card',
-      },
-      error: {
-        true: 'border-error-foreground placeholder:text-error-foreground/80',
+        default: 'ring-offset-surface',
+        card: 'ring-offset-surfaceContainerHighest',
       },
     },
     defaultVariants: {
@@ -23,13 +20,18 @@ const textareaVariants = cva(
 
 export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement>,
-    VariantProps<typeof textareaVariants> {}
+    VariantProps<typeof textareaVariants> {
+  error?: string
+}
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, variant = 'default', error, ...props }, ref) => {
     return (
       <textarea
-        className={cn(textareaVariants({ variant, error, className }))}
+        className={cn(
+          textareaVariants({ variant, className }),
+          error && 'invalid'
+        )}
         ref={ref}
         {...props}
       />

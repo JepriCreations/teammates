@@ -1,7 +1,35 @@
 import { ClassValue, clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import { extendTailwindMerge } from 'tailwind-merge'
 
-export function cn(...inputs: ClassValue[]) {
+export const DEBUG = process.env.NODE_ENV === 'development'
+
+export const twMerge = extendTailwindMerge({
+  classGroups: {
+    'font-size': [
+      {
+        text: [
+          'display-lg',
+          'display-md',
+          'display-sm',
+          'headline-lg',
+          'headline-md',
+          'headline-sm',
+          'title-lg',
+          'title-md',
+          'title-sm',
+          'label-lg',
+          'label-md',
+          'label-sm',
+          'body-lg',
+          'body-md',
+          'body-sm',
+        ],
+      },
+    ],
+  },
+})
+
+export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs))
 }
 
@@ -33,4 +61,30 @@ export function slugify(input: string): string {
   const slug = removedSpecialChars.replace(/\s+/g, '-')
 
   return slug
+}
+
+export function getColorByWord(
+  word: string,
+  opacity: number = 1
+): { baseColor: string; contrastingColor: string } {
+  const trimmedWord = word.trim().toLowerCase()
+  const initials = trimmedWord.substring(0, 3)
+
+  const hashCode = initials.split('').reduce((hash, char) => {
+    return char.charCodeAt(0) + (hash << 6) + (hash << 16) - hash
+  }, 0)
+
+  const saturation = 40
+  const lightness = 70
+
+  const baseHSL = `hsla(${
+    hashCode % 360
+  }, ${saturation}%, ${lightness}%, ${opacity})`
+
+  const contrastingLightness = 15
+  const contrastingColor = `hsla(${
+    hashCode % 360
+  }, ${saturation}%, ${contrastingLightness}%, ${opacity})`
+
+  return { baseColor: baseHSL, contrastingColor }
 }

@@ -5,6 +5,7 @@ import { getLocale, supportedLocales } from './utils'
 export async function intlMiddleware(req: NextRequest) {
   const locale = getLocale(req)
   const pathname = req.nextUrl.pathname
+
   const pathnameIsMissingLocale = supportedLocales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   )

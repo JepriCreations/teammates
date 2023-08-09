@@ -49,7 +49,7 @@ const SheetOverlay = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
-      'fixed inset-0 z-50 bg-background/80 backdrop-blur-sm transition-all animate-in duration-100 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in',
+      'fixed inset-0 z-50 bg-surface/80 backdrop-blur-sm transition-all animate-in duration-100 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in',
       className
     )}
     {...props}
@@ -59,7 +59,7 @@ const SheetOverlay = React.forwardRef<
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName
 
 const sheetVariants = cva(
-  'fixed z-50 gap-4 inset-0 bg-background p-6 opacity-100 shadow-lg animate-in duration-300 data-[state=closed]:animate-out',
+  'fixed z-50 gap-4 inset-0 bg-surface p-6 opacity-100 shadow-lg animate-in duration-300 data-[state=closed]:animate-out',
   {
     variants: {
       position: {
@@ -175,7 +175,11 @@ const SheetContent = React.forwardRef<
     >
       {children}
       <SheetPrimitive.Close asChild>
-        <Button icon={<CloseIcon />} className="absolute right-4 top-4 p-2">
+        <Button
+          icon={<CloseIcon />}
+          size="icon"
+          className="absolute right-4 top-4"
+        >
           <span className="sr-only">Close</span>
         </Button>
       </SheetPrimitive.Close>
@@ -218,7 +222,7 @@ const SheetTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Title
     ref={ref}
-    className={cn('text-lg font-semibold text-foreground', className)}
+    className={cn('text-lg font-semibold text-onSurface', className)}
     {...props}
   />
 ))
@@ -230,7 +234,7 @@ const SheetDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Description
     ref={ref}
-    className={cn('text-sm text-muted-foreground', className)}
+    className={cn('text-sm text-outline', className)}
     {...props}
   />
 ))

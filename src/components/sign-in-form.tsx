@@ -48,7 +48,7 @@ export const SignInForm = () => {
       <Button
         className="justify-start"
         fullWidth
-        icon={<LinkedinIcon className="text-blue-600 dark:text-foreground" />}
+        icon={<LinkedinIcon className="text-blue-600 dark:text-onSurface" />}
       >
         Linkedin
       </Button>

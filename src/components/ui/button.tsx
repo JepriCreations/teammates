@@ -5,28 +5,29 @@ import { cn } from '@/lib/utils'
 import { LoadingIcon } from '@/components/icons'
 
 const buttonVariants = cva(
-  'flex items-center justify-center gap-3 text-base font-semibold outline-none transition-all focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-60',
+  'flex items-center min-w-[120px] justify-center gap-3 rounded-md text-label-lg font-medium outline-none transition-all focus-visible:ring-0 disabled:pointer-events-none',
   {
     variants: {
       variant: {
         default:
-          '-translate-x-0.5 -translate-y-0.5 border border-border bg-primary text-primary-foreground shadow-[2px_2px_0px_hsl(var(--primary-foreground))] hover:bg-hover focus:bg-hover active:translate-x-0 active:translate-y-0 active:shadow-none disabled:translate-x-0 disabled:translate-y-0 disabled:bg-muted disabled:text-muted-foreground disabled:opacity-50 disabled:shadow-none',
+          '-translate-x-0.5 -translate-y-0.5 border border-outline bg-surface text-onSurface shadow-[2px_2px_0px_hsl(var(--onSurface))] hover:bg-onSurface/5 focus:bg-onSurface/5 active:translate-x-0 active:translate-y-0 active:shadow-none disabled:translate-x-0 disabled:translate-y-0 disabled:bg-onSurface/12 disabled:border-onSurface/12 disabled:text-onSurface/38 disabled:shadow-none',
         accent:
-          '-translate-x-0.5 -translate-y-0.5 border border-black bg-accent text-black shadow-[2px_2px_0px_hsl(var(--black))] hover:bg-accent/80 focus:bg-accent/80 active:translate-x-0 active:translate-y-0 active:shadow-none disabled:translate-x-0 disabled:translate-y-0 disabled:bg-muted disabled:text-muted-foreground disabled:opacity-50 disabled:shadow-none dark:disabled:opacity-80',
+          'bg-primary text-onPrimary hover:bg-primary/80 focus:bg-primary/80 disabled:bg-onSurface/12 disabled:text-onSurface/38 active:scale-95',
         secondary:
-          '-translate-x-0.5 -translate-y-0.5 border border-black bg-secondary text-secondary-foreground shadow-[2px_2px_0px_hsl(var(--black))] hover:bg-secondary/80 focus:bg-secondary/80 active:translate-x-0 active:translate-y-0 active:shadow-none disabled:translate-x-0 disabled:translate-y-0 disabled:bg-muted disabled:text-muted-foreground disabled:opacity-50 disabled:shadow-none dark:disabled:opacity-80',
+          'bg-secondaryContainer text-onSecondaryContainer hover:bg-secondaryContainer/80 focus:bg-secondaryContainer/80 disabled:bg-onSurface/12 disabled:text-onSurface/38 active:scale-95',
         ghost:
-          'hover:bg-foreground/5 active:scale-95 focus:bg-foreground/5 disabled:text-muted-foreground disabled:opacity-50',
-        link: 'font-normal opacity-60 text-foreground active:scale-95 focus:opacity-100 focus:bg-foreground/5 disabled:text-muted-foreground hover:opacity-100 active:opacity-100',
+          'text-onSurface hover:bg-onSurface/5 active:scale-95 focus:bg-onSurface/5 disabled:text-onSurface/38 disabled:bg-onSurface/12',
+        link: 'font-normal opacity-60 text-onSurface active:scale-95 focus:opacity-100 focus:bg-onSurface/5 disabled:text-outline hover:opacity-100 active:opacity-100',
         outline:
-          'bg-primary border-2 text-foregorund hover:bg-hover bg-transparent hover:bg-foreground/5 focus:bg-hover border-border disabled:text-muted-foreground disabled:opacity-50 aria-[invalid=true]:border-error-foreground',
+          'bg-surface border-2 text-onSurface hover:bg-onSurface/5 bg-transparent focus:bg-onSurface/5 border-outline/38 disabled:text-onSurface/38 disabled:bg-onSurface/12 disabled:border-onSurface/12 aria-[invalid=true]:border-error',
         destructive:
-          '-translate-x-0.5 -translate-y-0.5 border border-foreground bg-destructive text-destructive-foreground shadow-[2px_2px_0px_hsl(var(--foreground))] hover:bg-destructive/80 focus:bg-destructive/80 active:translate-x-0 active:translate-y-0 active:shadow-none disabled:translate-x-0 disabled:translate-y-0 disabled:shadow-none dark:border-destructive-foreground dark:shadow-[2px_2px_0px_hsl(var(--destructive-foreground))]',
+          'bg-errorContainer text-onErrorContainer hover:bg-errorContainer/80 focus:bg-errorContainer/80 disabled:bg-onSurface/12 disabled:text-onSurface/38 active:scale-95',
       },
       size: {
         default: 'px-4 py-2 h-10',
         sm: 'py-1 px-3',
         lg: 'py-3 px-8',
+        icon: 'p-2 min-w-0',
       },
       fullWidth: {
         true: 'w-full',
@@ -57,35 +58,42 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       fullWidth = false,
       loading = false,
       size = 'default',
-      children,
       asChild = false,
       icon,
       ...props
     },
     ref
   ) => {
-    let Comp: React.ElementType = 'button'
-    let childrenProps: { [x: string]: any } = {}
+    const childrenArray = React.Children.toArray(props.children)
+    const firstChild = childrenArray[0]
+    const isValidChild =
+      React.isValidElement(firstChild) && childrenArray.length === 1
 
-    if (asChild) {
-      const child = React.Children.toArray(children)[0]
-      if (React.isValidElement(child)) {
-        Comp = child.type as React.ElementType
-        childrenProps = child.props
-      }
-    }
+    if (asChild && !isValidChild) return React.Children.only(null)
+
+    const Comp = asChild && isValidChild ? firstChild.type : 'button'
+
+    const {
+      children,
+      className: childClassName = '',
+      ...childProps
+    } = asChild && isValidChild
+      ? (firstChild.props as Record<string, any>)
+      : { ...props }
 
     return (
       <Comp
-        className={cn(
-          buttonVariants({ variant, size, fullWidth, className }),
-          icon && size === 'default' && 'pl-2'
-        )}
         ref={ref}
-        {...(asChild ? { ...childrenProps } : { ...props })}
+        className={cn(
+          buttonVariants({ size, variant, className }),
+          asChild && childClassName,
+          fullWidth ? 'w-full' : 'w-fit'
+        )}
+        disabled={props.disabled || loading}
+        {...childProps}
       >
         {loading ? <LoadingIcon className="h-6 w-6 animate-spin" /> : icon}
-        {asChild ? childrenProps.children : children}
+        {children}
       </Comp>
     )
   }

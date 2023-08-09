@@ -3,13 +3,13 @@ import { z } from 'zod'
 
 import { RoleStatus } from '@/types/collections'
 import { PostgressError } from '@/lib/errors'
-import { roleSquema } from '@/lib/validations/project'
+import { roleSchema } from '@/lib/validations/project'
 
 export const useRoles = () => {
   const [isPending, setIsPending] = useState(false)
 
   const addRoles = async (
-    data: z.infer<typeof roleSquema>[],
+    data: z.infer<typeof roleSchema>[],
     project_id: string
   ) => {
     try {

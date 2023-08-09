@@ -18,7 +18,4 @@ export async function middleware(req: NextRequest) {
   return authResponse
 }
 
-export const config = {
-  // Paths where middleware should not be initialized
-  matcher: ['/((?!_next|api).*)'],
-}
+export const config = { matcher: ['/((?!api|_next|favicon.*).*)'] }

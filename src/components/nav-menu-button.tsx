@@ -28,7 +28,7 @@ export const NavMenuButton = ({ mainMenu }: NavMenuButtonProps) => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button icon={<MenuIcon />} className="p-2" />
+        <Button icon={<MenuIcon />} size="icon" />
       </SheetTrigger>
       <SheetContent position="left" size="full">
         <SheetHeader className="mb-3">

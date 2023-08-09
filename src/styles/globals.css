@@ -4,121 +4,168 @@
 
 @layer base {
   :root {
-    --black: 100 5% 11%;
-    --white: 30 27% 94%;
-
-    --background: var(--white);
-    --foreground: var(--black);
-
-    --hover: 30 15% 90%;
-    --border: var(--foreground) / 0.3;
-
-    --muted: 0 0% 85%;
-    --muted-foreground: var(--foreground) / 0.6;
-
-    --popover: 45 30% 92%;
-    --popover-foreground: 60 10% 10%;
-
-    --card: 44 65% 97%;
-    --card-foreground: var(--foreground);
-
-    --primary: var(--white);
-    --primary-foreground: var(--foreground);
-
-    --secondary: 96 15% 46%;
-    --secondary-foreground: 34 23% 94%;
-
-    --accent: 64 38% 50%;
-    --accent-foreground: 34 23% 94%;
-
-    --destructive: 0 75% 42%;
-    --destructive-foreground: 0 0% 100%;
-
-    --success: 119 85% 79%;
-    --success-foreground: 129 100% 6%;
-
-    --info: 203 100% 88%;
-    --info-foreground: 198 100% 8%;
-
-    --error: 6 100% 92%;
-    --error-foreground: 358 100% 13%;
-
-    --warning: 40 100% 81%;
-    --warning-foreground: 41 100% 7%;
-
-    --ring: var(--accent) / 0.5;
-
+    --primary: 181 100% 21%;
+    --onPrimary: 0 0% 100%;
+    --primaryContainer: 181 91% 70%;
+    --onPrimaryContainer: 180 100% 6%;
+    --secondary: 180 14% 34%;
+    --onSecondary: 0 0% 100%;
+    --secondaryContainer: 178 38% 85%;
+    --onSecondaryContainer: 182 78% 7%;
+    --tertiary: 216 24% 39%;
+    --onTertiary: 0 0% 100%;
+    --tertiaryContainer: 218 100% 91%;
+    --onTertiaryContainer: 211 83% 11%;
+    --error: 0 75% 42%;
+    --onError: 0 0% 100%;
+    --errorContainer: 6 100% 92%;
+    --onErrorContainer: 358 100% 13%;
+    --background: 160 43% 99%;
+    --onBackground: 180 6% 10%;
+    --surface: 160 43% 99%;
+    --onSurface: 180 6% 10%;
+    --surfaceVariant: 175 17% 88%;
+    --onSurfaceVariant: 174 7% 27%;
+    --outline: 180 4% 45%;
+    --outlineVariant: 180 8% 76%;
+    --shadow: 0 0% 0%;
+    --scrim: 0 0% 0%;
+    --inverseSurface: 180 4% 18%;
+    --inverseOnSurface: 150 7% 94%;
+    --inversePrimary: 180 67% 58%;
+    --primaryFixed: 181 91% 70%;
+    --primaryFixedDim: 180 67% 58%;
+    --onPrimaryFixed: 180 100% 6%;
+    --onPrimaryFixedVariant: 181 100% 16%;
+    --secondaryFixed: 178 38% 85%;
+    --secondaryFixedDim: 178 22% 75%;
+    --onSecondaryFixed: 182 78% 7%;
+    --onSecondaryFixedVariant: 180 20% 25%;
+    --tertiaryFixed: 218 100% 91%;
+    --tertiaryFixedDim: 217 55% 81%;
+    --onTertiaryFixed: 211 83% 11%;
+    --onTertiaryFixedVariant: 214 31% 30%;
+    --surfaceDim: 180 3% 85%;
+    --surfaceBright: 160 23% 97%;
+    --surfaceContainerLowest: 0 0% 100%;
+    --surfaceContainerLow: 150 8% 95%;
+    --surfaceContainer: 180 6% 93%;
+    --surfaceContainerHigh: 160 6% 91%;
+    --surfaceContainerHighest: 160 5% 88%;
+    --success: 142 72% 29%;
+    --onSuccess: 138 76% 97%;
+    --successContainer: 119 85% 79%;
+    --onSuccessContainer: 129 100% 6%;
+    --info: 217 91% 60%;
+    --onInfo: 214 100% 97%;
+    --infoContainer: 203 100% 88%;
+    --onInfoContainer: 198 100% 8%;
+    --warning: 32 95% 44%;
+    --onWarning: 48 100% 97%;
+    --warningContainer: 40 100% 81%;
+    --onWarningContainer: 22 78% 26%;
     --radius: 0rem;
   }
-
   .dark {
-    --black: 60 15% 7%;
-    --white: 34 23% 94%;
-
-    --background: var(--black);
-    --foreground: var(--white);
-
-    --hover: 100 4% 15%;
-    --border: var(--foreground) / 0.3;
-
-    --muted: 0 0% 24%;
-    --muted-foreground: var(--foreground) / 0.6;
-
-    --popover: 60 8% 12%;
-    --popover-foreground: 44 9% 77%;
-
-    --card: 60 6% 15%;
-    --card-foreground: var(--foreground);
-
-    --primary: var(--black);
-    --primary-foreground: var(--foreground);
-
-    --secondary: 117 31% 88%;
-    --secondary-foreground: 60 6% 21%;
-
-    --accent: 66 67% 76%;
-    --accent-foreground: 60 6% 21%;
-
-    --destructive: 357 100% 21%;
-    --destructive-foreground: 6 100% 84%;
-
-    --success: 83 100% 15%;
-    --success-foreground: 85 81% 73%;
-
-    --info: 195 100% 20%;
-    --info-foreground: 203 100% 88%;
-
-    --error: 356 100% 29%;
-    --error-foreground: 6 100% 92%;
-
-    --warning: 44 100% 18%;
-    --warning-foreground: 40 100% 81%;
-
-    --ring: var(--accent) / 0.5;
-
+    --primary: 180 67% 58%;
+    --onPrimary: 180 100% 11%;
+    --primaryContainer: 181 100% 16%;
+    --onPrimaryContainer: 181 91% 70%;
+    --secondary: 178 22% 75%;
+    --onSecondary: 182 33% 16%;
+    --secondaryContainer: 180 20% 25%;
+    --onSecondaryContainer: 178 38% 85%;
+    --tertiary: 217 55% 81%;
+    --onTertiary: 214 44% 20%;
+    --tertiaryContainer: 214 31% 30%;
+    --onTertiaryContainer: 218 100% 91%;
+    --error: 6 100% 84%;
+    --onError: 357 100% 21%;
+    --errorContainer: 356 100% 29%;
+    --onErrorContainer: 6 100% 84%;
+    --background: 180 6% 10%;
+    --onBackground: 160 5% 88%;
+    --surface: 180 6% 10%;
+    --onSurface: 160 5% 88%;
+    --surfaceVariant: 174 7% 27%;
+    --onSurfaceVariant: 180 8% 76%;
+    --outline: 174 4% 56%;
+    --outlineVariant: 174 7% 27%;
+    --shadow: 0 0% 0%;
+    --scrim: 0 0% 0%;
+    --inverseSurface: 160 5% 88%;
+    --inverseOnSurface: 180 4% 18%;
+    --inversePrimary: 181 100% 21%;
+    --primaryFixed: 181 91% 70%;
+    --primaryFixedDim: 180 67% 58%;
+    --onPrimaryFixed: 180 100% 6%;
+    --onPrimaryFixedVariant: 181 100% 16%;
+    --secondaryFixed: 178 38% 85%;
+    --secondaryFixedDim: 178 22% 75%;
+    --onSecondaryFixed: 182 78% 7%;
+    --onSecondaryFixedVariant: 180 20% 25%;
+    --tertiaryFixed: 218 100% 91%;
+    --tertiaryFixedDim: 217 55% 81%;
+    --onTertiaryFixed: 211 83% 11%;
+    --onTertiaryFixedVariant: 214 31% 30%;
+    --surfaceDim: 180 11% 7%;
+    --surfaceBright: 180 4% 22%;
+    --surfaceContainerLowest: 180 15% 5%;
+    --surfaceContainerLow: 180 5% 12%;
+    --surfaceContainer: 180 4% 14%;
+    --surfaceContainerHigh: 165 5% 16%;
+    --surfaceContainerHighest: 180 3% 20%;
+    --success: 142 77% 73%;
+    --onSuccess: 144 61% 20%;
+    --successContainer: 142 72% 29%;
+    --onSuccessContainer: 141 79% 85%;
+    --info: 212 96% 78%;
+    --onInfo: 224 64% 33%;
+    --infoContainer: 224 76% 48%;
+    --onInfoContainer: 213 97% 87%;
+    --warning: 46 97% 65%;
+    --onWarning: 22 78% 26%;
+    --warningContainer: 26 90% 37%;
+    --onWarningContainer: 48 97% 77%;
     --radius: 0rem;
   }
-}
 
-@layer base {
   * {
-    border-color: theme(colors.border);
+    border-color: theme(colors.outline);
   }
   body {
     font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 
   h1 {
-    font-size: theme(fontSize.4xl);
-    font-weight: theme(fontWeight.bold);
-    letter-spacing: theme(spacing.0);
+    font-size: theme(fontSize.display-lg);
+    line-height: theme(fontSize.display-lg);
   }
 
   h2 {
-    font-size: theme(fontSize.2xl);
-    font-weight: theme(fontWeight.semibold);
-    letter-spacing: theme(spacing.0);
-    margin-top: theme(spacing.2);
-    margin-bottom: theme(spacing.2);
+    font-size: theme(fontSize.display-md);
+    line-height: theme(fontSize.display-md);
+  }
+
+  h4 {
+    font-size: theme(fontSize.title-lg);
+    line-height: theme(fontSize.title-lg);
+  }
+}
+
+@layer utilities {
+  .card {
+    background-color: theme(colors.surfaceContainer);
+  }
+
+  .balance {
+    text-wrap: balance;
+  }
+
+  .muted {
+    color: theme(colors.outline);
+  }
+  .muted-bg {
+    background-color: theme(colors.outline / 12%);
   }
 }

@@ -35,23 +35,17 @@ export const ProjectCard = ({
       <div className="px-4 py-3">
         <div className="flex items-start justify-between gap-6">
           <p className="grow truncate text-lg">{name}</p>
-          <span className="flex shrink-0 origin-top-right items-center gap-2 rounded-full bg-foreground/5 px-2 py-1 text-sm transition-slide group-hover:scale-0 group-hover:opacity-0 dark:bg-foreground/10">
+          <span className="flex shrink-0 origin-top-right items-center gap-2 rounded-full bg-onSurface/5 px-2 py-1 text-sm transition-fadeAndMove group-hover:scale-0 group-hover:opacity-0">
             <ViewsIcon size={16} />
             {views[0]?.total_views ?? 0}
           </span>
         </div>
-        <p className="text-sm text-muted-foreground">{`${openRoles} open roles`}</p>
+        <p className="muted text-sm">{`${openRoles} open roles`}</p>
         <div className="flex items-end justify-between pt-8">
-          <p
-            className={cn(
-              isPublic
-                ? 'text-green-500 dark:text-green-300'
-                : 'text-muted-foreground'
-            )}
-          >
+          <p className={cn(isPublic ? 'text-success' : 'muted')}>
             {isPublic ? t('public') : t('hidden')}
           </p>
-          <span className="text-end text-sm text-muted-foreground">
+          <span className="muted text-end text-sm">
             {formatDate(updated_at)}
           </span>
         </div>
@@ -62,10 +56,10 @@ export const ProjectCard = ({
 
 export const ProjectCardSkeleton = () => {
   return (
-    <div className="relative h-[130px] border border-muted bg-card px-4 py-3">
-      <Skeleton className="h-4 w-[35%] rounded-none" />
-      <Skeleton className="mt-2 h-3 w-[25%] rounded-none" />
-      <Skeleton className="absolute inset-x-0 bottom-0 mx-4 my-3 ml-auto mt-2 block h-3 w-[25%] rounded-none" />
+    <div className="card relative h-[130px] rounded-lg px-4 py-3">
+      <Skeleton className="h-4 w-[35%]" />
+      <Skeleton className="mt-2 h-3 w-[25%]" />
+      <Skeleton className="absolute inset-x-0 bottom-0 mx-4 my-3 ml-auto mt-2 block h-3 w-[25%]" />
     </div>
   )
 }

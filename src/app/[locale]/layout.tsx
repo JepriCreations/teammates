@@ -26,8 +26,8 @@ export const metadata: Metadata = {
   ],
   icons: {
     icon: '/favicon.ico',
-    // shortcut: "/favicon-16x16.png",
-    // apple: "/apple-touch-icon.png",
+    shortcut: '/favicon-16x16.png',
+    apple: '/apple-touch-icon.png',
   },
 }
 
@@ -54,7 +54,7 @@ export default async function RootLayout({
       className={cn(fontSans.variable)}
     >
       <head />
-      <body className="min-h-[100dvh] overflow-x-hidden bg-background font-sans antialiased selection:bg-accent dark:selection:text-background">
+      <body className="min-h-[100dvh] overflow-x-hidden bg-background font-sans text-onSurface antialiased selection:bg-primary/30">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <DictionaryProvider dict={dict} defaultDict={defaultDict}>
             <SupabaseProvider>

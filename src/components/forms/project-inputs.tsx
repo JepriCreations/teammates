@@ -11,7 +11,6 @@ import {
   MAX_CATEGORIES,
   socials,
   SUMMARY_MAX_LENGTH,
-  updateProjectSquema,
 } from '@/lib/validations/project'
 import { CommandItem } from '@/components/ui/command'
 import {
@@ -29,12 +28,8 @@ import { Combobox } from '@/components/combobox'
 import { CheckIcon, ImageUploadIcon } from '@/components/icons'
 import { useDictionary } from '@/components/providers/dictionary-provider'
 
-type ProjectSchemaType =
-  | z.infer<typeof createProjectSquema>
-  | z.infer<typeof updateProjectSquema>
-
 interface ProjectInputsProps {
-  form: UseFormReturn<ProjectSchemaType>
+  form: UseFormReturn<z.infer<typeof createProjectSquema>>
   icon_url?: string
   disabled?: boolean
 }
@@ -45,10 +40,11 @@ export const ProjectInputs = ({
   disabled,
 }: ProjectInputsProps) => {
   const { t } = useDictionary('Projects')
+  const { t: categoriesT } = useDictionary('Categories')
 
   return (
     <>
-      <section className="grid grid-cols-3 border-b border-muted p-6">
+      <section className="grid grid-cols-3 border-b border-outline/38 p-6">
         <div>
           <p>{t('basic_info')}</p>
         </div>
@@ -92,7 +88,7 @@ export const ProjectInputs = ({
           />
         </div>
       </section>
-      <section className="grid grid-cols-3 border-b border-muted p-6">
+      <section className="grid grid-cols-3 border-b border-outline/38 p-6">
         <div>
           <p>{t('details')}</p>
         </div>
@@ -109,7 +105,7 @@ export const ProjectInputs = ({
                       <Input
                         disabled={disabled}
                         leftSection={
-                          <ImageUploadIcon className="text-muted-foreground" />
+                          <ImageUploadIcon className="text-outline" />
                         }
                         type="file"
                         accept="image/*"
@@ -133,7 +129,7 @@ export const ProjectInputs = ({
                 )}
               />
             </div>
-            <div className="relative mt-[28px] h-20 w-20 shrink-0 overflow-hidden border-2 border-border bg-foreground/10">
+            <div className="relative mt-[28px] h-20 w-20 shrink-0 overflow-hidden rounded-md border-2 border-outline/38 bg-onSurface/10">
               {(form.getValues('file') !== undefined || icon_url) && (
                 /**
                  * use of <img/> instead of next <Image/> to avoid chaching
@@ -147,7 +143,7 @@ export const ProjectInputs = ({
                   }
                   alt="preview"
                   sizes="(max-width: 80px) 100vw"
-                  className="animate-in zoom-in-50"
+                  className="h-full w-full animate-in zoom-in-50"
                 />
               )}
             </div>
@@ -167,8 +163,9 @@ export const ProjectInputs = ({
                         ? value
                             .map(
                               (category) =>
-                                categories(t).find((c) => c.value === category)
-                                  ?.label
+                                categories(categoriesT).find(
+                                  (c) => c.value === category
+                                )?.label
                             )
                             .join(', ')
                         : t('select_categories')
@@ -178,7 +175,7 @@ export const ProjectInputs = ({
                       emptyText: t('no_category_found'),
                       content: (
                         <ScrollArea className="h-72 w-full">
-                          {categories(t).map((category) => (
+                          {categories(categoriesT).map((category) => (
                             <CommandItem
                               value={category.value}
                               key={category.value}
@@ -198,7 +195,7 @@ export const ProjectInputs = ({
                             >
                               <CheckIcon
                                 className={cn(
-                                  'mr-2 h-4 w-4',
+                                  'absolute left-2 flex h-6 w-6',
                                   value.includes(category.value)
                                     ? 'opacity-100'
                                     : 'opacity-0'
@@ -239,7 +236,7 @@ export const ProjectInputs = ({
         </div>
       </section>
 
-      <section className="grid grid-cols-3 border-b border-muted p-6">
+      <section className="grid grid-cols-3 border-b border-outline/38 p-6">
         <div>
           <p>{t('location')}</p>
         </div>
@@ -274,7 +271,7 @@ export const ProjectInputs = ({
                             >
                               <CheckIcon
                                 className={cn(
-                                  'ml-3 mr-4',
+                                  'absolute left-2 flex h-6 w-6',
                                   country === value
                                     ? 'opacity-100'
                                     : 'opacity-0'
@@ -309,12 +306,10 @@ export const ProjectInputs = ({
         </div>
       </section>
 
-      <section className="grid grid-cols-3 border-b border-muted p-6">
+      <section className="grid grid-cols-3 border-b border-outline/38 p-6">
         <div>
           <p>{t('links')}</p>
-          <p className="text-sm text-muted-foreground">{`(${t(
-            'General.optional'
-          )})`}</p>
+          <p className="text-body-md text-outline">{`(${t('optional')})`}</p>
         </div>
         <div className="col-span-2 grid grid-cols-1 gap-3">
           {socials.map(({ name, icon: Icon }, index) => (
@@ -328,7 +323,7 @@ export const ProjectInputs = ({
                     <Input
                       disabled={disabled}
                       variant="card"
-                      leftSection={<Icon className="text-muted-foreground" />}
+                      leftSection={<Icon className="text-outline" />}
                       placeholder={name}
                       value={
                         value.find((link) => link.name === name)?.link || ''

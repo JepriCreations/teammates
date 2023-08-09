@@ -1,3 +1,3 @@
 export default function Loading() {
-  return <div>Loading roles...</div>
+  return <div className="my-3">Loading Roles</div>
 }

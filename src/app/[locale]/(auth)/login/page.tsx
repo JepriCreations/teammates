@@ -25,14 +25,12 @@ export default async function Login({ params: { locale } }: LoginProps) {
       </div>
       <main className="mx-auto flex min-h-[100dvh] max-w-5xl flex-col items-center justify-center py-20">
         <div className="relative">
-          <div className="relative z-10 border border-border bg-background p-14 text-center shadow-xl">
+          <div className="relative z-10 border border-outline bg-surface p-14 text-center shadow-xl">
             <h1>{t('welcome')}</h1>
-            <p className="max-w-sm text-lg text-muted-foreground">
-              {t('subtitle')}
-            </p>
+            <p className="max-w-sm text-lg text-outline">{t('subtitle')}</p>
             <p className="my-8 font-medium">{t('login_with')}</p>
             <SignInForm />
-            <p className="mt-11 max-w-sm text-lg text-muted-foreground">
+            <p className="mt-11 max-w-sm text-lg text-outline">
               {t('an_account_will_be_created')}
             </p>
           </div>

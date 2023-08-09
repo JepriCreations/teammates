@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { routes } from '@/constants/routes'
 
 import { cn } from '@/lib/utils'
-import { Logo } from '@/components/logo'
+import { Imagotype } from '@/components/logo'
 import { LogoutButton } from '@/components/logout-button'
 import { useDictionary } from '@/components/providers/dictionary-provider'
 
@@ -21,15 +21,13 @@ export const Sidebar = () => {
   }
 
   return (
-    <div className="w-64 shrink-0 border-r border-border">
-      <section className="flex h-16 items-center gap-3 border-b border-border px-5">
-        <Logo withText={false} height={32} />
+    <div className="w-64 shrink-0 border-r border-outline">
+      <section className="flex h-16 items-center gap-3 border-b border-outline px-5">
+        <Imagotype />
         <p className="text-2xl">{titles[slug]}</p>
       </section>
-      <section className="flex flex-col space-y-2 border-b border-border p-4">
-        <p className="text-sm text-muted-foreground">
-          {t('Dashboard.overview')}
-        </p>
+      <section className="flex flex-col space-y-2 border-b border-outline p-4">
+        <p className="text-sm text-outline">{t('Dashboard.overview')}</p>
         <Link
           href={routes.PROJECTS}
           className={cn(
@@ -49,10 +47,8 @@ export const Sidebar = () => {
           {t('Dashboard.profile')}
         </Link>
       </section>
-      <section className="flex flex-col space-y-2 border-b border-border p-4">
-        <p className="text-sm text-muted-foreground">
-          {t('Dashboard.account')}
-        </p>
+      <section className="flex flex-col space-y-2 border-b border-outline p-4">
+        <p className="text-sm text-outline">{t('Dashboard.account')}</p>
         <Link
           href={routes.PREFERENCES}
           className={cn(

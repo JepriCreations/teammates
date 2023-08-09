@@ -12,7 +12,7 @@ import { z } from 'zod'
 import { ExperienceLevel, Rewards, Roles, WorkMode } from '@/types/collections'
 import { Translator } from '@/lib/dictionaries'
 import { cn } from '@/lib/utils'
-import { roleSquema } from '@/lib/validations/project'
+import { roleSchema } from '@/lib/validations/project'
 import { Checkbox } from '@/components/ui/checkbox'
 import { CommandItem } from '@/components/ui/command'
 import {
@@ -43,7 +43,7 @@ const rewardsDescriptions = (t: Translator) => ({
 })
 
 interface RoleInputsProps {
-  form: UseFormReturn<z.infer<typeof roleSquema>>
+  form: UseFormReturn<z.infer<typeof roleSchema>>
   disabled?: boolean
 }
 
@@ -82,7 +82,7 @@ export const RoleInputs = ({ form, disabled }: RoleInputsProps) => {
                           >
                             <CheckIcon
                               className={cn(
-                                'mr-2 h-4 w-4',
+                                'absolute left-2 flex h-6 w-6',
                                 value === fieldValue
                                   ? 'opacity-100'
                                   : 'opacity-0'
@@ -118,9 +118,7 @@ export const RoleInputs = ({ form, disabled }: RoleInputsProps) => {
                     {field.value ? (
                       <span>{t(`Levels.${field.value}`)}</span>
                     ) : (
-                      <span className="text-muted-foreground">
-                        {t('select_level')}
-                      </span>
+                      <span className="text-outline">{t('select_level')}</span>
                     )}
                   </SelectTrigger>
                   <SelectContent>
@@ -158,7 +156,7 @@ export const RoleInputs = ({ form, disabled }: RoleInputsProps) => {
                     <FormControl>
                       <RadioGroupItem value={mode.value} />
                     </FormControl>
-                    <FormLabel className="text-base font-normal text-foreground">
+                    <FormLabel className="text-body-lg font-normal text-onSurface">
                       {mode.label}
                     </FormLabel>
                   </FormItem>
@@ -223,7 +221,7 @@ export const RoleInputs = ({ form, disabled }: RoleInputsProps) => {
                         />
                       </FormControl>
                       <div className="pb-2">
-                        <FormLabel className="block text-base leading-none text-foreground">
+                        <FormLabel className="block text-base leading-none text-onSurface">
                           {reward.label}
                         </FormLabel>
                         <FormDescription>

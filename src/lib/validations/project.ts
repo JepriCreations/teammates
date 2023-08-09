@@ -62,6 +62,10 @@ const linkPrefixes: Record<string, string> = socials.reduce(
   {}
 )
 
+/**
+ * PROJECT SQUEMAS
+ */
+
 const linkObjectSchema = z
   .object({
     name: z.string(),
@@ -125,16 +129,20 @@ export const projectSquema = z.object({
   }),
   location: locationSquema,
   links: z.array(linkObjectSchema),
+  icon_url: z.string().url().optional(),
+  public: z.boolean().default(false).optional(),
 })
 
 export const createProjectSquema = projectSquema.merge(
   z.object({ file: fileSchema })
 )
-export const updateProjectSquema = projectSquema.merge(
-  z.object({ file: fileSchema.optional() })
-)
+export const updateProjectSquema = createProjectSquema.partial()
 
-export const roleSquema = z.object({
+/**
+ * ROLES SQUEMAS
+ */
+
+export const roleSchema = z.object({
   name: z.nativeEnum(Roles),
   exp_level: z.nativeEnum(ExperienceLevel),
   rewards: z
@@ -151,15 +159,4 @@ export const rolesInsertSquema = z.object({
   project_id: z.string().uuid(),
 })
 
-export const rolesSquema = z.array(roleSquema.merge(rolesInsertSquema))
-
-export const serverProjectInsertSquema = z.object({
-  name: z.string().min(3).max(32),
-  slug: z.string().min(1),
-  summary: z.string().min(15).max(SUMMARY_MAX_LENGTH),
-  categories: z.string().array().min(1).max(MAX_CATEGORIES),
-  description: z.string().min(15),
-  location: locationSquema,
-  links: z.array(linkObjectSchema),
-  icon_url: z.string().url().optional(),
-})
+export const rolesSquema = z.array(roleSchema.merge(rolesInsertSquema))

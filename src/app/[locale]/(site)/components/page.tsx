@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -34,24 +35,32 @@ import {
 } from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
 import { BellExclamationIcon, GithubIcon, HomeIcon } from '@/components/icons'
 import { LinkCard } from '@/components/link-card'
 
 export default function ComponentPage() {
-  const form = useForm({ defaultValues: { username: '' } })
+  const [mounted, setMounted] = useState(false)
+  const form = useForm({ defaultValues: { username: '', email: '' } })
 
-  form.setError('username', { message: 'This field is required.' })
+  useEffect(() => {
+    if (!mounted) {
+      setMounted(true)
+    } else {
+      form.setError('username', { message: 'This field is required.' })
+    }
+  }, [mounted])
 
   return (
-    <main className="mb-36 p-10">
+    <main className="mb-36 space-y-4 p-10">
       <h2>Typography</h2>
       <section className="mb-6 space-y-1">
         <h1>H1 tag</h1>
         <h2>H2 tag</h2>
         <p>Foreground</p>
-        <p className="text-muted-foreground">Muted</p>
-        <div className="block w-fit bg-muted px-4 py-2">
-          <p className="text-muted-foreground">Muted foreground</p>
+        <p className="text-outline">Muted</p>
+        <div className="muted-bg block w-fit px-4 py-2">
+          <p className="text-outline">Muted foreground</p>
         </div>
       </section>
       <h2>Buttons</h2>
@@ -61,15 +70,9 @@ export default function ComponentPage() {
           <Button variant="ghost">Ghost button</Button>
           <Button variant="outline">Outline button</Button>
           <Button variant="destructive">Destructive button</Button>
-          <Button icon={<HomeIcon />} className="p-2" />
-          <Card>
-            <CardContent>
-              <div className="flex gap-3 pt-6">
-                <Button variant="secondary">Secondary button</Button>
-                <Button variant="accent">Accent button</Button>
-              </div>
-            </CardContent>
-          </Card>
+          <Button icon={<HomeIcon />} size="icon" />
+          <Button variant="secondary">Secondary button</Button>
+          <Button variant="accent">Accent button</Button>
         </div>
         <div className="mb-4 flex gap-3">
           <Button disabled>Primary button</Button>
@@ -82,19 +85,13 @@ export default function ComponentPage() {
           <Button disabled variant="destructive">
             Destructive button
           </Button>
-          <Button disabled icon={<HomeIcon />} className="p-2" />
-          <Card>
-            <CardContent>
-              <div className="flex gap-3 pt-6">
-                <Button disabled variant="secondary">
-                  Secondary button
-                </Button>
-                <Button disabled variant="accent">
-                  Accent button
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <Button disabled icon={<HomeIcon />} size="icon" />
+          <Button disabled variant="secondary">
+            Secondary button
+          </Button>
+          <Button disabled variant="accent">
+            Accent button
+          </Button>
         </div>
         <div className="flex items-start gap-3">
           <Button size="sm">Small button</Button>
@@ -142,12 +139,27 @@ export default function ComponentPage() {
       <h2>Input</h2>
       <section className="mb-6 flex max-w-sm flex-col gap-3">
         <Input type="email" placeholder="Email" />
+        <Input disabled type="email" placeholder="Email" />
+        <Textarea placeholder="Content" />
         <Input
-          leftSection={<GithubIcon className="text-border" />}
+          leftSection={<GithubIcon className="text-outline" />}
           placeholder="Github username"
         />
         <Form {...form}>
           <form onSubmit={form.handleSubmit(console.log)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input disabled placeholder="Your email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="username"
@@ -185,15 +197,18 @@ export default function ComponentPage() {
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="name">Name</Label>
                   <Input
+                    variant="card"
                     id="name"
                     placeholder="Name of your project"
-                    className="ring-offset-card"
                   />
                 </div>
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="framework">Framework</Label>
                   <Select>
-                    <SelectTrigger id="framework" className="ring-offset-card">
+                    <SelectTrigger
+                      id="framework"
+                      className="ring-offset-surfaceContainerHighest"
+                    >
                       <SelectValue placeholder="Select" />
                     </SelectTrigger>
                     <SelectContent position="popper">
@@ -221,12 +236,8 @@ export default function ComponentPage() {
         {/* Skeleton Card */}
         <Card className="w-[350px]">
           <CardHeader>
-            <CardTitle>
-              <Skeleton className="h-6 w-[30%]" />
-            </CardTitle>
-            <CardDescription>
-              <Skeleton className="h-4 w-[70%]" />
-            </CardDescription>
+            <Skeleton className="h-6 w-[30%]" />
+            <Skeleton className="h-4 w-[70%]" />
           </CardHeader>
         </Card>
       </section>

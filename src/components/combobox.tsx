@@ -43,9 +43,9 @@ export const Combobox = ({
             role="combobox"
             fullWidth
             className={cn(
-              'h-14 justify-between font-normal',
+              'h-14 justify-between text-body-lg font-normal',
               (!value || (Array.isArray(value) && !value.length)) &&
-                'text-muted-foreground'
+                'text-outline'
             )}
           >
             <div className="flex grow items-center justify-between">

@@ -11,15 +11,11 @@ interface LinkCardProps extends LinkProps {
 
 export const LinkCard = ({ children, className, ...rest }: LinkCardProps) => {
   return (
-    <Link
-      className={cn(
-        className,
-        'group relative translate-x-0 translate-y-0 bg-card transition hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[4px_4px_0px_hsl(var(--card-foreground))] active:translate-x-0 active:translate-y-0 active:shadow-none disabled:translate-x-0 disabled:translate-y-0 disabled:bg-muted/50 disabled:shadow-none'
-      )}
-      {...rest}
-    >
-      {children}
-      <ArrowUpRightIcon className="absolute right-0 top-0 m-3 hidden animate-in fade-in slide-in-from-bottom-1 slide-in-from-left-1 duration-300 group-hover:block" />
+    <Link className={cn(className, 'group relative')} {...rest}>
+      <div className="card translate-x-0 translate-y-0 rounded-lg text-onSurface transition group-hover:-translate-x-1 group-hover:-translate-y-1 group-hover:bg-surfaceContainer/70 group-hover:shadow-[4px_4px_0px_hsl(var(--onSurface))] group-active:translate-x-0 group-active:translate-y-0 group-active:shadow-none">
+        {children}
+      </div>
+      <ArrowUpRightIcon className="absolute right-2 top-0 m-3 hidden animate-in fade-in slide-in-from-bottom-1 slide-in-from-left-1 duration-300 group-hover:block" />
     </Link>
   )
 }

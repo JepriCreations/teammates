@@ -22,7 +22,7 @@ export const DictionaryProvider = ({
 }) => {
   const t: Translator = (
     key: string,
-    replacements?: React.ReactNode[],
+    replacements?: React.ReactNode[] | string[],
     dictKey?: string
   ) => {
     const parts = key.split('.')
@@ -30,8 +30,8 @@ export const DictionaryProvider = ({
     let defaultTranslation = dictKey ? defaultDict[dictKey] : defaultDict
 
     for (const part of parts) {
-      translation = translation[part]
-      defaultTranslation = defaultTranslation[part]
+      translation = translation?.[part]
+      defaultTranslation = defaultTranslation?.[part]
       // If undefined, use the default dictionary
       if (!translation) {
         translation = defaultTranslation
@@ -63,7 +63,7 @@ export const useDictionary = (dictKey?: string) => {
   }
 
   return {
-    t: (key: string, replacements?: React.ReactNode[]) =>
+    t: (key: string, replacements?: React.ReactNode[] | string[]) =>
       context.t(key, replacements, dictKey),
   }
 }

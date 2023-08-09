@@ -27,8 +27,8 @@ export const REWARDS = (t: Translator) =>
 
 export const categories = (t: Translator) =>
   [
-    { value: 'technology', label: 'Technology' },
-    { value: 'cience', label: 'Cience' },
-    { value: 'literature', label: 'Literature' },
-    { value: 'art', label: 'Art' },
+    { value: 'technology', label: t('technology') },
+    { value: 'science', label: t('science') },
+    { value: 'literature', label: t('literature') },
+    { value: 'art', label: t('art') },
   ] as const

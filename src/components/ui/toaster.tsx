@@ -31,37 +31,16 @@ export function Toaster() {
         ...props
       }) {
         const icons = {
-          success: {
-            icon: <SuccessIcon />,
-            colors: 'bg-success text-success-foreground',
-          },
-          error: {
-            icon: <ErrorIcon />,
-            colors: 'bg-error text-error-foreground',
-          },
-          info: {
-            icon: <InfoIcon />,
-            colors: 'bg-info text-info-foreground',
-          },
-          warning: {
-            icon: <WarningIcon />,
-            colors: 'bg-warning text-warning-foreground',
-          },
+          success: <SuccessIcon className="shrink-0 text-successContainer" />,
+          error: <ErrorIcon className="shrink-0 text-errorContainer" />,
+          info: <InfoIcon className="shrink-0 text-infoContainer" />,
+          warning: <WarningIcon className="shrink-0 text-warningContainer" />,
         } as const
 
         return (
           <Toast key={id} {...props}>
             <div className="flex items-start gap-6">
-              {severity && (
-                <div
-                  className={cn(
-                    'flex h-8 w-8 shrink-0 items-center justify-center rounded-full',
-                    icons[severity].colors
-                  )}
-                >
-                  {icons[severity].icon}
-                </div>
-              )}
+              {severity && icons[severity]}
               <div className="grid grow gap-1">
                 {title && <ToastTitle>{title}</ToastTitle>}
                 {description && (

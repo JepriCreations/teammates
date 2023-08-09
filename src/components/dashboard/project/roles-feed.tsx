@@ -13,7 +13,7 @@ import {
   WorkMode,
 } from '@/types/collections'
 import { formatDate } from '@/lib/utils'
-import { roleSquema } from '@/lib/validations/project'
+import { roleSchema } from '@/lib/validations/project'
 import { useRoles } from '@/hooks/useRoles'
 import { useToast } from '@/hooks/useToast'
 import { Button } from '@/components/ui/button'
@@ -29,14 +29,8 @@ import {
 } from '@/components/ui/dialog'
 import { Form } from '@/components/ui/form'
 import { Switch } from '@/components/ui/switch'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
 import { RoleInputs } from '@/components/forms/role-inputs'
-import { ArchiveIcon } from '@/components/icons'
+import { ArchiveIcon, LoadingIcon } from '@/components/icons'
 import { useDictionary } from '@/components/providers/dictionary-provider'
 
 const defaultValues = {
@@ -62,7 +56,6 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
   const { t } = useDictionary()
   const [open, setOpen] = useState(false)
   const [roles, setRoles] = useState(data)
-  const [editing, setEditing] = useState(false)
   const { addRoles, updateRoleStatus, isPending } = useRoles()
   const [updating, setUpdating] = useState<string | null>(null)
 
@@ -70,12 +63,12 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
     setRoles(data)
   }, [data])
 
-  const form = useForm<z.infer<typeof roleSquema>>({
-    resolver: zodResolver(roleSquema),
+  const form = useForm<z.infer<typeof roleSchema>>({
+    resolver: zodResolver(roleSchema),
     defaultValues,
   })
 
-  const onSubmit = async (values: z.infer<typeof roleSquema>) => {
+  const onSubmit = async (values: z.infer<typeof roleSchema>) => {
     if (projectId) {
       const { error } = await addRoles([values], projectId)
       if (error) {
@@ -97,6 +90,7 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
       status: RoleStatus.Archived,
     })
     if (error) {
+      setUpdating(null)
       return toast({
         title: 'Error',
         description: error.message,
@@ -133,12 +127,6 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
       })
     }
 
-    toast({
-      title: 'Success!',
-      description: 'Role updated succesfully.',
-      severity: 'success',
-    })
-
     router.refresh()
   }
 
@@ -149,7 +137,7 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
 
   return (
     <>
-      <section className="mb-4 flex justify-between gap-3">
+      <section className="mb-4 flex justify-end gap-3">
         <Dialog open={open} onOpenChange={handleDialogState}>
           <DialogTrigger asChild>
             <Button className="min-w-[120px]">{t('Roles.new_role')}</Button>
@@ -169,7 +157,7 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
                 <div className="mt-3">
                   <RoleInputs disabled={isPending} form={form} />
                   <DialogFooter>
-                    <Button disabled={isPending} type="submit">
+                    <Button variant="accent" disabled={isPending} type="submit">
                       {isPending
                         ? t('General.saving') + '...'
                         : t('General.save')}
@@ -180,12 +168,6 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
             </Form>
           </DialogContent>
         </Dialog>
-        <Button
-          onClick={() => setEditing((prev) => !prev)}
-          className="min-w-[120px]"
-        >
-          {editing ? 'Done' : 'Manage'}
-        </Button>
       </section>
       <section className="grid grid-cols-1 gap-3">
         {roles.map(
@@ -201,26 +183,25 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
           }) => {
             return (
               <div key={id} className="flex transition-all">
-                {editing && (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="lg"
-                          loading={updating === id}
-                          onClick={() => onArchive(id)}
-                          icon={<ArchiveIcon />}
-                          className="h-[100px] shrink-0 bg-secondary p-4 text-secondary-foreground hover:bg-secondary/80 focus:bg-secondary/80 active:bg-secondary/80"
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent side="left">
-                        <p>Archive</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                )}
-                <Card className="grow overflow-hidden px-6 py-4">
+                <button
+                  onClick={() => onArchive(id)}
+                  className="group peer relative h-[100px] min-w-[24px] shrink-0 basis-[24px] overflow-hidden bg-tertiary transition-all duration-300 hover:basis-[80px]"
+                >
+                  <div className="absolute inset-y-0 left-0 flex w-full">
+                    <div className="mx-auto flex h-full translate-x-[100%] scale-90 items-center justify-center transition-all duration-300 group-hover:translate-x-0 group-hover:scale-100">
+                      <div className="flex flex-col items-center justify-center p-2 text-onTertiary">
+                        {updating === id ? (
+                          <LoadingIcon className="animate-spin" />
+                        ) : (
+                          <ArchiveIcon />
+                        )}
+                        <p className="text-sm">Archive</p>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+
+                <Card className="overflow-hidden px-6 py-4">
                   <div className="relative mb-3">
                     <p className="text-xl font-medium">{t(`Roles.${name}`)}</p>
                     <div className="absolute right-0 top-0">
@@ -234,26 +215,25 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
                     </div>
                   </div>
                   <div className="mb-3 flex gap-3">
-                    <div className="bg-[#EBD2F8] px-3 py-1 text-black">
+                    <div className="bg-[#edd6f9] px-3 py-1 text-[#482f55] dark:bg-[#5e5265] dark:text-[#edd6f9]">
                       {t(`Roles.Levels.${exp_level}`)}
                     </div>
-                    <div className="bg-[#C5F9CC] px-3 py-1 text-black">
+                    <div className="bg-[#DCE9D9] px-3 py-1 text-[#39534b] dark:bg-[#4c534a] dark:text-[#DCE9D9]">
                       {t(`Roles.Workmode.${work_mode}`)}
                     </div>
-                    <div className="bg-[#FFFE9F] px-3 py-1 text-black">
+                    <div className="bg-[#F7C9BB] px-3 py-1 text-[#673c31] dark:bg-[#5d5250] dark:text-[#F7C9BB]">
                       {rewards
                         .map((rew) => t(`Roles.Rewards.${rew}`))
                         .join(', ')}
                     </div>
                   </div>
-                  <p className="mb-6">{description}</p>
+
+                  <p className="mb-6 flex">{description}</p>
                   <div className="flex justify-between">
                     <a href="#" className="hover:underline">
                       10 Applications
                     </a>
-                    <p className="text-muted-foreground">
-                      {formatDate(created_at)}
-                    </p>
+                    <p className="text-outline">{formatDate(created_at)}</p>
                   </div>
                 </Card>
               </div>

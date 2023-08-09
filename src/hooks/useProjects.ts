@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { routes } from '@/constants/routes'
 import { z } from 'zod'
 
-import { ProjectUpdate } from '@/types/collections'
+import { Project, ProjectUpdate } from '@/types/collections'
 import { PostgressError } from '@/lib/errors'
 import { slugify } from '@/lib/utils'
 import { createProjectSquema } from '@/lib/validations/project'
@@ -12,6 +13,7 @@ export const useProjects = () => {
   const { supabase } = useSupabase()
   const router = useRouter()
   const [isPending, setIsPending] = useState(false)
+  const [isRemoving, setIsRemoving] = useState(false)
 
   const update = async (values: ProjectUpdate & { file?: File }) => {
     try {
@@ -19,8 +21,7 @@ export const useProjects = () => {
 
       setIsPending(true)
       const { file, ...rest } = values
-      const slug = rest.name ? slugify(rest.name) : undefined
-      let valuesToUpdate = Object.assign({ slug }, rest)
+      let valuesToUpdate = { ...rest }
 
       if (file) {
         const bucketPath = values.id
@@ -48,21 +49,23 @@ export const useProjects = () => {
         method: 'PATCH',
         body: JSON.stringify(valuesToUpdate),
       })
-        .then((resp) => resp.json())
-        .then(
-          (resp: {
-            error: PostgressError | null
-            data: { success: boolean } | null
-          }) => resp
-        )
+      if (!resp.ok) {
+        throw new Error('Failed to fetch data')
+      }
 
-      if (resp.error) {
-        throw resp.error
+      const {
+        error,
+        data,
+      }: { error: PostgressError | null; data: { success: true } } =
+        await resp.json()
+
+      if (error) {
+        throw error
       }
 
       router.refresh()
 
-      return { error: null, data: resp.data }
+      return { error: null, data }
     } catch (error: any) {
       console.log({ error })
       return { error, data: null }
@@ -75,29 +78,24 @@ export const useProjects = () => {
     try {
       setIsPending(true)
       const { file, ...rest } = values
-      const slug = slugify(rest.name)
 
       const resp = await fetch(`${location.origin}/api/projects`, {
         method: 'POST',
-        body: JSON.stringify({
-          ...rest,
-          slug,
-          public: false,
-        }),
+        body: JSON.stringify(rest),
       })
-        .then((resp) => resp.json())
-        .then(
-          (resp: {
-            error: PostgressError | null
-            data: { id: string } | null
-          }) => resp
-        )
 
-      if (resp.error || !resp.data) {
-        throw resp.error
+      if (!resp.ok) {
+        throw new Error('Failed to fetch data')
       }
 
-      const bucketPath = resp.data.id
+      const { error, data }: { error: PostgressError | null; data: Project } =
+        await resp.json()
+
+      if (error || !data) {
+        throw error
+      }
+
+      const bucketPath = data.id
 
       const { error: storageError } = await supabase.storage
         .from('icons')
@@ -111,12 +109,12 @@ export const useProjects = () => {
           .from('icons')
           .getPublicUrl(bucketPath)
 
-        await update({ id: resp.data.id, icon_url: fileUrl.publicUrl })
+        await update({ id: data.id, icon_url: fileUrl.publicUrl })
       }
 
       router.refresh()
 
-      return { error: null, data: resp.data }
+      return { error, data }
     } catch (error: any) {
       // TODO: Save error to log
       return { error, data: null }
@@ -125,5 +123,25 @@ export const useProjects = () => {
     }
   }
 
-  return { create, update, isPending }
+  const remove = async (projectId: string) => {
+    try {
+      setIsRemoving(true)
+
+      const resp = await fetch(`${location.origin}/api/projects`, {
+        method: 'DELETE',
+        body: JSON.stringify({ id: projectId }),
+      })
+
+      if (!resp.ok) {
+        throw new Error('Failed to fetch data')
+      }
+      router.refresh()
+      router.replace(routes.PROJECTS)
+    } catch (error) {
+      setIsRemoving(false)
+      return { error, data: null }
+    }
+  }
+
+  return { create, update, remove, isPending, isRemoving }
 }

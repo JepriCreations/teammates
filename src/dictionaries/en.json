@@ -2,7 +2,6 @@
   "General": {
     "success": "Success!",
     "ups": "Oops, there has been an error.",
-    "optional": "optional",
     "cancel": "Cancel",
     "save": "Save",
     "saving": "Saving",
@@ -77,16 +76,23 @@
     "search_country": "Search country...",
     "country_not_found": "No country found",
     "city": "City",
-    "city_description": "Specialy usefull when you project require teammates near you.",
+    "city_description": "Specially useful when you project require teammates near you.",
     "links": "Links",
     "project_statistics": "Project statistics",
     "project_details": "Project details",
     "project_status": "Project status",
     "project_roles": "Project roles",
+    "show_danger_zone": "Show danger zone",
+    "danger_zone": "Danger zone",
+    "remove_project": "Remove project",
+    "remove_title": "Attention!",
+    "remove_description": "Are you sure you want to remove the project? This action can't be undone. To continue write down the project name.",
+    "optional": "optional",
     "errors": {
       "saving": "Has been an error while saving data.",
       "updating": "Has been an error while updating the project.",
-      "duplicate_name": "The name already exist, please use another."
+      "duplicate_name": "The name already exist, please use another.",
+      "incorrect_name": "The project name is incorrect."
     }
   },
   "Roles": {
@@ -133,5 +139,20 @@
     },
     "content_creator": "Content creator",
     "designer": "Designer"
+  },
+  "Errors": {
+    "something_went_wrong": "Oh no! Something went wrong...",
+    "another_try": "Give it another try"
+  },
+  "Project": {
+    "project_description": "About the project",
+    "open_roles": "Open roles"
+  },
+  "Categories": {
+    "technology": "Technology",
+    "art": "Art",
+    "science": "Science",
+    "literature": "Literature",
+    "health": "Health"
   }
 }

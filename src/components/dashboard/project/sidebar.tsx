@@ -13,7 +13,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { ChartBarIcon, ProjectDetailsIcon, RolesIcon } from '@/components/icons'
-import { Logo } from '@/components/logo'
+import { Imagotype } from '@/components/logo'
 import { useDictionary } from '@/components/providers/dictionary-provider'
 
 interface ProjectSideBarProps {
@@ -30,11 +30,11 @@ export const ProjectSideBar = ({ projectId }: ProjectSideBarProps) => {
   }
 
   return (
-    <div className="sticky top-0 z-40 flex h-[100dvh] w-14 shrink-0 flex-col justify-between overflow-hidden border-r border-border bg-background p-2">
+    <div className="sticky top-0 z-40 flex h-[100dvh] w-14 shrink-0 flex-col justify-between overflow-hidden border-r border-outline bg-surface p-2">
       <section className="flex flex-col space-y-3">
         <Link href={routes.PROJECTS}>
           <div className="h-10 w-10 p-1">
-            <Logo withText={false} height="100%" />
+            <Imagotype height="100%" />
           </div>
         </Link>
 
@@ -43,9 +43,10 @@ export const ProjectSideBar = ({ projectId }: ProjectSideBarProps) => {
             asChild
             icon={<ChartBarIcon />}
             variant="ghost"
+            size="icon"
             className={cn(
-              'p-2 opacity-60 transition-all hover:opacity-100',
-              isActive(projectId) && 'bg-foreground/5 opacity-100'
+              'opacity-60 transition-all hover:opacity-100',
+              isActive(projectId) && 'bg-onSurface/5 opacity-100'
             )}
           >
             <Link href={routes.STATISTICS(projectId)} />
@@ -57,9 +58,10 @@ export const ProjectSideBar = ({ projectId }: ProjectSideBarProps) => {
             asChild
             icon={<ProjectDetailsIcon />}
             variant="ghost"
+            size="icon"
             className={cn(
-              'p-2 opacity-60 transition-all hover:opacity-100',
-              isActive('details') && 'bg-foreground/5 opacity-100'
+              'opacity-60 transition-all hover:opacity-100',
+              isActive('details') && 'bg-onSurface/5 opacity-100'
             )}
           >
             <Link href={routes.DETAILS(projectId)} />
@@ -71,9 +73,10 @@ export const ProjectSideBar = ({ projectId }: ProjectSideBarProps) => {
             asChild
             icon={<RolesIcon />}
             variant="ghost"
+            size="icon"
             className={cn(
-              'p-2 opacity-60 transition-all hover:opacity-100',
-              isActive('roles') && 'bg-foreground/5 opacity-100'
+              'opacity-60 transition-all hover:opacity-100',
+              isActive('roles') && 'bg-onSurface/5 opacity-100'
             )}
           >
             <Link href={routes.ROLES(projectId)} />
