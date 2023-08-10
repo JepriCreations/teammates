@@ -14,10 +14,10 @@ export default async function Home({ params: { locale } }: HomeProps) {
 
   return (
     <>
-      <section className="container mx-auto pt-16">
+      <section className="pt-8">
         <div className="space-y-6 text-center">
           <h1 className="balance mx-auto max-w-3xl font-bold">{t('title')}</h1>
-          <p className="mx-auto max-w-lg text-base text-outline">
+          <p className="balance mx-auto max-w-2xl text-body-lg text-outline">
             {t('subtitle')}
           </p>
         </div>

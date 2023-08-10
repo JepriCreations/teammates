@@ -1,17 +1,9 @@
 import * as z from 'zod'
 
 import {
-  ExperienceLevel,
-  Rewards,
-  Roles,
-  RoleStatus,
-  WorkMode,
-} from '@/types/collections'
-import {
-  InstagramOutlineIcon,
-  LinkedinOutlineIcon,
-  MastodonOutlineIcon,
-  TwitterOutlineIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  TwitterIcon,
   WebsiteIcon,
 } from '@/components/icons'
 
@@ -28,17 +20,17 @@ const ACCEPTED_IMAGE_TYPES = [
 export const socials = [
   {
     name: 'twitter',
-    icon: TwitterOutlineIcon,
+    icon: TwitterIcon,
     link: 'https://twitter.com/',
   },
   {
     name: 'linkedin',
-    icon: LinkedinOutlineIcon,
+    icon: LinkedinIcon,
     link: 'https://linkedin.com/',
   },
   {
     name: 'instagram',
-    icon: InstagramOutlineIcon,
+    icon: InstagramIcon,
     link: 'https://instagram.com/',
   },
   // {
@@ -62,10 +54,6 @@ const linkPrefixes: Record<string, string> = socials.reduce(
   {}
 )
 
-/**
- * PROJECT SQUEMAS
- */
-
 const linkObjectSchema = z
   .object({
     name: z.string(),
@@ -83,7 +71,7 @@ const linkObjectSchema = z
     })
   )
 
-const locationSquema = z.object({
+const locationSchema = z.object({
   country: z
     .string()
     .min(1, {
@@ -108,7 +96,7 @@ export const fileSchema = z
     message: 'The accepted files are .png .jpg .jpeg .webp"',
   })
 
-export const projectSquema = z.object({
+export const projectSchema = z.object({
   name: z
     .string()
     .min(3, {
@@ -127,36 +115,13 @@ export const projectSquema = z.object({
   description: z.string().min(1, {
     message: 'This value is required.',
   }),
-  location: locationSquema,
+  location: locationSchema,
   links: z.array(linkObjectSchema),
   icon_url: z.string().url().optional(),
   public: z.boolean().default(false).optional(),
 })
 
-export const createProjectSquema = projectSquema.merge(
+export const createProjectSchema = projectSchema.merge(
   z.object({ file: fileSchema })
 )
-export const updateProjectSquema = createProjectSquema.partial()
-
-/**
- * ROLES SQUEMAS
- */
-
-export const roleSchema = z.object({
-  name: z.nativeEnum(Roles),
-  exp_level: z.nativeEnum(ExperienceLevel),
-  rewards: z
-    .array(z.nativeEnum(Rewards))
-    .refine((value) => value.some((item) => item), {
-      message: 'You have to select at least one reward.',
-    }),
-  description: z
-    .string()
-    .min(15, { message: 'Explain with more details the role position.' }),
-  work_mode: z.nativeEnum(WorkMode),
-})
-export const rolesInsertSquema = z.object({
-  project_id: z.string().uuid(),
-})
-
-export const rolesSquema = z.array(roleSchema.merge(rolesInsertSquema))
+export const updateProjectSchema = createProjectSchema.partial()

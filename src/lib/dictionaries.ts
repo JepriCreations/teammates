@@ -1,5 +1,6 @@
 import 'server-only'
 
+import React from 'react'
 import reactStringReplace from 'react-string-replace'
 
 import en from '../dictionaries/en.json'
@@ -49,6 +50,13 @@ export const getDictionary = async (locale: string, key?: string) => {
           () => replacement
         )
       })
+    }
+
+    const breakRegex = /(\n)/g
+    if (typeof translation === 'string' && translation.match(breakRegex)) {
+      translation = reactStringReplace(translation, breakRegex, () =>
+        React.createElement('br', null)
+      )
     }
 
     return translation

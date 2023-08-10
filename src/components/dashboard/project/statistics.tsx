@@ -8,28 +8,27 @@ import {
 } from '@/components/statistic-card'
 
 interface StatisticsProps {
-  t: Translator
+  locale: string
   data: {
     total_views: number
+    total_hits: number
+    percent_views: number
+    percent_hits: number
     views?: {
+      date: string
+      count: number
+    }[]
+    hits?: {
       date: string
       count: number
     }[]
   }
 }
 
-const hits = [
-  { count: Math.floor(Math.random() * (50 - 0 + 1) + 0) },
-  { count: Math.floor(Math.random() * (50 - 0 + 1) + 0) },
-  { count: Math.floor(Math.random() * (50 - 0 + 1) + 0) },
-  { count: Math.floor(Math.random() * (50 - 0 + 1) + 0) },
-  { count: Math.floor(Math.random() * (50 - 0 + 1) + 0) },
-  { count: Math.floor(Math.random() * (50 - 0 + 1) + 0) },
-  { count: Math.floor(Math.random() * (50 - 0 + 1) + 0) },
-]
-
-export const Statistics = ({ t, data }: StatisticsProps) => {
+export const Statistics = async ({ locale, data }: StatisticsProps) => {
+  const { t } = await getDictionary(locale, 'Projects')
   const views = data?.views ?? []
+  const hits = data?.hits ?? []
 
   return (
     <section className="grid grid-cols-4 gap-4 py-10">
@@ -37,7 +36,7 @@ export const Statistics = ({ t, data }: StatisticsProps) => {
         <HeartTagIcon size={62} className="text-pink-500" />
         <div>
           <p className="text-center text-4xl font-bold">120</p>
-          <p className="text-center text-outline">Likes</p>
+          <p className="text-center text-outline">{t('likes')}</p>
         </div>
       </Card>
       <div className="col-span-3 grid grid-cols-2 gap-4">
@@ -45,16 +44,24 @@ export const Statistics = ({ t, data }: StatisticsProps) => {
           title="Total views"
           icon={<ViewsIcon className="text-outline" />}
           value={data.total_views}
-          percent="+8.2%"
+          percent={
+            (data.percent_views > 0 ? '+' : '') +
+            data.percent_views.toFixed(1) +
+            '%'
+          }
           data={views}
         />
         <StatisticCard
           title="Project hits"
           icon={<HitsIcon className="text-outline" />}
-          value={12}
-          percent="-6.2%"
+          value={data.total_hits}
+          percent={
+            (data.percent_hits > 0 ? '+' : '') +
+            data.percent_hits.toFixed(1) +
+            '%'
+          }
           data={hits}
-          chartClassname="bg-tertiary"
+          chartClassName="bg-tertiary"
         />
       </div>
     </section>
@@ -82,14 +89,3 @@ export const LoadingStatistics = () => {
     </section>
   )
 }
-
-// response = await client
-//     .from(table)
-//     .upsert({
-//         'page_id': pageId,
-//         'date': date,
-//         'views': views,
-//     }, onConflict: {
-//         'columns': ['page_id', 'date'],
-//         'update': 'views = excluded.views + 1',
-//     }).execute();

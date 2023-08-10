@@ -10,12 +10,6 @@ import {
   ToastTitle,
   ToastViewport,
 } from '@/components/ui/toast'
-import {
-  ErrorIcon,
-  InfoIcon,
-  SuccessIcon,
-  WarningIcon,
-} from '@/components/icons'
 
 export function Toaster() {
   const { toasts } = useToast()
@@ -30,17 +24,24 @@ export function Toaster() {
         severity,
         ...props
       }) {
-        const icons = {
-          success: <SuccessIcon className="shrink-0 text-successContainer" />,
-          error: <ErrorIcon className="shrink-0 text-errorContainer" />,
-          info: <InfoIcon className="shrink-0 text-infoContainer" />,
-          warning: <WarningIcon className="shrink-0 text-warningContainer" />,
+        const severityAccent = {
+          success: 'bg-success',
+          error: 'bg-error',
+          info: 'bg-info',
+          warning: 'bg-warning',
         } as const
 
         return (
           <Toast key={id} {...props}>
             <div className="flex items-start gap-6">
-              {severity && icons[severity]}
+              {severity && (
+                <span
+                  className={cn(
+                    'absolute inset-y-0 left-0 w-1',
+                    severityAccent[severity]
+                  )}
+                />
+              )}
               <div className="grid grow gap-1">
                 {title && <ToastTitle>{title}</ToastTitle>}
                 {description && (

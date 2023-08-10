@@ -18,11 +18,11 @@ export class RequestError extends Error {
   }
 }
 
-export class PostgressError extends Error {
+export class PostgresError extends Error {
   public details?: string
   public hint?: string
   public code?: string
-  protected __PostgressError = true
+  protected __PostgresError = true
 
   constructor(
     message: string,
@@ -40,7 +40,7 @@ export class PostgressError extends Error {
     this.details = details
     this.hint = hint
     this.code = code
-    this.name = 'PostgressError'
+    this.name = 'PostgresError'
   }
 
   toJSON() {
@@ -54,8 +54,8 @@ export class PostgressError extends Error {
   }
 }
 
-export function isPostgressError(error: unknown): error is PostgressError {
+export function isPostgresError(error: unknown): error is PostgresError {
   return (
-    typeof error === 'object' && error !== null && '__PostgressError' in error
+    typeof error === 'object' && error !== null && '__PostgresError' in error
   )
 }

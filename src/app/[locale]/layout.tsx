@@ -54,7 +54,7 @@ export default async function RootLayout({
       className={cn(fontSans.variable)}
     >
       <head />
-      <body className="min-h-[100dvh] overflow-x-hidden bg-background font-sans text-onSurface antialiased selection:bg-primary/30">
+      <body className="min-h-[100dvh] overflow-x-hidden bg-background font-sans text-body-md text-onSurface antialiased selection:bg-primary/30">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <DictionaryProvider dict={dict} defaultDict={defaultDict}>
             <SupabaseProvider>

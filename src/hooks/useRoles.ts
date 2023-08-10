@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { z } from 'zod'
 
 import { RoleStatus } from '@/types/collections'
-import { PostgressError } from '@/lib/errors'
-import { roleSchema } from '@/lib/validations/project'
+import { PostgresError } from '@/lib/errors'
+import { roleSchema } from '@/lib/validations/role'
 
 export const useRoles = () => {
   const [isPending, setIsPending] = useState(false)
@@ -27,7 +27,7 @@ export const useRoles = () => {
         .then((resp) => resp.json())
         .then(
           (resp: {
-            error: PostgressError | null
+            error: PostgresError | null
             data: { id: string } | null
           }) => resp
         )
@@ -60,7 +60,7 @@ export const useRoles = () => {
         .then((resp) => resp.json())
         .then(
           (resp: {
-            error: PostgressError | null
+            error: PostgresError | null
             data: { id: string } | null
           }) => resp
         )

@@ -1,15 +1,16 @@
 import 'server-only'
 
 import { revalidatePath } from 'next/cache'
+import { ERROR_CODES } from '@/constants/errors'
 import { routes } from '@/constants/routes'
 import { z } from 'zod'
 
 import { RoleStatus } from '@/types/collections'
-import { isPostgressError, PostgressError } from '@/lib/errors'
+import { isPostgresError, PostgresError } from '@/lib/errors'
 import { createRouteHandlerClient } from '@/lib/supabase-server'
-import { rolesSquema } from '@/lib/validations/project'
+import { rolesSchema } from '@/lib/validations/role'
 
-export const insertRoles = async (values: z.infer<typeof rolesSquema>) => {
+export const insertRoles = async (values: z.infer<typeof rolesSchema>) => {
   try {
     const supabase = createRouteHandlerClient()
     const {
@@ -18,12 +19,13 @@ export const insertRoles = async (values: z.infer<typeof rolesSquema>) => {
     } = await supabase.auth.getUser()
 
     if (error || !user) {
-      throw new PostgressError('You must log in.', {
+      throw new PostgresError('You must log in.', {
         details: error?.message,
+        code: ERROR_CODES.UNAUTHENTICATED,
       })
     }
 
-    const payload = rolesSquema.safeParse(values)
+    const payload = rolesSchema.safeParse(values)
 
     if (!payload.success) {
       const errors = payload.error.issues.map((error) => ({
@@ -31,7 +33,7 @@ export const insertRoles = async (values: z.infer<typeof rolesSquema>) => {
         message: error.message,
       }))
       console.log({ payloadErrors: errors })
-      throw new PostgressError(
+      throw new PostgresError(
         'The form validation has not passed. Check that all the fields have valid values.'
       )
     }
@@ -48,7 +50,7 @@ export const insertRoles = async (values: z.infer<typeof rolesSquema>) => {
       .select('id')
 
     if (insertError) {
-      throw new PostgressError('Error saving the data in the database.', {
+      throw new PostgresError('Error saving the data in the database.', {
         details: insertError.message,
       })
     }
@@ -56,7 +58,7 @@ export const insertRoles = async (values: z.infer<typeof rolesSquema>) => {
     revalidatePath(routes.HOME)
     return { data, error: null }
   } catch (error) {
-    if (isPostgressError(error)) {
+    if (isPostgresError(error)) {
       console.log({ error })
       return { data: null, error }
     }
@@ -80,8 +82,9 @@ export const updateRoleStatus = async ({
     } = await supabase.auth.getUser()
 
     if (error || !user) {
-      throw new PostgressError('You must log in.', {
+      throw new PostgresError('You must log in.', {
         details: error?.message,
+        code: ERROR_CODES.UNAUTHENTICATED,
       })
     }
 
@@ -93,7 +96,7 @@ export const updateRoleStatus = async ({
       .single()
 
     if (updateError) {
-      throw new PostgressError('Error updating the data.', {
+      throw new PostgresError('Error updating the data.', {
         details: updateError.message,
       })
     }
@@ -101,7 +104,7 @@ export const updateRoleStatus = async ({
     revalidatePath(routes.HOME)
     return { data, error: null }
   } catch (error) {
-    if (isPostgressError(error)) {
+    if (isPostgresError(error)) {
       console.log({ error })
       return { data: null, error }
     }

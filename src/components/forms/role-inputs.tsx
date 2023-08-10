@@ -12,7 +12,7 @@ import { z } from 'zod'
 import { ExperienceLevel, Rewards, Roles, WorkMode } from '@/types/collections'
 import { Translator } from '@/lib/dictionaries'
 import { cn } from '@/lib/utils'
-import { roleSchema } from '@/lib/validations/project'
+import { roleSchema } from '@/lib/validations/role'
 import { Checkbox } from '@/components/ui/checkbox'
 import { CommandItem } from '@/components/ui/command'
 import {

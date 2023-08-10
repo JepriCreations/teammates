@@ -37,27 +37,27 @@ export interface Database {
       applications: {
         Row: {
           created_at: string | null
-          id: string
+          created_at_time: string | null
           project_id: string | null
-          role_id: string | null
+          role_id: string
           status: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           created_at?: string | null
-          id: string
+          created_at_time?: string | null
           project_id?: string | null
-          role_id?: string | null
+          role_id: string
           status?: string | null
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           created_at?: string | null
-          id?: string
+          created_at_time?: string | null
           project_id?: string | null
-          role_id?: string | null
+          role_id?: string
           status?: string | null
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
@@ -120,6 +120,37 @@ export interface Database {
           }
         ]
       }
+      project_likes: {
+        Row: {
+          created_at: string
+          profile_id: string
+          project_id: string
+        }
+        Insert: {
+          created_at?: string
+          profile_id: string
+          project_id: string
+        }
+        Update: {
+          created_at?: string
+          profile_id?: string
+          project_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_likes_profile_id_fkey"
+            columns: ["profile_id"]
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_likes_project_id_fkey"
+            columns: ["project_id"]
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       project_views: {
         Row: {
           count: number
@@ -153,6 +184,7 @@ export interface Database {
           description: string
           icon_url: string | null
           id: string
+          likes: number
           links: Json[]
           location: Json | null
           name: string
@@ -168,6 +200,7 @@ export interface Database {
           description?: string
           icon_url?: string | null
           id?: string
+          likes?: number
           links?: Json[]
           location?: Json | null
           name?: string
@@ -183,6 +216,7 @@ export interface Database {
           description?: string
           icon_url?: string | null
           id?: string
+          likes?: number
           links?: Json[]
           location?: Json | null
           name?: string
@@ -254,9 +288,16 @@ export interface Database {
       }
     }
     Views: {
-      project_views_statistics: {
+      project_statistics: {
         Row: {
+          current_month_hits: number | null
+          current_month_views: number | null
+          percent_hits: number | null
+          percent_views: number | null
+          prev_month_hits: number | null
+          prev_month_views: number | null
           project_id: string | null
+          total_hits: number | null
           total_views: number | null
         }
         Relationships: [
@@ -282,6 +323,30 @@ export interface Database {
           object: string
         }
         Returns: Record<string, unknown>
+      }
+      get_application_counts: {
+        Args: {
+          project_id: string
+        }
+        Returns: {
+          created_at: string
+          count: number
+        }[]
+      }
+      increment: {
+        Args: {
+          table_name: string
+          row_id: string
+          x: number
+          field_name: string
+        }
+        Returns: number
+      }
+      update_or_insert_project_view: {
+        Args: {
+          p_id: string
+        }
+        Returns: undefined
       }
     }
     Enums: {

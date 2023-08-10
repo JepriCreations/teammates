@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { routes } from '@/constants/routes'
 
 import { Role } from '@/types/collections'
-import { Translator } from '@/lib/dictionaries'
+import { getDictionary } from '@/lib/dictionaries'
 import { formatDate } from '@/lib/utils'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
@@ -18,10 +18,10 @@ interface ProjectCardProps {
   updated_at: string
   icon_url: string | null
   roles: Partial<Role>[]
-  t: Translator
+  locale: string
 }
 
-export const ProjectCard = ({
+export const ProjectCard = async ({
   slug,
   name,
   summary,
@@ -29,8 +29,10 @@ export const ProjectCard = ({
   updated_at,
   icon_url,
   roles,
-  t,
+  locale,
 }: ProjectCardProps) => {
+  const { t } = await getDictionary(locale)
+
   return (
     <LinkCard href={routes.PROJECT(slug)}>
       <div className="space-y-3 p-4">
@@ -75,8 +77,8 @@ export const ProjectCard = ({
             ))}
           </div>
           <ScrollBar orientation="horizontal" />
-          <div className="absolute inset-y-0 left-0 w-4 bg-gradient-to-r from-surfaceContainer via-surfaceContainer" />
-          <div className="absolute inset-y-0 right-0 w-4 bg-gradient-to-l from-surfaceContainer via-surfaceContainer" />
+          <div className="absolute inset-y-0 left-0 w-4 bg-gradient-to-r from-surfaceContainer via-surfaceContainer group-hover:from-surfaceContainerLow group-hover:via-surfaceContainerLow" />
+          <div className="absolute inset-y-0 right-0 w-4 bg-gradient-to-l from-surfaceContainer via-surfaceContainer group-hover:from-surfaceContainerLow group-hover:via-surfaceContainerLow" />
         </ScrollArea>
         <span className="px-4 text-sm leading-none text-outline">
           {formatDate(updated_at)}

@@ -4,9 +4,9 @@ import { routes } from '@/constants/routes'
 import { z } from 'zod'
 
 import { Project, ProjectUpdate } from '@/types/collections'
-import { PostgressError } from '@/lib/errors'
+import { PostgresError } from '@/lib/errors'
 import { slugify } from '@/lib/utils'
-import { createProjectSquema } from '@/lib/validations/project'
+import { createProjectSchema } from '@/lib/validations/project'
 import { useSupabase } from '@/components/providers/supabase-provider'
 
 export const useProjects = () => {
@@ -56,7 +56,7 @@ export const useProjects = () => {
       const {
         error,
         data,
-      }: { error: PostgressError | null; data: { success: true } } =
+      }: { error: PostgresError | null; data: { success: true } } =
         await resp.json()
 
       if (error) {
@@ -74,7 +74,7 @@ export const useProjects = () => {
     }
   }
 
-  const create = async (values: z.infer<typeof createProjectSquema>) => {
+  const create = async (values: z.infer<typeof createProjectSchema>) => {
     try {
       setIsPending(true)
       const { file, ...rest } = values
@@ -88,7 +88,7 @@ export const useProjects = () => {
         throw new Error('Failed to fetch data')
       }
 
-      const { error, data }: { error: PostgressError | null; data: Project } =
+      const { error, data }: { error: PostgresError | null; data: Project } =
         await resp.json()
 
       if (error || !data) {
@@ -116,20 +116,19 @@ export const useProjects = () => {
 
       return { error, data }
     } catch (error: any) {
-      // TODO: Save error to log
       return { error, data: null }
     } finally {
       setIsPending(false)
     }
   }
 
-  const remove = async (projectId: string) => {
+  const remove = async (project_id: string) => {
     try {
       setIsRemoving(true)
 
       const resp = await fetch(`${location.origin}/api/projects`, {
         method: 'DELETE',
-        body: JSON.stringify({ id: projectId }),
+        body: JSON.stringify({ id: project_id }),
       })
 
       if (!resp.ok) {
@@ -143,5 +142,39 @@ export const useProjects = () => {
     }
   }
 
-  return { create, update, remove, isPending, isRemoving }
+  const addLike = async (project_id: string) => {
+    try {
+      const resp = await fetch(`${location.origin}/api/projects/likes`, {
+        method: 'POST',
+        body: JSON.stringify({ project_id }),
+      })
+
+      if (!resp.ok) {
+        throw new Error('Failed to fetch data')
+      }
+      router.refresh()
+      return { error: null, data: null }
+    } catch (error) {
+      return { error, data: null }
+    }
+  }
+
+  const removeLike = async (project_id: string) => {
+    try {
+      const resp = await fetch(`${location.origin}/api/projects/likes`, {
+        method: 'DELETE',
+        body: JSON.stringify({ project_id }),
+      })
+
+      if (!resp.ok) {
+        throw new Error('Failed to fetch data')
+      }
+      router.refresh()
+      return { error: null, data: null }
+    } catch (error) {
+      return { error, data: null }
+    }
+  }
+
+  return { create, update, remove, addLike, removeLike, isPending, isRemoving }
 }

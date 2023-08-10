@@ -11,10 +11,10 @@ import { z } from 'zod'
 import { Project } from '@/types/collections'
 import { cn } from '@/lib/utils'
 import {
-  createProjectSquema,
-  projectSquema,
+  createProjectSchema,
+  projectSchema,
   socials,
-  updateProjectSquema,
+  updateProjectSchema,
 } from '@/lib/validations/project'
 import { useProjects } from '@/hooks/useProjects'
 import { useToast } from '@/hooks/useToast'
@@ -31,12 +31,12 @@ const defaultSocialLinks = socials.map((s) => ({
 }))
 
 type ProjectSchemaType =
-  | z.infer<typeof createProjectSquema>
-  | z.infer<typeof updateProjectSquema>
+  | z.infer<typeof createProjectSchema>
+  | z.infer<typeof updateProjectSchema>
 
 interface ProjectForm {
   action: 'update' | 'create'
-  defaultValues?: z.infer<typeof projectSquema>
+  defaultValues?: z.infer<typeof projectSchema>
   projectData?: Partial<Project>
   children?: React.ReactNode
 }
@@ -55,9 +55,9 @@ export const ProjectForm = ({
   const [error, setError] = useState(null)
   const isUpdating = action === 'update'
 
-  const form = useForm<z.infer<typeof createProjectSquema>>({
+  const form = useForm<z.infer<typeof createProjectSchema>>({
     resolver: zodResolver(
-      isUpdating ? updateProjectSquema : createProjectSquema
+      isUpdating ? updateProjectSchema : createProjectSchema
     ),
     defaultValues: defaultValues ?? {
       name: '',
@@ -79,13 +79,13 @@ export const ProjectForm = ({
   const onSubmit = async (values: ProjectSchemaType) => {
     if (isUpdating) return onUpdate(values)
 
-    const validation = createProjectSquema.safeParse(values)
+    const validation = createProjectSchema.safeParse(values)
     if (validation.success) {
       return onCreate(validation.data)
     }
   }
 
-  const onCreate = async (values: z.infer<typeof createProjectSquema>) => {
+  const onCreate = async (values: z.infer<typeof createProjectSchema>) => {
     const { error, data } = await create(values)
 
     if (error || !data) {
@@ -113,7 +113,7 @@ export const ProjectForm = ({
     onNext(data.id)
   }
 
-  const onUpdate = async (values: z.infer<typeof updateProjectSquema>) => {
+  const onUpdate = async (values: z.infer<typeof updateProjectSchema>) => {
     if (!projectData?.id) return
 
     const { data } = await update({ id: projectData.id, ...values })

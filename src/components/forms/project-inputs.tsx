@@ -7,7 +7,7 @@ import { z } from 'zod'
 
 import { capitalize, cn } from '@/lib/utils'
 import {
-  createProjectSquema,
+  createProjectSchema,
   MAX_CATEGORIES,
   socials,
   SUMMARY_MAX_LENGTH,
@@ -29,7 +29,7 @@ import { CheckIcon, ImageUploadIcon } from '@/components/icons'
 import { useDictionary } from '@/components/providers/dictionary-provider'
 
 interface ProjectInputsProps {
-  form: UseFormReturn<z.infer<typeof createProjectSquema>>
+  form: UseFormReturn<z.infer<typeof createProjectSchema>>
   icon_url?: string
   disabled?: boolean
 }

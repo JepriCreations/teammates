@@ -1,8 +1,11 @@
+'use client'
+
 import { cn } from '@/lib/utils'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 
 import { Barchart } from './bar-char'
+import { useDictionary } from './providers/dictionary-provider'
 
 interface StatisticCardProps {
   title: string
@@ -11,7 +14,7 @@ interface StatisticCardProps {
   loading?: boolean
   icon?: React.ReactNode
   data?: { count: number }[]
-  chartClassname?: string
+  chartClassName?: string
 }
 
 export const StatisticCard = ({
@@ -21,8 +24,9 @@ export const StatisticCard = ({
   percent,
   loading,
   data,
-  chartClassname,
+  chartClassName,
 }: StatisticCardProps) => {
+  const { t } = useDictionary()
   const values = data?.map(({ count }) => ({ value: count }))
 
   if (loading) return <LoadingStatisticCard icon={icon} title={title} />
@@ -40,16 +44,17 @@ export const StatisticCard = ({
             <span
               className={cn(
                 'font-semibold',
-                String(percent).startsWith('-') ? 'text-error' : 'text-success'
+                percent.startsWith('-') && 'text-error',
+                percent.startsWith('+') && 'text-success'
               )}
             >
               {percent}
             </span>{' '}
-            than last month
+            {t('General.than_last_month')}
           </p>
         </div>
         <div className="mt-auto flex h-[80%] pb-1 pt-2">
-          <Barchart data={values} className={chartClassname} />
+          <Barchart data={values} className={chartClassName} />
         </div>
       </div>
     </Card>

@@ -28,6 +28,12 @@ export enum RoleStatus {
   Archived = 'archived',
 }
 
+export enum ApplicationStatus {
+  StandBy = 'standby',
+  Granted = 'granted',
+  Rejected = 'rejected',
+}
+
 export type Profile = Database['public']['Tables']['profiles']['Row'] & {
   avatar: string | undefined | null
 }
@@ -37,3 +43,9 @@ export type Project = Database['public']['Tables']['projects']['Row']
 
 export type ProjectInsert = Database['public']['Tables']['projects']['Insert']
 export type ProjectUpdate = Database['public']['Tables']['projects']['Update']
+
+export type ProjectLocation = {
+  city: string
+  country: string
+}
+export type ProjectLinks = Array<{ link: string; name: string }>

@@ -1,6 +1,6 @@
 import { SVGIcon, SVGIconProps } from '@/components/ui/svg-icon'
 
-export const MastodonOutlineIcon = (props: SVGIconProps) => {
+export const MastodonIcon = (props: SVGIconProps) => {
   return (
     <SVGIcon {...props}>
       <title id="title">Mastodon Icon</title>

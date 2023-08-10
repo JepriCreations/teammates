@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { ExperienceLevel, WorkMode } from '@/types/collections'
-import { roleSchema } from '@/lib/validations/project'
+import { roleSchema } from '@/lib/validations/role'
 import { useRoles } from '@/hooks/useRoles'
 import { useToast } from '@/hooks/useToast'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'

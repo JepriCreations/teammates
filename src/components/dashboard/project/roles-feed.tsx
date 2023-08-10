@@ -13,7 +13,7 @@ import {
   WorkMode,
 } from '@/types/collections'
 import { formatDate } from '@/lib/utils'
-import { roleSchema } from '@/lib/validations/project'
+import { roleSchema } from '@/lib/validations/role'
 import { useRoles } from '@/hooks/useRoles'
 import { useToast } from '@/hooks/useToast'
 import { Button } from '@/components/ui/button'

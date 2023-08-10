@@ -21,7 +21,7 @@ const buttonVariants = cva(
         outline:
           'bg-surface border-2 text-onSurface hover:bg-onSurface/5 bg-transparent focus:bg-onSurface/5 border-outline/38 disabled:text-onSurface/38 disabled:bg-onSurface/12 disabled:border-onSurface/12 aria-[invalid=true]:border-error',
         destructive:
-          'bg-errorContainer text-onErrorContainer hover:bg-errorContainer/80 focus:bg-errorContainer/80 disabled:bg-onSurface/12 disabled:text-onSurface/38 active:scale-95',
+          '-translate-x-0.5 -translate-y-0.5 bg-errorContainer text-onErrorContainer shadow-[2px_2px_0px_hsl(var(--onSurface))]  hover:bg-errorContainer/80 focus:bg-errorContainer/80 active:translate-x-0 active:translate-y-0 active:shadow-none disabled:translate-x-0  disabled:translate-y-0 disabled:bg-onSurface/12 disabled:text-onSurface/38',
       },
       size: {
         default: 'px-4 py-2 h-10',

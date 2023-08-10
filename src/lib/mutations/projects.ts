@@ -4,12 +4,12 @@ import { ERROR_CODES } from '@/constants/errors'
 import { z } from 'zod'
 
 import { ProjectUpdate } from '@/types/collections'
-import { isPostgressError, PostgressError } from '@/lib/errors'
+import { isPostgresError, PostgresError } from '@/lib/errors'
 import { createRouteHandlerClient } from '@/lib/supabase-server'
 import { slugify } from '@/lib/utils'
-import { projectSquema, updateProjectSquema } from '@/lib/validations/project'
+import { projectSchema, updateProjectSchema } from '@/lib/validations/project'
 
-export const createProject = async (values: z.infer<typeof projectSquema>) => {
+export const createProject = async (values: z.infer<typeof projectSchema>) => {
   try {
     const supabase = createRouteHandlerClient()
     const {
@@ -18,12 +18,13 @@ export const createProject = async (values: z.infer<typeof projectSquema>) => {
     } = await supabase.auth.getUser()
 
     if (error || !user) {
-      throw new PostgressError('You must log in.', {
+      throw new PostgresError('You must log in.', {
         details: error?.message,
+        code: ERROR_CODES.UNAUTHENTICATED,
       })
     }
 
-    const payload = projectSquema.safeParse(values)
+    const payload = projectSchema.safeParse(values)
 
     if (!payload.success) {
       const errors = payload.error.issues.map((error) => ({
@@ -31,7 +32,7 @@ export const createProject = async (values: z.infer<typeof projectSquema>) => {
         message: error.message,
       }))
       console.log({ payloadErrors: errors })
-      throw new PostgressError(
+      throw new PostgresError(
         'The form validation has not passed. Check that all the fields have valid values.'
       )
     }
@@ -51,18 +52,18 @@ export const createProject = async (values: z.infer<typeof projectSquema>) => {
       // console.log({ insertError })
       if (insertError.code === '23505') {
         // duplicate key (name)
-        throw new PostgressError('Duplicate Name.', {
+        throw new PostgresError('Duplicate Name.', {
           code: ERROR_CODES.DUPLICATE_NAME,
         })
       }
-      throw new PostgressError('Error saving the data in the database.', {
+      throw new PostgresError('Error saving the data in the database.', {
         hint: insertError.message,
       })
     }
 
     return { error: null, data }
   } catch (error) {
-    if (isPostgressError(error)) {
+    if (isPostgresError(error)) {
       console.log({ error })
       return { data: null, error }
     }
@@ -80,19 +81,20 @@ export const updateProject = async (values: ProjectUpdate) => {
     } = await supabase.auth.getUser()
 
     if (error || !user) {
-      throw new PostgressError('You must log in.', {
+      throw new PostgresError('You must log in.', {
         details: error?.message,
+        code: ERROR_CODES.UNAUTHENTICATED,
       })
     }
 
-    const payload = updateProjectSquema.safeParse(values)
+    const payload = updateProjectSchema.safeParse(values)
     if (!payload.success) {
       const errors = payload.error.issues.map((error) => ({
         path: error.path,
         message: error.message,
       }))
       console.log({ payloadErrors: errors })
-      throw new PostgressError(
+      throw new PostgresError(
         'The form validation has not passed. Check that all the fields have valid values.'
       )
     }
@@ -106,13 +108,13 @@ export const updateProject = async (values: ProjectUpdate) => {
       .eq('id', values.id)
 
     if (updateError) {
-      throw new PostgressError('Error saving the data in the database.', {
+      throw new PostgresError('Error saving the data in the database.', {
         details: updateError.message,
       })
     }
     return { data: { success: true }, error: null }
   } catch (error) {
-    if (isPostgressError(error)) {
+    if (isPostgresError(error)) {
       console.log({ error })
       return { data: null, error }
     }
@@ -130,12 +132,13 @@ export const removeProject = async (id: string) => {
     } = await supabase.auth.getUser()
 
     if (error || !user) {
-      throw new PostgressError('You must log in.', {
+      throw new PostgresError('You must log in.', {
         details: error?.message,
+        code: ERROR_CODES.UNAUTHENTICATED,
       })
     }
 
-    if (!id) throw new PostgressError('The id has not been passed.')
+    if (!id) throw new PostgresError('The id has not been passed.')
 
     const { error: deleteError } = await supabase
       .from('projects')
@@ -143,14 +146,113 @@ export const removeProject = async (id: string) => {
       .eq('id', id)
 
     if (deleteError) {
-      throw new PostgressError('Error deleting the project.', {
+      throw new PostgresError('Error deleting the project.', {
         details: deleteError.message,
       })
     }
 
     return { data: { success: true }, error: null }
   } catch (error) {
-    if (isPostgressError(error)) {
+    if (isPostgresError(error)) {
+      console.log({ error })
+      return { data: null, error }
+    }
+
+    throw error
+  }
+}
+
+export const updateProjectViews = async (id: string) => {
+  const supabase = createRouteHandlerClient()
+  await supabase.rpc('update_or_insert_project_view', {
+    p_id: id,
+  })
+}
+
+export const addLike = async ({ project_id }: { project_id: string }) => {
+  try {
+    const supabase = createRouteHandlerClient()
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser()
+
+    if (error || !user) {
+      throw new PostgresError('You must log in.', {
+        details: error?.message,
+        code: ERROR_CODES.UNAUTHENTICATED,
+      })
+    }
+
+    const insertPromise = supabase.from('project_likes').insert({
+      profile_id: user.id,
+      project_id,
+    })
+    const updatePromise = supabase.rpc('increment', {
+      table_name: 'projects',
+      row_id: project_id,
+      field_name: 'likes',
+      x: 1,
+    })
+
+    const [insert, update] = await Promise.all([insertPromise, updatePromise])
+
+    const promiseError = insert.error || update.error
+    if (promiseError) {
+      throw new PostgresError('Error updating likes.', {
+        details: promiseError.message,
+      })
+    }
+
+    return { error: null, data: update.data }
+  } catch (error) {
+    if (isPostgresError(error)) {
+      console.log({ error })
+      return { data: null, error }
+    }
+
+    throw error
+  }
+}
+
+export const removeLike = async ({ project_id }: { project_id: string }) => {
+  try {
+    const supabase = createRouteHandlerClient()
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser()
+
+    if (error || !user) {
+      throw new PostgresError('You must log in.', {
+        details: error?.message,
+        code: ERROR_CODES.UNAUTHENTICATED,
+      })
+    }
+
+    const removePromise = supabase
+      .from('project_likes')
+      .delete()
+      .match({ project_id, profile_id: user.id })
+    const updatePromise = supabase.rpc('increment', {
+      table_name: 'projects',
+      row_id: project_id,
+      field_name: 'likes',
+      x: -1,
+    })
+
+    const [remove, update] = await Promise.all([removePromise, updatePromise])
+
+    const promiseError = remove.error || update.error
+    if (promiseError) {
+      throw new PostgresError('Error updating likes.', {
+        details: promiseError.message,
+      })
+    }
+
+    return { error: null, data: update.data }
+  } catch (error) {
+    if (isPostgresError(error)) {
       console.log({ error })
       return { data: null, error }
     }

@@ -104,17 +104,9 @@ const config = {
         'label-lg': ['0.875rem', { lineHeight: '1.25rem', fontWeight: 500 }],
         'label-md': ['0.75rem', { lineHeight: '1rem', fontWeight: 500 }],
         'label-sm': ['0.687rem', { lineHeight: '1rem', fontWeight: 500 }],
-        'body-lg': ['1rem', { lineHeight: '1.5rem' }],
-        'body-md': ['0.875rem', { lineHeight: '1.25rem' }],
-        'body-sm': ['0.75rem', { lineHeight: '1rem' }],
-      },
-      boxShadow: {
-        sm: '0px 1px 3px 1px hsl(var(--shadow) / 0.15), 0px 1px 2px 0px hsl(var(--shadow) / 0.3)',
-        md: '0px 2px 6px 2px hsl(var(--shadow) / 0.15), 0px 1px 2px 0px hsl(var(--shadow) / 0.3)',
-        lg: '0px 4px 8px 3px hsl(var(--shadow) / 0.15), 0px 1px 3px 0px hsl(var(--shadow) / 0.3)',
-        xl: '0px 6px 10px 4px hsl(var(--shadow) / 0.15), 0px 2px 3px 0px hsl(var(--shadow) / 0.3)',
-        '2xl':
-          '0px 8px 12px 6px hsl(var(--shadow) / 0.15), 0px 4px 4px 0px hsl(var(--shadow) / 0.3)',
+        'body-lg': ['1.125rem', { lineHeight: '1.5rem' }],
+        'body-md': ['1rem', { lineHeight: '1.5rem' }],
+        'body-sm': ['0.875rem', { lineHeight: '1.25rem' }],
       },
       transitionProperty: {
         fadeAndMove: 'transform, opacity',

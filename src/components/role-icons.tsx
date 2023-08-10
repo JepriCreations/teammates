@@ -2,6 +2,7 @@ import { ExperienceLevel, Rewards, WorkMode } from '@/types/collections'
 import { cn } from '@/lib/utils'
 import {
   ContractIcon,
+  CreditIcon,
   ExperienceLevelIcon,
   PercentCircleIcon,
   PresentialIcon,
@@ -33,6 +34,10 @@ const rewardIcon = (rewards: string[], className?: string) => {
 
   if (rewards.includes(Rewards.Contract)) {
     return <ContractIcon className={cn('h-4 w-4', className)} />
+  }
+
+  if (rewards.includes(Rewards.Credit)) {
+    return <CreditIcon className={cn('h-4 w-4', className)} />
   }
 
   return null

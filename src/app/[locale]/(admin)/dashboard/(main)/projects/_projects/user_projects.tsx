@@ -1,5 +1,5 @@
 import { getDictionary } from '@/lib/dictionaries'
-import { PostgressError } from '@/lib/errors'
+import { PostgresError } from '@/lib/errors'
 import { fetchUserProjects } from '@/lib/fetching/projects'
 import {
   ProjectCard,
@@ -20,7 +20,7 @@ export default async function UserProjects({ locale }: ProjectsFeedProps) {
   )
 }
 
-const ErrorHandler = ({ error }: { error: PostgressError }) => {
+const ErrorHandler = ({ error }: { error: PostgresError }) => {
   return (
     <div className="col-span-4 text-center">
       <p className="text-xl font-bold">Upps!</p>

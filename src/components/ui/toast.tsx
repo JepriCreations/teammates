@@ -24,11 +24,11 @@ const ToastViewport = React.forwardRef<
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName
 
 const toastVariants = cva(
-  'group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md p-4 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-top-full data-[state=open]:slide-in-from-top-full data-[state=closed]:sm:slide-out-to-right-full data-[state=closed]:sm:slide-out-to-top-0 data-[state=open]:sm:slide-in-from-right-full data-[state=open]:sm:slide-in-from-top-0',
+  'group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md pl-6 pr-4 py-4 shadow-xl transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-top-full data-[state=open]:slide-in-from-top-full data-[state=closed]:sm:slide-out-to-right-full data-[state=closed]:sm:slide-out-to-top-0 data-[state=open]:sm:slide-in-from-right-full data-[state=open]:sm:slide-in-from-top-0',
   {
     variants: {
       variant: {
-        default: 'bg-inverseSurface text-inverseOnSurface',
+        default: 'bg-surfaceContainerLowest text-onSurface',
         destructive: 'bg-error text-onError',
       },
     },
@@ -60,7 +60,7 @@ const ToastAction = React.forwardRef<
   <Button
     asChild
     variant="ghost"
-    className="min-w-0 flex-shrink-0 text-inversePrimary hover:bg-inversePrimary/5"
+    className="min-w-0 flex-shrink-0 text-primary hover:bg-primary/5"
   >
     <ToastPrimitives.Action
       ref={ref}
@@ -78,7 +78,7 @@ const ToastClose = React.forwardRef<
   <ToastPrimitives.Close
     ref={ref}
     className={cn(
-      'absolute right-2 top-2 rounded-md p-1 text-inverseOnSurface/50 opacity-0 transition-opacity hover:text-inverseOnSurface focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600',
+      'absolute right-2 top-2 rounded-md p-1 text-onSurface/50 opacity-0 transition-opacity hover:text-onSurface focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600',
       className
     )}
     toast-close=""
@@ -107,7 +107,7 @@ const ToastDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Description
     ref={ref}
-    className={cn('text-body-md text-inverseOnSurface/70', className)}
+    className={cn('muted text-body-md text-onSurface', className)}
     {...props}
   />
 ))

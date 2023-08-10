@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { PostgressError } from '@/lib/errors'
+import { PostgresError } from '@/lib/errors'
 import {
   createProject,
   removeProject,
@@ -10,11 +10,11 @@ import {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const project = await createProject(body)
-    return NextResponse.json(project)
+    const result = await createProject(body)
+    return NextResponse.json(result)
   } catch (error: any) {
     return NextResponse.json({
-      error: new PostgressError(error.message),
+      error: new PostgresError(error.message),
       data: null,
     })
   }
@@ -23,11 +23,11 @@ export async function POST(request: Request) {
 export async function PATCH(request: Request) {
   try {
     const body = await request.json()
-    const project = await updateProject(body)
-    return NextResponse.json(project)
+    const result = await updateProject(body)
+    return NextResponse.json(result)
   } catch (error: any) {
     return NextResponse.json({
-      error: new PostgressError(error.message),
+      error: new PostgresError(error.message),
       data: null,
     })
   }
@@ -36,11 +36,11 @@ export async function PATCH(request: Request) {
 export async function DELETE(request: Request) {
   try {
     const body = await request.json()
-    const project = await removeProject(body?.id)
-    return NextResponse.json(project)
+    const result = await removeProject(body?.id)
+    return NextResponse.json(result)
   } catch (error: any) {
     return NextResponse.json({
-      error: new PostgressError(error.message),
+      error: new PostgresError(error.message),
       data: null,
     })
   }

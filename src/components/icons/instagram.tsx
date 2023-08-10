@@ -1,6 +1,6 @@
 import { SVGIcon, SVGIconProps } from '@/components/ui/svg-icon'
 
-export const InstagramOutlineIcon = (props: SVGIconProps) => {
+export const InstagramIcon = (props: SVGIconProps) => {
   return (
     <SVGIcon {...props}>
       <title id="title">Instagram Icon</title>
