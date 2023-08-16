@@ -11,17 +11,17 @@ import { Button } from '@/components/ui/button'
 import { useDictionary } from './providers/dictionary-provider'
 import { useAuth } from './providers/supabase-auth-provider'
 
-export const ApplicationButton = ({
+export const ApplyButton = ({
   project_id,
   role_id,
 }: z.infer<typeof applicationSchema>) => {
   const { user } = useAuth()
   const { toast } = useToast()
   const { t } = useDictionary()
-  const { addApplication, isPending } = useApplication()
+  const { insert, isPending } = useApplication()
 
   const handleOnClick = async () => {
-    const { error } = await addApplication({ project_id, role_id })
+    const { error } = await insert({ project_id, role_id })
     if (error) {
       let error_description = t('Project.Errors.sending_application')
 
@@ -54,6 +54,7 @@ export const ApplicationButton = ({
     <>
       <Button
         onClick={handleOnClick}
+        variant="accent"
         disabled={!user || isPending}
         loading={isPending}
         className="ml-auto"

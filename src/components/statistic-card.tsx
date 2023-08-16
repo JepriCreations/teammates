@@ -39,7 +39,7 @@ export const StatisticCard = ({
       </div>
       <div className="grid grid-cols-3 gap-2">
         <div className="col-span-2 flex flex-col space-y-2">
-          <p className="text-[4rem] font-medium">{value}</p>
+          <p className=" mb-4 text-display-lg font-medium">{value}</p>
           <p className="text-sm text-outline">
             <span
               className={cn(

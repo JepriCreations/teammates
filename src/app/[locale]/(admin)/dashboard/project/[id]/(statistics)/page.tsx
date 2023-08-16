@@ -1,4 +1,3 @@
-import { getDictionary } from '@/lib/dictionaries'
 import { fetchProjectStatistics } from '@/lib/fetching/projects'
 import { Statistics } from '@/components/dashboard/project/statistics'
 import { Error } from '@/components/error'

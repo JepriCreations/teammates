@@ -8,6 +8,8 @@ export const routes = {
   STATISTICS: (id: string) => `/dashboard/project/${id}`,
   DETAILS: (id: string) => `/dashboard/project/${id}/details`,
   ROLES: (id: string) => `/dashboard/project/${id}/roles`,
+  APPLICATIONS: (project_id: string, role_id: string) =>
+    `/dashboard/project/${project_id}/roles/${role_id}/applications`,
   PREFERENCES: '/dashboard/preferences',
   CONTACT: '/contact',
   PRIVACY: '/privacy',
@@ -17,4 +19,9 @@ export const routes = {
 
   // Externals
   GITHUB: 'https://github.com/jepricreations/teammates',
+}
+
+export const slugs = {
+  DETAILS: 'details',
+  ROLES: 'roles',
 }

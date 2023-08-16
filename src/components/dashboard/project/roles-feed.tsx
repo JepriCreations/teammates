@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { routes } from '@/constants/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -41,7 +43,7 @@ const defaultValues = {
   rewards: [],
 }
 
-const getStaus = (input: boolean) => {
+const getStatus = (input: boolean) => {
   return input === true ? RoleStatus.Open : RoleStatus.Closed
 }
 
@@ -110,7 +112,7 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
 
   const onStatusChange = async (value: boolean, role_id: string) => {
     const index = roles.findIndex((role) => role.id === role_id)
-    const status = getStaus(value)
+    const status = getStatus(value)
     updateStatus(index, status)
 
     const { error } = await updateRoleStatus({
@@ -119,7 +121,7 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
     })
 
     if (error) {
-      updateStatus(index, getStaus(!value))
+      updateStatus(index, getStatus(!value))
       return toast({
         title: 'Error',
         description: error.message,
@@ -180,6 +182,7 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
             rewards,
             status,
             created_at,
+            applications,
           }) => {
             return (
               <div key={id} className="flex transition-all">
@@ -230,9 +233,19 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
 
                   <p className="mb-6 flex">{description}</p>
                   <div className="flex justify-between">
-                    <a href="#" className="hover:underline">
-                      10 Applications
-                    </a>
+                    <Button
+                      asChild={applications > 0}
+                      variant="link"
+                      disabled={applications === 0}
+                    >
+                      <Link href={routes.APPLICATIONS(projectId, id)}>
+                        {`${applications} ${
+                          applications > 1
+                            ? t('Roles.applications')
+                            : t('Roles.application')
+                        }`}
+                      </Link>
+                    </Button>
                     <p className="text-outline">{formatDate(created_at)}</p>
                   </div>
                 </Card>

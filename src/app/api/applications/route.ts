@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server'
 
 import { PostgresError } from '@/lib/errors'
-import { createApplication } from '@/lib/mutations/applications'
+import {
+  createApplication,
+  updateApplicationStatus,
+} from '@/lib/mutations/applications'
 
 export async function POST(request: Request) {
   try {
@@ -11,7 +14,18 @@ export async function POST(request: Request) {
   } catch (error: any) {
     return NextResponse.json({
       error: new PostgresError(error.message),
-      data: null,
+    })
+  }
+}
+
+export async function PATCH(request: Request) {
+  try {
+    const body = await request.json()
+    const result = await updateApplicationStatus(body)
+    return NextResponse.json(result)
+  } catch (error: any) {
+    return NextResponse.json({
+      error: new PostgresError(error.message),
     })
   }
 }

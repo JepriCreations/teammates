@@ -34,7 +34,6 @@ export const fetchProjects = async () => {
 
   if (error) {
     return {
-      data: null,
       error: new PostgresError('Has been an error retrieving projects.', {
         details: error.message,
       }),
@@ -46,7 +45,6 @@ export const fetchProjects = async () => {
       projects: projects?.filter((project) => project.roles.length > 0),
       count,
     },
-    error: null,
   }
 }
 
@@ -80,7 +78,6 @@ export const fetchProjectBySlug = async (slug: string) => {
 
   if (error) {
     return {
-      data: null,
       error: new PostgresError('Has been an error retrieving the project.', {
         details: error.message,
       }),
@@ -90,7 +87,7 @@ export const fetchProjectBySlug = async (slug: string) => {
   const data = { ...projectData, liked: doesUserLike }
   if (!DEBUG) await updateProjectViews(data.id)
 
-  return { data, error: null }
+  return { data }
 }
 
 export const fetchUserProjects = async () => {
@@ -115,14 +112,13 @@ export const fetchUserProjects = async () => {
 
   if (error) {
     return {
-      data: null,
       error: new PostgresError('Has been an error retrieving the project.', {
         details: error.message,
       }),
     }
   }
 
-  return { data, error: null }
+  return { data }
 }
 
 export const fetchUserProject = async (projectId: string) => {
@@ -144,14 +140,13 @@ export const fetchUserProject = async (projectId: string) => {
 
   if (error) {
     return {
-      data: null,
       error: new PostgresError('Has been an error retrieving the project.', {
         details: error.message,
       }),
     }
   }
 
-  return { data, error: null }
+  return { data }
 }
 
 export const fetchProjectName = async (projectId: string) => {
@@ -159,20 +154,19 @@ export const fetchProjectName = async (projectId: string) => {
 
   const { data, error } = await supabase
     .from('projects')
-    .select('name')
+    .select('id, name')
     .eq('id', projectId)
     .single()
 
   if (error) {
     return {
-      data: null,
       error: new PostgresError('Has been an error retrieving the project.', {
         details: error.message,
       }),
     }
   }
 
-  return { data, error: null }
+  return { data }
 }
 
 export const fetchProjectStatistics = async (projectId: string) => {
@@ -260,7 +254,6 @@ export const fetchProjectStatistics = async (projectId: string) => {
 
   if (error) {
     return {
-      data: null,
       error: new PostgresError(
         'Has been an error retrieving the project statistics.',
         {
@@ -272,12 +265,11 @@ export const fetchProjectStatistics = async (projectId: string) => {
 
   if (!data) {
     return {
-      data: null,
       error: new PostgresError('Unauthorized'),
     }
   }
 
-  return { data, error: null }
+  return { data }
 }
 
 export const fetchProjectRoles = async (projectId: string) => {
@@ -293,22 +285,25 @@ export const fetchProjectRoles = async (projectId: string) => {
 
   const { data, error } = await supabase
     .from('projects')
-    .select('roles(*)')
+    .select('roles(*, applications(created_at))')
     .eq('id', projectId)
     .neq('roles.status', RoleStatus.Archived)
     .single()
 
   if (error) {
     return {
-      data: null,
       error: new PostgresError('Has been an error retrieving the roles.', {
         details: error.message,
       }),
     }
   }
 
-  const roles = data.roles
-  return { data: roles, error: null }
+  const roles = data.roles.map((role) => ({
+    ...role,
+    applications: role.applications.length,
+  }))
+
+  return { data: roles }
 }
 
 // SQL

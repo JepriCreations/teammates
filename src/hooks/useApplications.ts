@@ -1,14 +1,16 @@
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { z } from 'zod'
 
-import { ApplicationStatus } from '@/types/collections'
+import { ApplicationStatus, ApplicationUpdate } from '@/types/collections'
 import { PostgresError } from '@/lib/errors'
 import { applicationSchema } from '@/lib/validations/application'
 
 export const useApplication = () => {
+  const router = useRouter()
   const [isPending, setIsPending] = useState(false)
 
-  const addApplication = async (values: z.infer<typeof applicationSchema>) => {
+  const insert = async (values: z.infer<typeof applicationSchema>) => {
     try {
       setIsPending(true)
 
@@ -32,46 +34,36 @@ export const useApplication = () => {
         throw resp.error
       }
 
-      return { error: null, data: resp.data }
+      return { data: resp.data }
     } catch (error: any) {
-      return { error, data: null }
+      return { error }
     } finally {
       setIsPending(false)
     }
   }
 
-  //   const updateApplicationStatus = async ({
-  //     role_id,
-  //     status,
-  //   }: {
-  //     role_id: string
-  //     status: ApplicationStatus
-  //   }) => {
-  //     try {
-  //       setIsPending(true)
+  const update = async (values: ApplicationUpdate) => {
+    try {
+      setIsPending(true)
 
-  //       const resp = await fetch(`${location.origin}/api/roles`, {
-  //         method: 'PATCH',
-  //         body: JSON.stringify({ role_id, status }),
-  //       })
-  //         .then((resp) => resp.json())
-  //         .then(
-  //           (resp: {
-  //             error: PostgresError | null
-  //             data: { id: string } | null
-  //           }) => resp
-  //         )
-  //       if (resp.error) {
-  //         throw resp.error
-  //       }
+      const resp = await fetch(`${location.origin}/api/applications`, {
+        method: 'PATCH',
+        body: JSON.stringify(values),
+      })
+        .then((resp) => resp.json())
+        .then((resp: { error: PostgresError | null }) => resp)
+      if (resp.error) {
+        throw resp.error
+      }
 
-  //       return { error: null, data: resp.data }
-  //     } catch (error: any) {
-  //       return { error, data: null }
-  //     } finally {
-  //       setIsPending(false)
-  //     }
-  //   }
+      router.refresh()
+      return {}
+    } catch (error: any) {
+      return { error }
+    } finally {
+      setIsPending(false)
+    }
+  }
 
-  return { addApplication, isPending }
+  return { insert, update, isPending }
 }

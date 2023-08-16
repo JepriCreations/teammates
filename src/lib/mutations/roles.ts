@@ -56,11 +56,11 @@ export const insertRoles = async (values: z.infer<typeof rolesSchema>) => {
     }
 
     revalidatePath(routes.HOME)
-    return { data, error: null }
+    return { data }
   } catch (error) {
     if (isPostgresError(error)) {
       console.log({ error })
-      return { data: null, error }
+      return { error }
     }
 
     throw error
@@ -102,11 +102,11 @@ export const updateRoleStatus = async ({
     }
 
     revalidatePath(routes.HOME)
-    return { data, error: null }
+    return { data }
   } catch (error) {
     if (isPostgresError(error)) {
       console.log({ error })
-      return { data: null, error }
+      return { error }
     }
 
     throw error

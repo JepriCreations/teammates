@@ -5,7 +5,6 @@ import { z } from 'zod'
 
 import { Project, ProjectUpdate } from '@/types/collections'
 import { PostgresError } from '@/lib/errors'
-import { slugify } from '@/lib/utils'
 import { createProjectSchema } from '@/lib/validations/project'
 import { useSupabase } from '@/components/providers/supabase-provider'
 
@@ -65,10 +64,10 @@ export const useProjects = () => {
 
       router.refresh()
 
-      return { error: null, data }
+      return { data }
     } catch (error: any) {
       console.log({ error })
-      return { error, data: null }
+      return { error }
     } finally {
       setIsPending(false)
     }
@@ -114,9 +113,9 @@ export const useProjects = () => {
 
       router.refresh()
 
-      return { error, data }
+      return { data }
     } catch (error: any) {
-      return { error, data: null }
+      return { error }
     } finally {
       setIsPending(false)
     }
@@ -136,9 +135,10 @@ export const useProjects = () => {
       }
       router.refresh()
       router.replace(routes.PROJECTS)
+      return {}
     } catch (error) {
       setIsRemoving(false)
-      return { error, data: null }
+      return { error }
     }
   }
 
@@ -153,9 +153,9 @@ export const useProjects = () => {
         throw new Error('Failed to fetch data')
       }
       router.refresh()
-      return { error: null, data: null }
+      return {}
     } catch (error) {
-      return { error, data: null }
+      return { error }
     }
   }
 
@@ -170,9 +170,9 @@ export const useProjects = () => {
         throw new Error('Failed to fetch data')
       }
       router.refresh()
-      return { error: null, data: null }
+      return {}
     } catch (error) {
-      return { error, data: null }
+      return { error }
     }
   }
 

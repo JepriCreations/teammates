@@ -14,8 +14,7 @@ export async function POST(request: Request) {
     return NextResponse.json(result)
   } catch (error: any) {
     return NextResponse.json({
-      error: new PostgresError(error.message),
-      data: null,
+      error: new PostgresError(error.message)
     })
   }
 }
@@ -27,8 +26,7 @@ export async function PATCH(request: Request) {
     return NextResponse.json(result)
   } catch (error: any) {
     return NextResponse.json({
-      error: new PostgresError(error.message),
-      data: null,
+      error: new PostgresError(error.message)
     })
   }
 }
@@ -40,8 +38,7 @@ export async function DELETE(request: Request) {
     return NextResponse.json(result)
   } catch (error: any) {
     return NextResponse.json({
-      error: new PostgresError(error.message),
-      data: null,
+      error: new PostgresError(error.message)
     })
   }
 }

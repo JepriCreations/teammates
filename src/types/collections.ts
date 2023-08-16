@@ -38,7 +38,9 @@ export type Profile = Database['public']['Tables']['profiles']['Row'] & {
   avatar: string | undefined | null
 }
 
-export type Role = Database['public']['Tables']['roles']['Row']
+export type Role = Database['public']['Tables']['roles']['Row'] & {
+  applications: number
+}
 export type Project = Database['public']['Tables']['projects']['Row']
 
 export type ProjectInsert = Database['public']['Tables']['projects']['Insert']
@@ -49,3 +51,9 @@ export type ProjectLocation = {
   country: string
 }
 export type ProjectLinks = Array<{ link: string; name: string }>
+
+export type ApplicationUpdate = {
+  status: ApplicationStatus
+  role_id: string
+  user_id: string
+}

@@ -229,7 +229,7 @@ export default function ComponentPage() {
         </Card>
 
         {/* Link Card */}
-        <LinkCard href="/#">
+        <LinkCard href="#">
           <div className="w-[350px] p-6">I am a link card</div>
         </LinkCard>
 

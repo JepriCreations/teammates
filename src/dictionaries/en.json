@@ -1,170 +1,186 @@
 {
-  "General": {
-    "success": "Success!",
-    "ups": "Oops, there has been an error.",
-    "cancel": "Cancel",
-    "save": "Save",
-    "saving": "Saving",
-    "continue": "Continue",
-    "save_changes": "Save changes",
-    "than_last_month": "Than last month"
-  },
-  "Theme": {
-    "toggle_theme": "Toggle theme",
-    "dark": "Dark",
-    "light": "Light",
-    "system": "System"
+  "Applications": {
+    "about": "About",
+    "links": "Links",
+    "reject": "Reject",
+    "Status": {
+      "standby": "Standby",
+      "granted": "Granted",
+      "rejected": "Rejected"
+    }
   },
   "Auth": {
-    "discover": "Discover projects",
-    "welcome": "Welcome",
-    "subtitle": "Unlock the Power of Collaboration and Connect with Your Dream Team!",
-    "login_with": "Sign in with",
     "an_account_will_be_created": "An account will be created if you don't have one.",
+    "discover": "Discover projects",
+    "illustrations_by": "Illustrations by %0",
+    "login_with": "Sign in with",
     "privacy": "Privacy policy",
-    "illustrations_by": "Illustrations by %0"
-  },
-  "Site": {
-    "title": "Find the next project to be part of.",
-    "subtitle": "The powerhouse platform for connecting visionaries and Cultivating Success. Step into a world of collaboration and innovation."
-  },
-  "Menus": {
-    "discover": "Discover",
-    "blog": "Blog",
-    "about": "About",
-    "dashboard": "Dashboard",
-    "login": "Login"
-  },
-  "Dashboard": {
-    "overview": "Overview",
-    "projects": "Projects",
-    "profile": "Profile",
-    "account": "Account",
-    "preferences": "Preferences",
-    "statistics": "Statistics",
-    "details": "Details",
-    "roles": "Roles"
-  },
-  "Projects": {
-    "new_project": "New Project",
-    "active": "Active",
-    "disabled": "Disabled",
-    "public": "Public",
-    "hidden": "Hidden",
-    "create_new_project": "Create new project",
-    "new_project_description": "Unlock the power of collaboration: find like-minded teammates to elevate your project and make your vision a resounding success.",
-    "add_available_roles": "Add available roles",
-    "add_available_roles_description": "Identify the key roles needed for your project's success, ranging from developers to designers, marketers, and more.",
-    "views": "Views",
-    "success_update": "The project has been updated.",
-    "success_create": "The project has been created.",
-    "basic_info": "Basic Info",
-    "name": "Project name",
-    "summary": "Summary",
-    "summary_description": "Summarize what your project aims to achieve in one line.",
-    "details": "Project details",
-    "icon": "Icon",
-    "icon_description": "The icon image should have an aspect ratio of 1/1 for a better looking. The formats allowed are .png, .jpg, .webp",
-    "categories": "Categories",
-    "select_categories": "Select categories",
-    "search_category": "Search category...",
-    "no_category_found": "No category found",
-    "categories_max": "Choose a maximum of 2 categories that represent your project.",
-    "description": "Description",
-    "description_placeholder": "Craft a captivating and concise description that showcases the core of your project. Clearly convey your project's purpose, goals, and any specific requirements to attract potential teammates. A well-written description will help others visualize themselves joining your project and contribute their skills and passion. By providing a clear and engaging summary, you increase the likelihood of finding like-minded individuals eager to collaborate and bring your project to life.",
-    "location": "Location",
-    "country": "Country",
-    "search_country": "Search country...",
-    "country_not_found": "No country found",
-    "city": "City",
-    "city_description": "Specially useful when you project require teammates near you.",
-    "links": "Links",
-    "project_statistics": "Project statistics",
-    "project_details": "Project details",
-    "project_status": "Project status",
-    "project_roles": "Project roles",
-    "show_danger_zone": "Show danger zone",
-    "danger_zone": "Danger zone",
-    "remove_project": "Remove project",
-    "remove_title": "Attention!",
-    "remove_description": "Are you sure you want to remove the project? This action can't be undone. To continue write down the project name.",
-    "optional": "optional",
-    "likes": "Likes",
-    "errors": {
-      "saving": "Has been an error while saving data.",
-      "updating": "Has been an error while updating the project.",
-      "duplicate_name": "The name already exist, please use another.",
-      "incorrect_name": "The project name is incorrect."
-    }
-  },
-  "Roles": {
-    "role": "Role",
-    "the_roles_has_been_added": "The roles has been added to the project.",
-    "select_a_role": "Select a role",
-    "search_role": "Search role...",
-    "no_role_found": "No role found",
-    "experience_level": "Experience level",
-    "select_level": "Select a level",
-    "work_mode": "Work mode",
-    "role_description": "Role description",
-    "rewards": "Rewards",
-    "add_role": "Add role",
-    "no_roles_created": "No roles created yet.",
-    "omit": "Omit for now",
-    "save_roles": "Save roles",
-    "new_role": "New role",
-    "new_role_description": "Enrich your project with the Perfect Fit: Define the Role that your team needs.",
-    "errors": {
-      "saving": "Has been an error while saving the new roles.",
-      "removing": "Has been an error while removing the role."
-    },
-    "Levels": {
-      "entry": "Entry",
-      "intermediate": "Intermediate",
-      "expert": "Expert"
-    },
-    "Workmode": {
-      "remote": "Remote",
-      "presential": "Presential"
-    },
-    "Rewards": {
-      "percent": "Percent",
-      "contract": "Contract",
-      "credit": "Credit",
-      "percent_description": "An agreed percent of the company.",
-      "contract_description": "A contract position at the company.",
-      "credit_description": "Clearly credits to the aport."
-    },
-    "Status": {
-      "open": "Open",
-      "closed": "Closed"
-    },
-    "content_creator": "Content creator",
-    "designer": "Designer"
-  },
-  "Errors": {
-    "something_went_wrong": "Oh no! Something went wrong...",
-    "another_try": "Give it another try"
-  },
-  "Project": {
-    "project_description": "About %0",
-    "open_roles": "Open roles",
-    "application_button": "I am interested",
-    "application_sent": "Your application has been sent.",
-    "you_must_login": "To send an application, you must login first",
-    "available_roles": "Apply for the role that best suits your experience.",
-    "no_roles_available": "Currently this project has not roles available.",
-    "Errors": {
-      "sending_application": "There was an error sending your application.",
-      "duplicate_application": "You have already applied for this role.",
-      "unauthenticated": "You must log in to send an application."
-    }
+    "subtitle": "Unlock the Power of Collaboration and Connect with Your Dream Team!",
+    "welcome": "Welcome"
   },
   "Categories": {
-    "technology": "Technology",
     "art": "Art",
-    "science": "Science",
+    "health": "Health",
     "literature": "Literature",
-    "health": "Health"
+    "science": "Science",
+    "technology": "Technology"
+  },
+  "Dashboard": {
+    "account": "Account",
+    "applications": "Applications",
+    "details": "Details",
+    "overview": "Overview",
+    "preferences": "Preferences",
+    "profile": "Profile",
+    "projects": "Projects",
+    "roles": "Roles",
+    "statistics": "Statistics"
+  },
+  "Errors": {
+    "another_try": "Give it another try",
+    "something_went_wrong": "Oh no! Something went wrong..."
+  },
+  "General": {
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "save": "Save",
+    "save_changes": "Save changes",
+    "saving": "Saving",
+    "success": "Success!",
+    "than_last_month": "Than last month",
+    "ups": "Oops, there has been an error.",
+    "created_at": "Created at"
+  },
+  "Menus": {
+    "about": "About",
+    "blog": "Blog",
+    "dashboard": "Dashboard",
+    "discover": "Discover",
+    "login": "Login"
+  },
+  "Project": {
+    "application_button": "I am interested",
+    "application_sent": "Your application has been sent.",
+    "available_roles": "Apply for the role that best suits your experience.",
+    "Errors": {
+      "duplicate_application": "You have already applied for this role.",
+      "sending_application": "There was an error sending your application.",
+      "unauthenticated": "You must log in to send an application."
+    },
+    "no_roles_available": "Currently this project has not roles available.",
+    "open_roles": "Open roles",
+    "project_description": "About %0",
+    "you_must_login": "To send an application, you must login first"
+  },
+  "Projects": {
+    "active": "Active",
+    "add_available_roles": "Add available roles",
+    "add_available_roles_description": "Identify the key roles needed for your project's success, ranging from developers to designers, marketers, and more.",
+    "basic_info": "Basic Info",
+    "categories": "Categories",
+    "categories_max": "Choose a maximum of 2 categories that represent your project.",
+    "city": "City",
+    "city_description": "Specially useful when you project require teammates near you.",
+    "country": "Country",
+    "country_not_found": "No country found",
+    "create_new_project": "Create new project",
+    "danger_zone": "Danger zone",
+    "description": "Description",
+    "description_placeholder": "Craft a captivating and concise description that showcases the core of your project. Clearly convey your project's purpose, goals, and any specific requirements to attract potential teammates. A well-written description will help others visualize themselves joining your project and contribute their skills and passion. By providing a clear and engaging summary, you increase the likelihood of finding like-minded individuals eager to collaborate and bring your project to life.",
+    "details": "Project details",
+    "disabled": "Disabled",
+    "errors": {
+      "duplicate_name": "The name already exist, please use another.",
+      "incorrect_name": "The project name is incorrect.",
+      "saving": "Has been an error while saving data.",
+      "updating": "Has been an error while updating the project."
+    },
+    "hidden": "Hidden",
+    "icon": "Icon",
+    "icon_description": "The icon image should have an aspect ratio of 1/1 for a better looking. The formats allowed are .png, .jpg, .webp",
+    "likes": "Likes",
+    "links": "Links",
+    "location": "Location",
+    "name": "Project name",
+    "new_project": "New Project",
+    "new_project_description": "Unlock the power of collaboration: find like-minded teammates to elevate your project and make your vision a resounding success.",
+    "no_category_found": "No category found",
+    "optional": "optional",
+    "project_details": "Project details",
+    "project_roles": "Project roles",
+    "project_statistics": "Project statistics",
+    "project_status": "Project status",
+    "public": "Public",
+    "remove_description": "Are you sure you want to remove the project? This action can't be undone. To continue write down the project name.",
+    "remove_project": "Remove project",
+    "remove_title": "Attention!",
+    "search_category": "Search category...",
+    "search_country": "Search country...",
+    "select_categories": "Select categories",
+    "show_danger_zone": "Show danger zone",
+    "success_create": "The project has been created.",
+    "success_update": "The project has been updated.",
+    "summary": "Summary",
+    "summary_description": "Summarize what your project aims to achieve in one line.",
+    "views": "Views"
+  },
+  "Roles": {
+    "application": "Application",
+    "applications": "Applications",
+    "add_role": "Add role",
+    "content_creator": "Content creator",
+    "designer": "Designer",
+    "errors": {
+      "removing": "Has been an error while removing the role.",
+      "saving": "Has been an error while saving the new roles."
+    },
+    "experience_level": "Experience level",
+    "Levels": {
+      "entry": "Entry",
+      "expert": "Expert",
+      "intermediate": "Intermediate"
+    },
+    "new_role": "New role",
+    "new_role_description": "Enrich your project with the Perfect Fit: Define the Role that your team needs.",
+    "no_role_found": "No role found",
+    "no_roles_created": "No roles created yet.",
+    "omit": "Omit for now",
+    "role_details": "Role details",
+    "rewards": "Rewards",
+    "Rewards": {
+      "contract": "Contract",
+      "contract_description": "A contract position at the company.",
+      "credit": "Credit",
+      "credit_description": "Clearly credits to the aport.",
+      "percent": "Percent",
+      "percent_description": "An agreed percent of the company."
+    },
+    "role": "Role",
+    "role_description": "Role description",
+    "save_roles": "Save roles",
+    "search_role": "Search role...",
+    "select_a_role": "Select a role",
+    "select_level": "Select a level",
+    "Status": {
+      "closed": "Closed",
+      "open": "Open",
+      "archived": "Archived"
+    },
+    "the_roles_has_been_added": "The roles has been added to the project.",
+    "work_mode": "Work mode",
+    "Workmode": {
+      "presential": "Presential",
+      "remote": "Remote"
+    }
+  },
+  "Site": {
+    "subtitle": "The powerhouse platform for connecting visionaries and Cultivating Success. Step into a world of collaboration and innovation.",
+    "title": "Find the next project to be part of."
+  },
+  "Theme": {
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System",
+    "toggle_theme": "Toggle theme"
   }
 }

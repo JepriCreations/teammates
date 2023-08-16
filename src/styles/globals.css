@@ -131,10 +131,13 @@
   }
 
   * {
+    /* border: 2px solid red; */
     border-color: theme(colors.outline);
   }
   body {
-    font-feature-settings: 'rlig' 1, 'calt' 1;
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1;
   }
 
   h1 {

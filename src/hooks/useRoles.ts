@@ -35,9 +35,9 @@ export const useRoles = () => {
         throw resp.error
       }
 
-      return { error: null, data: resp.data }
+      return { data: resp.data }
     } catch (error: any) {
-      return { error, data: null }
+      return { error }
     } finally {
       setIsPending(false)
     }
@@ -68,9 +68,9 @@ export const useRoles = () => {
         throw resp.error
       }
 
-      return { error: null, data: resp.data }
+      return { data: resp.data }
     } catch (error: any) {
-      return { error, data: null }
+      return { error }
     } finally {
       setIsPending(false)
     }

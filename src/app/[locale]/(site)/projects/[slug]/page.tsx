@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { linksIcons, LinksIconsType } from '@/constants/links'
 
 import { ProjectLinks } from '@/types/collections'
 import { getDictionary } from '@/lib/dictionaries'
@@ -7,30 +8,15 @@ import { getColorByWord } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { ApplicationButton } from '@/components/application-button'
+import { ApplyButton } from '@/components/apply-button'
 import { Error } from '@/components/error'
-import {
-  InstagramIcon,
-  LinkedinIcon,
-  PinIcon,
-  TwitterIcon,
-  WebsiteIcon,
-} from '@/components/icons'
+import { PinIcon } from '@/components/icons'
 import { LikeButton } from '@/components/like-button'
 import { RoleIcon } from '@/components/role-icons'
 
 interface ProjectProps {
   params: { slug: string; locale: string }
 }
-
-const linksIcons = {
-  twitter: <TwitterIcon />,
-  linkedin: <LinkedinIcon />,
-  instagram: <InstagramIcon />,
-  website: <WebsiteIcon />,
-} as const
-
-type LinksIconsType = keyof typeof linksIcons
 
 export default async function ProjectPage({
   params: { slug, locale },
@@ -85,11 +71,11 @@ export default async function ProjectPage({
           <section className="flex flex-wrap items-center justify-between gap-12">
             <div className="flex gap-3">
               {filteredLinks.map(({ name, link }) => {
-                const icon = linksIcons[name as LinksIconsType]
+                const Icon = linksIcons[name as LinksIconsType]
                 return (
                   <Button asChild key={name} variant="ghost" size="icon">
                     <a href={link} target="_blank">
-                      {icon}
+                      <Icon />
                     </a>
                   </Button>
                 )
@@ -127,9 +113,7 @@ export default async function ProjectPage({
                 <p className="mb-2 text-title-lg">{t(`Roles.${role.name}`)}</p>
                 <p className="muted text-body-lg">{role.description}</p>
 
-                <Separator className="my-3" />
-
-                <div className="my-8 grid grid-cols-3 gap-4">
+                <div className="my-6 grid grid-cols-3 gap-4">
                   {/* Experience level */}
                   <div className="rounded-md bg-primaryContainer p-4 text-center text-onPrimaryContainer">
                     <div className="wi-full mb-1 flex flex-col items-center justify-center gap-2 opacity-60 sm:flex-row">
@@ -166,11 +150,8 @@ export default async function ProjectPage({
                   </div>
                 </div>
 
-                <div className="ml-auto mt-8 w-fit">
-                  <ApplicationButton
-                    project_id={project.id}
-                    role_id={role.id}
-                  />
+                <div className="ml-auto mt-6 w-fit">
+                  <ApplyButton project_id={project.id} role_id={role.id} />
                 </div>
               </Card>
             ))}

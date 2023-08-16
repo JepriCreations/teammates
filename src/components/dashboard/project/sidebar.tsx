@@ -23,14 +23,16 @@ interface ProjectSideBarProps {
 export const ProjectSideBar = ({ projectId }: ProjectSideBarProps) => {
   const { t } = useDictionary()
   const pathname = usePathname()
-  const slug = pathname.split('/').pop()
+  const pathSegments = pathname.split('/')
+  pathSegments.splice(0, 2)
+  const slug = pathSegments[3]
 
   const isActive = (key: string) => {
-    return slug === key
+    return slug === key || pathSegments.pop() === key
   }
 
   return (
-    <div className="sticky top-0 z-40 flex h-[100dvh] w-14 shrink-0 flex-col justify-between overflow-hidden border-r border-outline bg-surface p-2">
+    <aside className="sticky top-0 z-40 flex h-[100dvh] w-14 shrink-0 flex-col justify-between overflow-hidden border-r border-outline bg-surface p-2">
       <section className="flex flex-col space-y-3">
         <Link href={routes.PROJECTS}>
           <div className="h-10 w-10 p-1">
@@ -83,7 +85,7 @@ export const ProjectSideBar = ({ projectId }: ProjectSideBarProps) => {
           </Button>
         </ItemTooltip>
       </section>
-    </div>
+    </aside>
   )
 }
 

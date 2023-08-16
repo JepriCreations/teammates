@@ -36,27 +36,27 @@ export interface Database {
     Tables: {
       applications: {
         Row: {
-          created_at: string | null
-          created_at_time: string | null
-          project_id: string | null
+          created_at: string
+          created_at_time: string
+          project_id: string
           role_id: string
-          status: string | null
+          status: string
           user_id: string
         }
         Insert: {
-          created_at?: string | null
-          created_at_time?: string | null
-          project_id?: string | null
+          created_at?: string
+          created_at_time?: string
+          project_id: string
           role_id: string
-          status?: string | null
+          status: string
           user_id: string
         }
         Update: {
-          created_at?: string | null
-          created_at_time?: string | null
-          project_id?: string | null
+          created_at?: string
+          created_at_time?: string
+          project_id?: string
           role_id?: string
-          status?: string | null
+          status?: string
           user_id?: string
         }
         Relationships: [

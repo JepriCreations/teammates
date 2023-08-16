@@ -61,11 +61,11 @@ export const createProject = async (values: z.infer<typeof projectSchema>) => {
       })
     }
 
-    return { error: null, data }
+    return { data }
   } catch (error) {
     if (isPostgresError(error)) {
       console.log({ error })
-      return { data: null, error }
+      return { error }
     }
 
     throw error
@@ -112,11 +112,10 @@ export const updateProject = async (values: ProjectUpdate) => {
         details: updateError.message,
       })
     }
-    return { data: { success: true }, error: null }
+    return { data: { success: true } }
   } catch (error) {
     if (isPostgresError(error)) {
-      console.log({ error })
-      return { data: null, error }
+      return { error }
     }
 
     throw error
@@ -151,11 +150,10 @@ export const removeProject = async (id: string) => {
       })
     }
 
-    return { data: { success: true }, error: null }
+    return { data: { success: true } }
   } catch (error) {
     if (isPostgresError(error)) {
-      console.log({ error })
-      return { data: null, error }
+      return { error }
     }
 
     throw error
@@ -204,11 +202,10 @@ export const addLike = async ({ project_id }: { project_id: string }) => {
       })
     }
 
-    return { error: null, data: update.data }
+    return { data: update.data }
   } catch (error) {
     if (isPostgresError(error)) {
-      console.log({ error })
-      return { data: null, error }
+      return { error }
     }
 
     throw error
@@ -250,11 +247,11 @@ export const removeLike = async ({ project_id }: { project_id: string }) => {
       })
     }
 
-    return { error: null, data: update.data }
+    return { data: update.data }
   } catch (error) {
     if (isPostgresError(error)) {
       console.log({ error })
-      return { data: null, error }
+      return { error }
     }
 
     throw error
