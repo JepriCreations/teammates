@@ -23,7 +23,7 @@ const alertVariants = cva(
   }
 )
 
-const Alert = React.forwardRef<
+const AlertRoot = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
 >(({ className, variant, ...props }, ref) => (
@@ -34,7 +34,7 @@ const Alert = React.forwardRef<
     {...props}
   />
 ))
-Alert.displayName = 'Alert'
+AlertRoot.displayName = 'AlertRoot'
 
 const AlertTitle = React.forwardRef<
   HTMLParagraphElement,
@@ -60,4 +60,9 @@ const AlertDescription = React.forwardRef<
 ))
 AlertDescription.displayName = 'AlertDescription'
 
-export { Alert, AlertTitle, AlertDescription }
+const Alert = Object.assign(AlertRoot, {
+  Title: AlertTitle,
+  Description: AlertDescription,
+})
+
+export { Alert }

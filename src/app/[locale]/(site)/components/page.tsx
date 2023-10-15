@@ -3,40 +3,33 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Alert } from '@/components/ui/alert'
+import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Chip } from '@/components/ui/chip'
+import { Dropzone, IMAGE_MIME_TYPE } from '@/components/ui/drop-zone'
+import { DropdownMenu } from '@/components/ui/dropdown-menu'
 import {
   Form,
   FormControl,
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+import { IconButton } from '@/components/ui/icon-button'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { SearchBar } from '@/components/ui/search-bar'
+import { Select } from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Switch } from '@/components/ui/switch'
+import { TextField } from '@/components/ui/text-field'
 import { Textarea } from '@/components/ui/textarea'
-import { BellExclamationIcon, GithubIcon, HomeIcon } from '@/components/icons'
+import { Combobox } from '@/components/combobox'
+import { Icons } from '@/components/icons'
 import { LinkCard } from '@/components/link-card'
 
 export default function ComponentPage() {
@@ -52,9 +45,9 @@ export default function ComponentPage() {
   }, [mounted])
 
   return (
-    <main className="mb-36 space-y-4 p-10">
-      <h2>Typography</h2>
-      <section className="mb-6 space-y-1">
+    <main className="p-10">
+      <h2 className="mb-4">Typography</h2>
+      <section className="mb-20 space-y-1">
         <h1>H1 tag</h1>
         <h2>H2 tag</h2>
         <p>Foreground</p>
@@ -63,49 +56,238 @@ export default function ComponentPage() {
           <p className="text-outline">Muted foreground</p>
         </div>
       </section>
-      <h2>Buttons</h2>
-      <section className="mb-6">
-        <div className="mb-4 flex items-start gap-3">
-          <Button>Primary button</Button>
-          <Button variant="ghost">Ghost button</Button>
-          <Button variant="outline">Outline button</Button>
-          <Button variant="destructive">Destructive button</Button>
-          <Button icon={<HomeIcon />} size="icon" />
-          <Button variant="secondary">Secondary button</Button>
-          <Button variant="accent">Accent button</Button>
+      <h2 className="mb-4">Buttons</h2>
+      <section className="mb-20">
+        <div className="mb-4 flex flex-wrap items-start gap-3">
+          <Button variant="brutalist">Brutalist button</Button>
+
+          <Button variant="filled">Filled button</Button>
+          <Button variant="elevated">Elevated button</Button>
+          <Button variant="outlined">Outlined button</Button>
+          <Button variant="text">Text button</Button>
+          <Button variant="tonal">Tonal button</Button>
         </div>
-        <div className="mb-4 flex gap-3">
-          <Button disabled>Primary button</Button>
-          <Button disabled variant="ghost">
-            Ghost button
+        <div className="mb-4 flex flex-wrap gap-3">
+          <Button variant="brutalist" disabled>
+            Brutalist button
           </Button>
-          <Button disabled variant="outline">
-            Outline button
+
+          <Button variant="filled" disabled>
+            Filled button
           </Button>
-          <Button disabled variant="destructive">
-            Destructive button
+          <Button variant="elevated" disabled>
+            Elevated button
           </Button>
-          <Button disabled icon={<HomeIcon />} size="icon" />
-          <Button disabled variant="secondary">
-            Secondary button
+          <Button variant="outlined" disabled>
+            Outlined button
           </Button>
-          <Button disabled variant="accent">
-            Accent button
+          <Button variant="text" disabled>
+            Text button
+          </Button>
+          <Button variant="tonal" disabled>
+            Tonal button
           </Button>
         </div>
-        <div className="flex items-start gap-3">
-          <Button size="sm">Small button</Button>
-          <Button size="lg">Large button</Button>
+        <div className="mb-4 flex flex-wrap items-start gap-3">
+          <IconButton asChild>
+            <a href="#">
+              <Icons.home />
+            </a>
+          </IconButton>
+          <IconButton variant="outlined">
+            <Icons.home />
+          </IconButton>
+          <IconButton variant="standard">
+            <Icons.home />
+          </IconButton>
+          <IconButton variant="tonal">
+            <Icons.home />
+          </IconButton>
         </div>
       </section>
-      <h2>Switch</h2>
-      <section className="mb-6 flex gap-3">
+      <h2 className="mb-4">Chips</h2>
+      <section className="mb-20 flex flex-wrap gap-3">
+        <Chip>
+          <Chip.Label>Assist chip</Chip.Label>
+        </Chip>
+        <Chip>
+          <Chip.Icon>
+            <Icons.check size="100%" />
+          </Chip.Icon>
+          <Chip.Label>Assist chip</Chip.Label>
+        </Chip>
+        <Chip>
+          <Chip.Icon>
+            <Icons.check size="100%" />
+          </Chip.Icon>
+          <Chip.Label>Assist chip</Chip.Label>
+          <Chip.Button>
+            <Icons.close size={18} />
+          </Chip.Button>
+        </Chip>
+        <Chip
+          onClick={() => {
+            console.log('Clicked')
+          }}
+        >
+          <Chip.Icon>
+            <Icons.check size="100%" />
+          </Chip.Icon>
+          <Chip.Label>Assist chip</Chip.Label>
+        </Chip>
+        <Chip
+          disabled
+          onClick={() => {
+            console.log('Clicked')
+          }}
+        >
+          <Chip.Icon>
+            <Icons.check size="100%" />
+          </Chip.Icon>
+          <Chip.Label>Assist chip</Chip.Label>
+        </Chip>
+        <Chip disabled>
+          <Chip.Icon>
+            <Icons.check size="100%" />
+          </Chip.Icon>
+          <Chip.Label>Disabled chip</Chip.Label>
+        </Chip>
+        <Chip selected>
+          <Chip.Icon>
+            <Icons.check size="100%" />
+          </Chip.Icon>
+          <Chip.Label>Assist chip</Chip.Label>
+        </Chip>
+        <Chip selected disabled>
+          <Chip.Icon>
+            <Icons.check size="100%" />
+          </Chip.Icon>
+          <Chip.Label>Assist chip</Chip.Label>
+        </Chip>
+        <Chip disabled selected>
+          <Chip.Icon>
+            <Icons.check size="100%" />
+          </Chip.Icon>
+          <Chip.Label>Assist chip</Chip.Label>
+          <Chip.Button>
+            <Icons.close size={18} />
+          </Chip.Button>
+        </Chip>
+      </section>
+
+      <h2 className="mb-4">Dropdown</h2>
+      <section className="mb-20 flex flex-wrap gap-3">
+        <DropdownMenu>
+          <DropdownMenu.Trigger asChild>
+            <Button variant="outlined">Open</Button>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content className="w-56" align="start">
+            <DropdownMenu.Label>My Account</DropdownMenu.Label>
+            <DropdownMenu.Divider />
+            <DropdownMenu.Group>
+              <DropdownMenu.MenuItem>
+                <Icons.credit className="mr-4 h-5 w-5" />
+                <span>Profile</span>
+                <DropdownMenu.Shortcut>⇧⌘P</DropdownMenu.Shortcut>
+              </DropdownMenu.MenuItem>
+              <DropdownMenu.MenuItem>
+                <Icons.archive className="mr-4 h-5 w-5" />
+                <span>Billing</span>
+                <DropdownMenu.Shortcut>⌘B</DropdownMenu.Shortcut>
+              </DropdownMenu.MenuItem>
+              <DropdownMenu.MenuItem>
+                <Icons.menu className="mr-4 h-5 w-5" />
+                <span>Settings</span>
+                <DropdownMenu.Shortcut>⌘S</DropdownMenu.Shortcut>
+              </DropdownMenu.MenuItem>
+              <DropdownMenu.MenuItem>
+                <Icons.systemMode className="mr-4 h-5 w-5" />
+                <span>Keyboard shortcuts</span>
+                <DropdownMenu.Shortcut>⌘K</DropdownMenu.Shortcut>
+              </DropdownMenu.MenuItem>
+            </DropdownMenu.Group>
+            <DropdownMenu.Divider />
+            <DropdownMenu.Group>
+              <DropdownMenu.MenuItem>
+                <Icons.archive className="mr-4 h-5 w-5" />
+                <span>Team</span>
+                <DropdownMenu.CheckBoxItem checked />
+              </DropdownMenu.MenuItem>
+              <DropdownMenu.SubMenu>
+                <DropdownMenu.SubTrigger>
+                  <Icons.home className="mr-4 h-5 w-5" />
+                  <span>Invite users</span>
+                </DropdownMenu.SubTrigger>
+                <DropdownMenu.Portal>
+                  <DropdownMenu.SubContent>
+                    <DropdownMenu.MenuItem>
+                      <Icons.email className="mr-4 h-5 w-5" />
+                      <span>Email</span>
+                    </DropdownMenu.MenuItem>
+                    <DropdownMenu.MenuItem>
+                      <Icons.add className="mr-4 h-5 w-5" />
+                      <span>Message</span>
+                    </DropdownMenu.MenuItem>
+                    <DropdownMenu.Divider />
+                    <DropdownMenu.MenuItem>
+                      <Icons.add className="mr-4 h-5 w-5" />
+                      <span>More...</span>
+                    </DropdownMenu.MenuItem>
+                  </DropdownMenu.SubContent>
+                </DropdownMenu.Portal>
+              </DropdownMenu.SubMenu>
+              <DropdownMenu.MenuItem>
+                <Icons.contract className="mr-4 h-5 w-5" />
+                <span>New Team</span>
+                <DropdownMenu.Shortcut>⌘+T</DropdownMenu.Shortcut>
+              </DropdownMenu.MenuItem>
+            </DropdownMenu.Group>
+            <DropdownMenu.Divider />
+            <DropdownMenu.MenuItem>
+              <Icons.github className="mr-4 h-5 w-5" />
+              <span>GitHub</span>
+            </DropdownMenu.MenuItem>
+            <DropdownMenu.MenuItem>
+              <Icons.hits className="mr-4 h-5 w-5" />
+              <span>Support</span>
+            </DropdownMenu.MenuItem>
+            <DropdownMenu.MenuItem disabled>
+              <Icons.apple className="mr-4 h-5 w-5" />
+              <span>API</span>
+            </DropdownMenu.MenuItem>
+            <DropdownMenu.Divider />
+            <DropdownMenu.Label>Radiogroup</DropdownMenu.Label>
+            <DropdownMenu.RadioGroup value="pedro">
+              <DropdownMenu.RadioItem value="pedro">
+                Pedro Duarte
+              </DropdownMenu.RadioItem>
+              <DropdownMenu.RadioItem value="colm">
+                Colm Tuite
+              </DropdownMenu.RadioItem>
+            </DropdownMenu.RadioGroup>
+            <DropdownMenu.Divider />
+
+            <DropdownMenu.MenuItem>
+              <Icons.logout className="mr-4 h-5 w-5" />
+              <span>Log out</span>
+              <DropdownMenu.Shortcut>⇧⌘Q</DropdownMenu.Shortcut>
+            </DropdownMenu.MenuItem>
+          </DropdownMenu.Content>
+        </DropdownMenu>
+      </section>
+
+      <h2 className="mb-4">Switch</h2>
+      <section className="mb-20 flex flex-wrap gap-3">
         <Switch />
         <Switch disabled />
         <Switch checked disabled />
+        <Switch withIcons />
+        <Switch disabled withIcons />
+        <Switch checked disabled withIcons />
+        <Switch widthIconOnSelected />
       </section>
-      <h2>CheckBox</h2>
-      <section className="mb-6 flex flex-col gap-3">
+      <h2 className="mb-4">CheckBox</h2>
+      <section className="mb-20 flex flex-col gap-3">
         <div className="flex items-center space-x-2">
           <Checkbox id="terms" />
           <Label htmlFor="terms">Accept terms and conditions</Label>
@@ -119,8 +301,8 @@ export default function ComponentPage() {
           <Label htmlFor="terms">Accept terms and conditions</Label>
         </div>
       </section>
-      <h2>Radio</h2>
-      <section className="mb-6 flex flex-col gap-3">
+      <h2 className="mb-4">Radio</h2>
+      <section className="mb-20 flex flex-col gap-3">
         <RadioGroup defaultValue="comfortable">
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="default" id="r1" />
@@ -136,38 +318,684 @@ export default function ComponentPage() {
           </div>
         </RadioGroup>
       </section>
-      <h2>Input</h2>
-      <section className="mb-6 flex max-w-sm flex-col gap-3">
-        <Input type="email" placeholder="Email" />
-        <Input disabled type="email" placeholder="Email" />
-        <Textarea placeholder="Content" />
-        <Input
-          leftSection={<GithubIcon className="text-outline" />}
-          placeholder="Github username"
-        />
+      <h2 className="mb-4">Input</h2>
+      <section className="mb-20 max-w-sm space-y-3">
+        <p className="text-title-lg">Search bar</p>
+        <SearchBar>
+          <SearchBar.LeftSection>
+            <IconButton variant="standard" className="-ml-2">
+              <Icons.menu />
+            </IconButton>
+          </SearchBar.LeftSection>
+          <SearchBar.Input placeholder="Hinted search text" />
+          <SearchBar.RightSection>
+            <IconButton variant="standard" className="-mr-2">
+              <Avatar className="h-8">
+                <Avatar.Image src="https://github.com/jepricreations.png" />
+                <Avatar.Fallback>JC</Avatar.Fallback>
+              </Avatar>
+            </IconButton>
+          </SearchBar.RightSection>
+        </SearchBar>
+        <SearchBar>
+          <SearchBar.LeftSection>
+            <IconButton variant="standard" className="-ml-2">
+              <Icons.menu />
+            </IconButton>
+          </SearchBar.LeftSection>
+          <SearchBar.Input placeholder="Hinted search text" />
+          <SearchBar.RightSection>
+            <Icons.search />
+          </SearchBar.RightSection>
+        </SearchBar>
+        <SearchBar>
+          <SearchBar.LeftSection>
+            <IconButton variant="standard" className="-ml-2">
+              <Icons.menu />
+            </IconButton>
+          </SearchBar.LeftSection>
+          <SearchBar.Input placeholder="Hinted search text" />
+          <SearchBar.RightSection>
+            <Icons.search />
+            <IconButton variant="standard" className="-mr-2">
+              <Avatar className="h-8">
+                <Avatar.Image src="https://github.com/jepricreations.png" />
+                <Avatar.Fallback>JC</Avatar.Fallback>
+              </Avatar>
+            </IconButton>
+          </SearchBar.RightSection>
+        </SearchBar>
+        <SearchBar>
+          <SearchBar.LeftSection>
+            <Icons.search />
+          </SearchBar.LeftSection>
+          <SearchBar.Input placeholder="Hinted search text" />
+        </SearchBar>
+      </section>
+      <section className="mb-20 flex max-w-3xl flex-col gap-3">
+        <div className="grid grid-cols-2 gap-6">
+          {/* Filled examples */}
+          <div className="mb-12 space-y-4">
+            <p className="text-title-lg">Filled</p>
+            <TextField label="Email" type="email" placeholder="Your email" />
+            <TextField
+              disabled
+              label="Disabled email"
+              type="email"
+              placeholder="Your email"
+              error="Required"
+            />
+            <TextField
+              disabled
+              label="Disabled email"
+              type="email"
+              placeholder="Your email"
+              value="Disabled with value"
+              readOnly
+            />
+            <TextField type="email" placeholder="No label" />
+            <TextField
+              type="email"
+              placeholder="Label with error"
+              error="Required"
+              label="Email"
+            />
+            <TextField
+              leadingIcon={<Icons.github />}
+              placeholder="Github username"
+              label="Github"
+            />
+            <TextField
+              leadingIcon={<Icons.github />}
+              placeholder="Github username"
+              label="Github"
+              disabled
+            />
+            <TextField placeholder="Your salary" label="Amount" suffix="$" />
+            <TextField
+              placeholder="Your salary"
+              label="Amount"
+              suffix="$"
+              disabled
+            />
+            <TextField
+              placeholder="Your place"
+              label="Location"
+              trailingIcon={<Icons.search />}
+            />
+            <TextField
+              placeholder="Your place"
+              label="Location"
+              error="Required"
+              trailingIcon={<Icons.pin />}
+            />
+            <TextField
+              placeholder="Your place"
+              label="Location"
+              trailingIcon={<Icons.search />}
+              disabled
+            />
+          </div>
+
+          {/* Outlined Examples */}
+          <div className="mb-12 space-y-4">
+            <p className="text-title-lg">Outline</p>
+            <TextField
+              variant="outlined"
+              label="Email"
+              type="email"
+              placeholder="Your email"
+            />
+            <TextField
+              variant="outlined"
+              disabled
+              label="Disabled email"
+              type="email"
+              placeholder="Your email"
+              error="Required"
+            />
+            <TextField
+              variant="outlined"
+              disabled
+              label="Disabled email"
+              type="email"
+              placeholder="Your email"
+              value="email@mail.com"
+              readOnly
+            />
+
+            <TextField
+              variant="outlined"
+              disabled
+              label="Disabled email"
+              type="email"
+              placeholder="Your email"
+              error="Required"
+              value="email@mail.com"
+              readOnly
+            />
+
+            <TextField
+              variant="outlined"
+              type="email"
+              placeholder="No label"
+              disabled
+            />
+
+            <TextField variant="outlined" type="email" placeholder="No label" />
+
+            <TextField
+              variant="outlined"
+              type="email"
+              placeholder="No label with error"
+              error="Required"
+            />
+
+            <TextField
+              variant="outlined"
+              type="email"
+              placeholder="Label with error"
+              error="Required"
+              label="Email"
+            />
+
+            <TextField
+              variant="outlined"
+              type="email"
+              placeholder="Label with error"
+              error="Required"
+              label="Email"
+              value="incorrect@email"
+              readOnly
+            />
+            <TextField
+              variant="outlined"
+              leadingIcon={<Icons.github />}
+              placeholder="Github username"
+              label="Github"
+            />
+            <TextField
+              variant="outlined"
+              leadingIcon={<Icons.github />}
+              placeholder="Github username"
+              label="Github"
+              disabled
+            />
+            <TextField
+              variant="outlined"
+              placeholder="Your salary"
+              label="Amount"
+              suffix="$"
+            />
+            <TextField
+              variant="outlined"
+              placeholder="Your salary"
+              label="Amount"
+              suffix="$"
+              disabled
+            />
+            <TextField
+              variant="outlined"
+              placeholder="Your place"
+              label="Location"
+              trailingIcon={<Icons.search />}
+            />
+            <TextField
+              variant="outlined"
+              placeholder="Your place"
+              label="Location"
+              error="Required"
+              trailingIcon={<Icons.pin />}
+            />
+            <TextField
+              variant="outlined"
+              placeholder="Your place"
+              label="Location"
+              trailingIcon={<Icons.search />}
+              disabled
+            />
+
+            <TextField
+              variant="outlined"
+              rightSection={<Button variant="tonal">Subscribe</Button>}
+              placeholder="With right section"
+              label="Right section"
+              className="pr-[125px]"
+            />
+          </div>
+          {/* Filled Textarea examples */}
+          <div className="mb-12 space-y-4">
+            <p className="text-title-lg">Filled</p>
+            <Textarea placeholder="Placeholder" label="Label" />
+            <Textarea placeholder="No Label Placeholder" />
+            <Textarea
+              placeholder="No Label Placeholder"
+              label="Label"
+              error="required"
+            />
+            <Textarea
+              placeholder="Placeholder"
+              label="Disabled placeholder"
+              disabled
+            />
+
+            <Textarea
+              placeholder="Placeholder"
+              label="Disabled placeholder"
+              disabled
+              value="Disabled with value"
+              readOnly
+            />
+
+            <Textarea
+              disabled
+              placeholder="Disabled with error"
+              label="Label"
+              error="required"
+            />
+          </div>
+          {/* Outlined Textarea examples */}
+          <div className="mb-12 space-y-4">
+            <p className="text-title-lg">Outlined</p>
+            <Textarea
+              variant="outlined"
+              placeholder="Placeholder"
+              label="Label"
+            />
+            <Textarea variant="outlined" placeholder="No Label Placeholder" />
+            <Textarea
+              variant="outlined"
+              placeholder="No Label Placeholder"
+              label="Label"
+              error="required"
+            />
+            <Textarea
+              variant="outlined"
+              placeholder="Placeholder"
+              label="Disabled placeholder"
+              disabled
+            />
+
+            <Textarea
+              variant="outlined"
+              placeholder="Placeholder"
+              label="Disabled placeholder"
+              disabled
+              value="Disabled with value"
+            />
+
+            <Textarea
+              variant="outlined"
+              disabled
+              placeholder="Disabled with error"
+              label="Label"
+              error="required"
+            />
+          </div>
+        </div>
+
+        {/* Select examples */}
+        <div className="grid grid-cols-2 gap-6">
+          {/* Filled examples */}
+          <div className="mb-12 space-y-4">
+            <Select>
+              <Select.Trigger
+                id="framework"
+                placeholder="Select a framework"
+                label="Framework Select"
+              />
+              <Select.Content position="popper">
+                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                  <Select.Item key={value} value={value}>
+                    {value}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select>
+
+            <Select error="Required">
+              <Select.Trigger
+                id="framework"
+                placeholder="Select a framework"
+                label="Framework Select"
+              />
+              <Select.Content position="popper">
+                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                  <Select.Item key={value} value={value}>
+                    {value}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select>
+
+            <Select error="Required">
+              <Select.Trigger
+                id="framework"
+                placeholder="Error with no label"
+              />
+              <Select.Content position="popper">
+                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                  <Select.Item key={value} value={value}>
+                    {value}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select>
+
+            <Select>
+              <Select.Trigger
+                id="framework"
+                placeholder="Select a framework no label"
+              />
+              <Select.Content position="popper">
+                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                  <Select.Item key={value} value={value}>
+                    {value}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select>
+
+            <Select disabled>
+              <Select.Trigger
+                id="framework"
+                placeholder="Select a framework"
+                label="Framework Select"
+              />
+              <Select.Content position="popper">
+                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                  <Select.Item key={value} value={value}>
+                    {value}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select>
+
+            <Select disabled defaultValue="Next.js">
+              <Select.Trigger
+                id="framework"
+                placeholder="Select a framework"
+                label="Disabled with value"
+              />
+              <Select.Content position="popper">
+                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                  <Select.Item key={value} value={value}>
+                    {value}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select>
+          </div>
+          {/* Outlined examples */}
+          <div className="mb-12 space-y-4">
+            <Select variant="outlined">
+              <Select.Trigger
+                id="framework"
+                placeholder="Select a framework"
+                label="Framework Select"
+              />
+              <Select.Content position="popper">
+                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                  <Select.Item key={value} value={value}>
+                    {value}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select>
+
+            <Select variant="outlined" error="required">
+              <Select.Trigger
+                id="framework"
+                placeholder="Select a framework"
+                label="Framework Select"
+              />
+              <Select.Content position="popper">
+                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                  <Select.Item key={value} value={value}>
+                    {value}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select>
+
+            <Select variant="outlined" error="Required">
+              <Select.Trigger
+                id="framework"
+                placeholder="Error with no label"
+              />
+              <Select.Content position="popper">
+                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                  <Select.Item key={value} value={value}>
+                    {value}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select>
+
+            <Select variant="outlined">
+              <Select.Trigger
+                id="framework"
+                placeholder="Select a framework no label"
+              />
+              <Select.Content position="popper">
+                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                  <Select.Item key={value} value={value}>
+                    {value}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select>
+
+            <Select variant="outlined" disabled>
+              <Select.Trigger
+                id="framework"
+                placeholder="Select a framework"
+                label="Framework Select"
+              />
+              <Select.Content position="popper">
+                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                  <Select.Item key={value} value={value}>
+                    {value}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select>
+
+            <Select variant="outlined" disabled defaultValue="Next.js">
+              <Select.Trigger
+                id="framework"
+                placeholder="Select a framework"
+                label="Disabled with value"
+              />
+              <Select.Content position="popper">
+                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                  <Select.Item key={value} value={value}>
+                    {value}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select>
+          </div>
+
+          {/* Combobox examples */}
+          <div className="mb-12 space-y-4">
+            <Combobox
+              label="Framework Combobox"
+              placeholder="Select a framework"
+              emptyState="Nothing have been found."
+              displayValue={(value: string) => value}
+            >
+              {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                <Combobox.Item key={value} value={value}>
+                  {value}
+                </Combobox.Item>
+              ))}
+            </Combobox>
+            <Combobox
+              disabled
+              label="Framework Combobox"
+              placeholder="Select a framework"
+              emptyState="Nothing have been found."
+              displayValue={(value: string) => value}
+            >
+              {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                <Combobox.Item key={value} value={value}>
+                  {value}
+                </Combobox.Item>
+              ))}
+            </Combobox>
+            <Combobox
+              placeholder="Select a framework no label"
+              emptyState="Nothing have been found."
+              displayValue={(value: string) => value}
+            >
+              {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                <Combobox.Item key={value} value={value}>
+                  {value}
+                </Combobox.Item>
+              ))}
+            </Combobox>
+            <Combobox
+              placeholder="Select a framework no label"
+              emptyState="Nothing have been found."
+              label="Framework Combobox"
+              displayValue={(value: string) => value}
+              error="Required"
+            >
+              {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                <Combobox.Item key={value} value={value}>
+                  {value}
+                </Combobox.Item>
+              ))}
+            </Combobox>
+          </div>
+
+          <div className="mb-12 space-y-4">
+            <Combobox
+              variant="outlined"
+              label="Framework Combobox"
+              placeholder="Select a framework"
+              emptyState="Nothing have been found."
+              displayValue={(value: string) => value}
+            >
+              {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                <Combobox.Item key={value} value={value}>
+                  {value}
+                </Combobox.Item>
+              ))}
+            </Combobox>
+            <Combobox
+              variant="outlined"
+              disabled
+              label="Framework Combobox"
+              placeholder="Select a framework"
+              emptyState="Nothing have been found."
+              displayValue={(value: string) => value}
+            >
+              {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                <Combobox.Item key={value} value={value}>
+                  {value}
+                </Combobox.Item>
+              ))}
+            </Combobox>
+            <Combobox
+              variant="outlined"
+              placeholder="Select a framework no label"
+              emptyState="Nothing have been found."
+              displayValue={(value: string) => value}
+            >
+              {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                <Combobox.Item key={value} value={value}>
+                  {value}
+                </Combobox.Item>
+              ))}
+            </Combobox>
+            <Combobox
+              variant="outlined"
+              label="Framework Combobox"
+              placeholder="Select a framework"
+              emptyState="Nothing have been found."
+              displayValue={(value: string) => value}
+              error="Required"
+            >
+              {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
+                <Combobox.Item key={value} value={value}>
+                  {value}
+                </Combobox.Item>
+              ))}
+            </Combobox>
+          </div>
+        </div>
+
+        <Dropzone accept={IMAGE_MIME_TYPE} className="flex gap-3">
+          <Dropzone.Preview>
+            {/* <img
+                src="https://via.placeholder.com/80"
+                className="h-full w-full object-fill"
+              /> */}
+            <Dropzone.Idle>
+              <Icons.imageUpload />
+            </Dropzone.Idle>
+            <Dropzone.Accept>
+              <Icons.checkSquare />
+            </Dropzone.Accept>
+            <Dropzone.Reject>
+              <Icons.errorSquare />
+            </Dropzone.Reject>
+          </Dropzone.Preview>
+          <Dropzone.Content>
+            <Dropzone.Label>Project icon</Dropzone.Label>
+            <p>
+              <span className="font-medium underline">Click to upload</span>{' '}
+              <span className="opacity-50">or drag and drop</span>
+            </p>
+            <p className="text-body-sm opacity-50">
+              PNG, JPG or WEBP (max. 250kb)
+            </p>
+          </Dropzone.Content>
+        </Dropzone>
+
+        <Dropzone
+          accept={IMAGE_MIME_TYPE}
+          className="flex gap-3"
+          variant="outlined"
+        >
+          <Dropzone.Preview>
+            <Dropzone.Idle>
+              <Icons.imageUpload />
+            </Dropzone.Idle>
+            <Dropzone.Accept>
+              <Icons.checkSquare />
+            </Dropzone.Accept>
+            <Dropzone.Reject>
+              <Icons.errorSquare />
+            </Dropzone.Reject>
+          </Dropzone.Preview>
+          <Dropzone.Content>
+            <Dropzone.Label>Project icon</Dropzone.Label>
+            <p>
+              <span className="font-medium underline">Click to upload</span>{' '}
+              <span className="opacity-50">or drag and drop</span>
+            </p>
+            <p className="text-body-sm opacity-50">
+              PNG, JPG or WEBP (max. 250kb)
+            </p>
+          </Dropzone.Content>
+        </Dropzone>
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(console.log)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input disabled placeholder="Your email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your user name" {...field} />
+                    <TextField
+                      label="Username"
+                      placeholder="Your user name"
+                      {...field}
+                    />
                   </FormControl>
                   <FormDescription>
                     This is your public display name.
@@ -182,114 +1010,161 @@ export default function ComponentPage() {
           </form>
         </Form>
       </section>
-      <h2>Cards</h2>
-      <section className="mb-6 flex items-start gap-3">
-        <Card className="w-[350px]">
-          <CardHeader>
-            <CardTitle>Create project</CardTitle>
-            <CardDescription>
+      <h2 className="mb-4">Cards</h2>
+      <section className="mb-20 flex flex-col items-start gap-6">
+        <Card className="w-[350px]" variant="elevated">
+          <Card.Header>
+            <Card.Title>Elevated card</Card.Title>
+            <Card.Description>
               Deploy your new project in one-click.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+            </Card.Description>
+          </Card.Header>
+          <Card.Footer className="flex justify-end">
+            <Button variant="tonal">Action</Button>
+          </Card.Footer>
+        </Card>
+
+        <Card className="w-[350px]">
+          <Card.Header>
+            <Card.Title>Filled card</Card.Title>
+            <Card.Description>
+              Deploy your new project in one-click.
+            </Card.Description>
+          </Card.Header>
+          <Card.Footer className="flex justify-end">
+            <Button variant="outlined">Action</Button>
+          </Card.Footer>
+        </Card>
+
+        <Card className="w-[350px]" variant="outlined">
+          <Card.Header>
+            <Card.Title>Outlined card</Card.Title>
+            <Card.Description>
+              Deploy your new project in one-click.
+            </Card.Description>
+          </Card.Header>
+          <Card.Footer className="flex justify-end">
+            <Button variant="tonal">Action</Button>
+          </Card.Footer>
+        </Card>
+
+        <Card className="w-[350px]" variant="elevated">
+          <Card.Header>
+            <Card.Title>Create project</Card.Title>
+            <Card.Description>
+              Deploy your new project in one-click.
+            </Card.Description>
+          </Card.Header>
+          <Card.Content>
             <form>
               <div className="grid w-full items-center gap-4">
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="name">Name</Label>
-                  <Input
-                    variant="card"
-                    id="name"
-                    placeholder="Name of your project"
+                <Select>
+                  <Select.Trigger
+                    id="framework"
+                    placeholder="Select a framework"
+                    label="Framework Select"
                   />
-                </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="framework">Framework</Label>
-                  <Select>
-                    <SelectTrigger
-                      id="framework"
-                      className="ring-offset-surfaceContainerHighest"
-                    >
-                      <SelectValue placeholder="Select" />
-                    </SelectTrigger>
-                    <SelectContent position="popper">
-                      <SelectItem value="next">Next.js</SelectItem>
-                      <SelectItem value="sveltekit">SvelteKit</SelectItem>
-                      <SelectItem value="astro">Astro</SelectItem>
-                      <SelectItem value="nuxt">Nuxt.js</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                  <Select.Content position="popper">
+                    {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map(
+                      (value) => (
+                        <Select.Item key={value} value={value}>
+                          {value}
+                        </Select.Item>
+                      )
+                    )}
+                  </Select.Content>
+                </Select>
+
+                <Select variant="outlined">
+                  <Select.Trigger
+                    id="framework"
+                    placeholder="Select a framework"
+                    label="Framework Select"
+                  />
+                  <Select.Content position="popper">
+                    {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map(
+                      (value) => (
+                        <Select.Item key={value} value={value}>
+                          {value}
+                        </Select.Item>
+                      )
+                    )}
+                  </Select.Content>
+                </Select>
               </div>
             </form>
-          </CardContent>
-          <CardFooter className="flex justify-between">
-            <Button variant="ghost">Cancel</Button>
-            <Button variant="accent">Deploy</Button>
-          </CardFooter>
+          </Card.Content>
+          <Card.Footer className="flex justify-between">
+            <Button variant="text">Cancel</Button>
+            <Button variant="tonal">Deploy</Button>
+          </Card.Footer>
         </Card>
 
         {/* Link Card */}
         <LinkCard href="#">
-          <div className="w-[350px] p-6">I am a link card</div>
+          <Card.Header>
+            <Card.Title>Card title</Card.Title>
+          </Card.Header>
+          <Card.Content>I am a link card</Card.Content>
         </LinkCard>
 
         {/* Skeleton Card */}
         <Card className="w-[350px]">
-          <CardHeader>
+          <Card.Header>
             <Skeleton className="h-6 w-[30%]" />
             <Skeleton className="h-4 w-[70%]" />
-          </CardHeader>
+          </Card.Header>
         </Card>
       </section>
-      <h2>Alerts</h2>
-      <section className="mb-6 flex max-w-lg flex-col gap-3">
+      <h2 className="mb-4">Alerts</h2>
+      <section className="mb-20 flex max-w-lg flex-col gap-3">
         {/* Default */}
         <Alert>
-          <BellExclamationIcon className="h-6 w-6" />
-          <AlertTitle>Heads up!</AlertTitle>
-          <AlertDescription>
+          <Icons.notification className="h-6 w-6" />
+          <Alert.Title>Heads up!</Alert.Title>
+          <Alert.Description>
             You can add components to your app using the cli.
-          </AlertDescription>
+          </Alert.Description>
         </Alert>
         {/* Success */}
         <Alert variant="success">
-          <BellExclamationIcon className="h-6 w-6" />
-          <AlertTitle>Heads up!</AlertTitle>
-          <AlertDescription>
+          <Icons.notification className="h-6 w-6" />
+          <Alert.Title>Heads up!</Alert.Title>
+          <Alert.Description>
             You can add components to your app using the cli.
-          </AlertDescription>
+          </Alert.Description>
         </Alert>
         {/* Info */}
         <Alert variant="info">
-          <BellExclamationIcon className="h-6 w-6" />
-          <AlertTitle>Heads up!</AlertTitle>
-          <AlertDescription>
+          <Icons.notification className="h-6 w-6" />
+          <Alert.Title>Heads up!</Alert.Title>
+          <Alert.Description>
             You can add components to your app using the cli.
-          </AlertDescription>
+          </Alert.Description>
         </Alert>
         {/* Warning */}
         <Alert variant="warning">
-          <BellExclamationIcon className="h-6 w-6" />
-          <AlertTitle>Heads up!</AlertTitle>
-          <AlertDescription>
+          <Icons.notification className="h-6 w-6" />
+          <Alert.Title>Heads up!</Alert.Title>
+          <Alert.Description>
             You can add components to your app using the cli.
-          </AlertDescription>
+          </Alert.Description>
         </Alert>
         {/* Error */}
         <Alert variant="error">
-          <BellExclamationIcon className="h-6 w-6" />
-          <AlertTitle>Heads up!</AlertTitle>
-          <AlertDescription>
+          <Icons.notification className="h-6 w-6" />
+          <Alert.Title>Heads up!</Alert.Title>
+          <Alert.Description>
             You can add components to your app using the cli.
-          </AlertDescription>
+          </Alert.Description>
         </Alert>
         {/* Destructive */}
         <Alert variant="destructive">
-          <BellExclamationIcon className="h-6 w-6" />
-          <AlertTitle>Heads up!</AlertTitle>
-          <AlertDescription>
+          <Icons.notification className="h-6 w-6" />
+          <Alert.Title>Heads up!</Alert.Title>
+          <Alert.Description>
             You can add components to your app using the cli.
-          </AlertDescription>
+          </Alert.Description>
         </Alert>
       </section>
     </main>

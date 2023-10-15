@@ -44,18 +44,21 @@ export const getDictionary = async (locale: string, key?: string) => {
     if (replacements && replacements.length > 0) {
       replacements.forEach((replacement, index) => {
         const placeholder = `%${index}`
-        translation = reactStringReplace(
-          translation,
-          placeholder,
-          () => replacement
-        )
+        if (typeof replacement === 'string') {
+          return (translation = translation.replace(placeholder, replacement))
+        }
+        if (React.isValidElement(replacement)) {
+          translation = reactStringReplace(translation, placeholder, () =>
+            React.cloneElement(replacement, { key: index })
+          )
+        }
       })
     }
 
     const breakRegex = /(\n)/g
     if (typeof translation === 'string' && translation.match(breakRegex)) {
       translation = reactStringReplace(translation, breakRegex, () =>
-        React.createElement('br', null)
+        React.createElement('br', { key: Math.random() })
       )
     }
 

@@ -85,30 +85,30 @@ export interface Database {
           about: string | null
           avatar_url: string | null
           created_at: string | null
-          email: string | null
           id: string
           links: Json | null
           name: string | null
+          nationality: string
           updated_at: string | null
         }
         Insert: {
           about?: string | null
           avatar_url?: string | null
           created_at?: string | null
-          email?: string | null
           id: string
           links?: Json | null
           name?: string | null
+          nationality?: string
           updated_at?: string | null
         }
         Update: {
           about?: string | null
           avatar_url?: string | null
           created_at?: string | null
-          email?: string | null
           id?: string
           links?: Json | null
           name?: string | null
+          nationality?: string
           updated_at?: string | null
         }
         Relationships: [
@@ -123,30 +123,30 @@ export interface Database {
       project_likes: {
         Row: {
           created_at: string
-          profile_id: string
           project_id: string
+          user_id: string
         }
         Insert: {
           created_at?: string
-          profile_id: string
           project_id: string
+          user_id: string
         }
         Update: {
           created_at?: string
-          profile_id?: string
           project_id?: string
+          user_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "project_likes_profile_id_fkey"
-            columns: ["profile_id"]
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "project_likes_project_id_fkey"
             columns: ["project_id"]
             referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_likes_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           }
         ]

@@ -1,6 +1,6 @@
 'use client'
 
-import { LoadingIcon, LogoutIcon } from '@/components/icons'
+import { Icons } from '@/components/icons'
 import { useAuth } from '@/components/providers/supabase-auth-provider'
 
 export const LogoutButton = () => {
@@ -12,9 +12,9 @@ export const LogoutButton = () => {
       className="flex items-center gap-2 opacity-60 transition hover:opacity-100"
     >
       {isAuthenticating ? (
-        <LoadingIcon className="h-5 w-5 animate-spin" />
+        <Icons.spinner className="h-5 w-5 animate-spin" />
       ) : (
-        <LogoutIcon className="h-5 w-5" />
+        <Icons.logout className="h-5 w-5" />
       )}
       Logout
     </button>

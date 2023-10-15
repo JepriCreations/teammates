@@ -1,34 +1,53 @@
 'use server'
 
 import { redirect } from 'next/navigation'
-import { routes } from '@/constants/routes'
+import { ROUTES } from '@/constants/routes'
 
-import { RoleStatus } from '@/types/collections'
-import { PostgresError } from '@/lib/errors'
+import { ApplicationStatus, RoleStatus } from '@/types/collections'
+import { isPostgresError, PostgresError } from '@/lib/errors'
 import { updateProjectViews } from '@/lib/mutations/projects'
 import { createServerClient } from '@/lib/supabase-server'
 import { DEBUG } from '@/lib/utils'
 
-export const fetchProjects = async () => {
+export const fetchProjects = async ({
+  search,
+  work_mode,
+  experience,
+  rewards,
+  location,
+}: {
+  search?: string
+  work_mode?: string[]
+  experience?: string[]
+  rewards?: string[]
+  location?: string
+}) => {
   const supabase = createServerClient()
 
-  const location = undefined
+  let query = supabase.from('projects').select(
+    `id, slug, updated_at, name, summary, categories, icon_url, public,
+    roles(name, exp_level, rewards, work_mode, status)`,
+    { count: 'exact' }
+  )
 
   const matchingObject = { public: true, 'roles.status': RoleStatus.Open }
   if (location)
     Object.assign(matchingObject, { 'location->>country': location })
 
+  // if (search)
+  //   query = query.or(
+  //     `name.ilike.%${search ?? ''}%,summary.ilike.%${search ?? ''}%`
+  //   )
+
+  if (work_mode) query = query.in('roles.work_mode', work_mode)
+  if (experience) query = query.in('roles.exp_level', experience)
+  if (rewards) query = query.containedBy('roles.rewards', rewards)
+
   const {
     data: projects,
     error,
     count,
-  } = await supabase
-    .from('projects')
-    .select(
-      `id, slug, updated_at, name, summary, categories, icon_url, public,
-      roles(name, exp_level, rewards, work_mode, status)`,
-      { count: 'exact' }
-    )
+  } = await query
     .match(matchingObject)
     .order('updated_at', { ascending: false })
 
@@ -40,9 +59,26 @@ export const fetchProjects = async () => {
     }
   }
 
+  let filteredResult = projects.filter((project) => project.roles.length > 0)
+
+  if (search) {
+    filteredResult = filteredResult.filter((project) => {
+      return (
+        project.name.toLowerCase().includes(search.toLowerCase()) ||
+        project.summary.toLowerCase().includes(search.toLowerCase()) ||
+        project.categories.some((category) =>
+          category.toLowerCase().includes(search.toLowerCase())
+        ) ||
+        project.roles.some((role) => {
+          return role.name.replaceAll('_', ' ').includes(search.toLowerCase())
+        })
+      )
+    })
+  }
+
   return {
     data: {
-      projects: projects?.filter((project) => project.roles.length > 0),
+      projects: filteredResult,
       count,
     },
   }
@@ -64,18 +100,6 @@ export const fetchProjectBySlug = async (slug: string) => {
     .eq('roles.status', RoleStatus.Open)
     .single()
 
-  let doesUserLike = false
-
-  if (user && projectData) {
-    const userLikeCheck = await supabase
-      .from('project_likes')
-      .select('*', { count: 'exact', head: true })
-      .match({ profile_id: user.id, project_id: projectData.id })
-      .single()
-
-    doesUserLike = Boolean(userLikeCheck.count && userLikeCheck.count > 0)
-  }
-
   if (error) {
     return {
       error: new PostgresError('Has been an error retrieving the project.', {
@@ -84,7 +108,31 @@ export const fetchProjectBySlug = async (slug: string) => {
     }
   }
 
-  const data = { ...projectData, liked: doesUserLike }
+  const { data: similarProjects } = await supabase
+    .from('projects')
+    .select('slug, name, categories, icon_url')
+    .eq('public', true)
+    .overlaps('categories', projectData.categories)
+    .neq('slug', slug)
+    .limit(4)
+
+  let doesUserLike = false
+
+  if (user && projectData) {
+    const userLikeCheck = await supabase
+      .from('project_likes')
+      .select('*', { count: 'exact', head: true })
+      .match({ user_id: user.id, project_id: projectData.id })
+      .single()
+
+    doesUserLike = Boolean(userLikeCheck.count && userLikeCheck.count > 0)
+  }
+
+  const data = {
+    ...projectData,
+    liked: doesUserLike,
+    similarProjects: similarProjects ?? [],
+  }
   if (!DEBUG) await updateProjectViews(data.id)
 
   return { data }
@@ -97,7 +145,7 @@ export const fetchUserProjects = async () => {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect(routes.HOME)
+    redirect(ROUTES.LOGIN)
   }
 
   const { data, error } = await supabase
@@ -122,31 +170,40 @@ export const fetchUserProjects = async () => {
 }
 
 export const fetchUserProject = async (projectId: string) => {
-  const supabase = createServerClient()
+  try {
+    const supabase = createServerClient()
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
 
-  if (!user) {
-    redirect(routes.HOME)
-  }
-
-  const { data, error } = await supabase
-    .from('projects')
-    .select('*')
-    .match({ id: projectId, created_by: user.id })
-    .single()
-
-  if (error) {
-    return {
-      error: new PostgresError('Has been an error retrieving the project.', {
-        details: error.message,
-      }),
+    if (!user) {
+      redirect(ROUTES.LOGIN)
     }
-  }
 
-  return { data }
+    const { data, error } = await supabase
+      .from('projects')
+      .select('*')
+      .match({ id: projectId, created_by: user.id })
+      .single()
+
+    if (error) {
+      return {
+        error: new PostgresError('Has been an error retrieving the project.', {
+          details: error.message,
+        }),
+      }
+    }
+
+    return { data }
+  } catch (error: any) {
+    if (isPostgresError(error)) {
+      console.log({ error })
+      return { error }
+    }
+
+    return { error }
+  }
 }
 
 export const fetchProjectName = async (projectId: string) => {
@@ -177,7 +234,7 @@ export const fetchProjectStatistics = async (projectId: string) => {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect(routes.HOME)
+    redirect(ROUTES.LOGIN)
   }
 
   const totalViewsPromise = supabase
@@ -198,7 +255,9 @@ export const fetchProjectStatistics = async (projectId: string) => {
 
   const hitsByDatePromise = supabase.rpc('get_application_counts', {
     project_id: projectId,
-  })
+  }) as unknown as Promise<{
+    data: { created_at: string; count: number }[]
+  }>
 
   const [totalViews, viewsByDate, hitsByDate] = await Promise.all([
     totalViewsPromise,
@@ -212,7 +271,7 @@ export const fetchProjectStatistics = async (projectId: string) => {
   const total_hits = totalViews.data?.views[0]?.total_hits ?? 0
   const viewsWithData =
     viewsByDate.data?.map(({ date, count }) => ({ date, count })) || []
-  const hitsWIthData =
+  const hitsWithData =
     hitsByDate.data?.map(({ created_at, count }) => ({
       date: created_at,
       count,
@@ -236,7 +295,7 @@ export const fetchProjectStatistics = async (projectId: string) => {
       const date = new Date(startDate)
       date.setDate(date.getDate() + index)
       const dateString = date.toISOString().substring(0, 10)
-      const foundView = hitsWIthData.find((view) => view.date === dateString)
+      const foundView = hitsWithData.find((view) => view.date === dateString)
       return foundView || { date: dateString, count: 0 }
     }),
   ]
@@ -273,118 +332,44 @@ export const fetchProjectStatistics = async (projectId: string) => {
 }
 
 export const fetchProjectRoles = async (projectId: string) => {
-  const supabase = createServerClient()
+  try {
+    const supabase = createServerClient()
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
 
-  if (!user) {
-    redirect(routes.HOME)
-  }
-
-  const { data, error } = await supabase
-    .from('projects')
-    .select('roles(*, applications(created_at))')
-    .eq('id', projectId)
-    .neq('roles.status', RoleStatus.Archived)
-    .single()
-
-  if (error) {
-    return {
-      error: new PostgresError('Has been an error retrieving the roles.', {
-        details: error.message,
-      }),
+    if (!user) {
+      redirect(ROUTES.LOGIN)
     }
+
+    const { data, error } = await supabase
+      .from('projects')
+      .select('roles(*, applications(created_at, status))')
+      .eq('id', projectId)
+      .neq('roles.status', RoleStatus.Archived)
+      .order('created_at', { foreignTable: 'roles', ascending: false })
+      .single()
+
+    if (error) {
+      throw new PostgresError('Has been an error retrieving the roles.', {
+        details: error.message,
+      })
+    }
+
+    const roles = data.roles.map((role) => ({
+      ...role,
+      applications: role.applications.filter(
+        (ap) => ap.status !== ApplicationStatus.Rejected
+      ).length,
+    }))
+
+    return { data: roles }
+  } catch (error: any) {
+    if (isPostgresError(error)) {
+      console.log({ error })
+      return { error }
+    }
+    return { error }
   }
-
-  const roles = data.roles.map((role) => ({
-    ...role,
-    applications: role.applications.length,
-  }))
-
-  return { data: roles }
 }
-
-// SQL
-
-// CREATE OR REPLACE VIEW project_statistics AS
-// WITH all_total_views AS (
-//     SELECT
-//         project_id,
-//         SUM(count) AS total_views
-//     FROM project_views
-//     GROUP BY project_id
-// ),
-// current_month_views AS (
-//     SELECT
-//         project_id,
-//         SUM(count) AS current_month_views
-//     FROM project_views
-//     WHERE date_trunc('month', date) = date_trunc('month', NOW())
-//     GROUP BY project_id
-// ),
-// previous_month_views AS (
-//     SELECT
-//         project_id,
-//         SUM(count) AS prev_month_views
-//     FROM project_views
-//     WHERE date_trunc('month', date) = date_trunc('month', NOW()) - INTERVAL '1 month'
-//     GROUP BY project_id
-// ),
-// all_total_hits AS (
-//     SELECT
-//         project_id,
-//         COUNT(*) AS total_hits
-//     FROM applications
-//     GROUP BY project_id
-// ),
-// current_month_hits AS (
-//     SELECT
-//         project_id,
-//         COUNT(*) AS current_month_hits
-//     FROM applications
-//     WHERE date_trunc('month', created_at) = date_trunc('month', NOW())
-//     GROUP BY project_id
-// ),
-// previous_month_hits AS (
-//     SELECT
-//         project_id,
-//         COUNT(*) AS prev_month_hits
-//     FROM applications
-//     WHERE date_trunc('month', created_at) = date_trunc('month', NOW()) - INTERVAL '1 month'
-//     GROUP BY project_id
-// ),
-// comparison AS (
-//     SELECT
-//         tv.project_id,
-//         tv.total_views AS total_views,
-//         cv.current_month_views AS current_month_views,
-//         pv.prev_month_views AS prev_month_views,
-//         th.total_hits AS total_hits,
-//         ch.current_month_hits AS current_month_hits,
-//         ph.prev_month_hits AS prev_month_hits
-//     FROM all_total_views tv
-//     LEFT JOIN current_month_views cv ON tv.project_id = cv.project_id
-//     LEFT JOIN previous_month_views pv ON tv.project_id = pv.project_id
-//     LEFT JOIN all_total_hits th ON tv.project_id = th.project_id
-//     LEFT JOIN current_month_hits ch ON tv.project_id = ch.project_id
-//     LEFT JOIN previous_month_hits ph ON tv.project_id = ph.project_id
-// )
-// SELECT
-//     c.project_id,
-//     COALESCE(c.total_views, 0) AS total_views,
-//     COALESCE(c.current_month_views, 0) AS current_month_views,
-//     COALESCE(c.prev_month_views, 0) AS prev_month_views,
-//     COALESCE(c.total_hits, 0) AS total_hits,
-//     COALESCE(c.current_month_hits, 0) AS current_month_hits,
-//     COALESCE(c.prev_month_hits, 0) AS prev_month_hits,
-//     CASE
-//         WHEN c.prev_month_views IS NULL OR c.prev_month_views = 0 THEN NULL
-//         ELSE ROUND(((c.current_month_views - c.prev_month_views) * 100.0) / c.prev_month_views, 2)
-//     END AS percent_views,
-//     CASE
-//         WHEN c.prev_month_hits IS NULL OR c.prev_month_hits = 0 THEN NULL
-//         ELSE ROUND(((c.current_month_hits - c.prev_month_hits) * 100.0) / c.prev_month_hits, 2)
-//     END AS percent_hits
-// FROM comparison c;

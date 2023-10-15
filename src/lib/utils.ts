@@ -33,6 +33,15 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs))
 }
 
+export function createComponentWithStatics<Props, Static>(
+  baseComponent: React.ComponentType<Props>,
+  staticComponents: Static
+): React.ComponentType<Props> & Static {
+  const component = baseComponent as React.ComponentType<Props> & Static
+  Object.assign(component, staticComponents)
+  return component
+}
+
 export function formatDate(input: string | number): string {
   const date = new Date(input)
   return date.toLocaleDateString('en-US', {
@@ -63,28 +72,28 @@ export function slugify(input: string): string {
   return slug
 }
 
-export function getColorByWord(
-  word: string,
-  opacity: number = 1
-): { baseColor: string; contrastingColor: string } {
-  const trimmedWord = word.trim().toLowerCase()
-  const initials = trimmedWord.substring(0, 3)
+export function parseFormData(formData: FormData) {
+  const values: Record<string, any> = {}
 
-  const hashCode = initials.split('').reduce((hash, char) => {
-    return char.charCodeAt(0) + (hash << 6) + (hash << 16) - hash
-  }, 0)
+  for (const key of formData.keys()) {
+    const value = formData.get(key)
 
-  const saturation = 40
-  const lightness = 70
+    if (value === null || value === undefined) {
+      continue
+    }
 
-  const baseHSL = `hsla(${
-    hashCode % 360
-  }, ${saturation}%, ${lightness}%, ${opacity})`
+    if (typeof value === 'string') {
+      try {
+        // Try parsing as JSON
+        values[key] = JSON.parse(value)
+      } catch (e) {
+        // If parsing as JSON fails, store it as a string
+        values[key] = value
+      }
+    } else {
+      values[key] = value
+    }
+  }
 
-  const contrastingLightness = 15
-  const contrastingColor = `hsla(${
-    hashCode % 360
-  }, ${saturation}%, ${contrastingLightness}%, ${opacity})`
-
-  return { baseColor: baseHSL, contrastingColor }
+  return values
 }

@@ -4,7 +4,7 @@ import * as React from 'react'
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox'
 
 import { cn } from '@/lib/utils'
-import { CheckIcon } from '@/components/icons'
+import { Icons } from '@/components/icons'
 
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
@@ -13,17 +13,17 @@ const Checkbox = React.forwardRef<
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn(
-      'peer h-5 w-5 shrink-0 rounded-sm border-2 border-outline text-onPrimary ring-offset-surface transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/38 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-38 data-[state=checked]:border-0 data-[state=checked]:bg-primary disabled:data-[state=checked]:bg-outline',
+      'peer h-5 w-5 shrink-0 rounded-[calc(var(--radius)-12px)] border-2 border-outline text-onPrimary ring-offset-surface transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/38 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-38 data-[state=checked]:border-0 data-[state=checked]:bg-primary disabled:data-[state=checked]:bg-outline',
       className
     )}
     {...props}
   >
     <CheckboxPrimitive.Indicator
       className={cn(
-        'flex items-center justify-center text-current transition-transform animate-in duration-200 data-[state=unchecked]:animate-out data-[state=checked]:zoom-in-0 data-[state=unchecked]:zoom-out-0'
+        'flex items-center justify-center text-current transition-transform duration-200 animate-in data-[state=unchecked]:animate-out data-[state=checked]:zoom-in-0 data-[state=unchecked]:zoom-out-0'
       )}
     >
-      <CheckIcon className="h-5 w-5" />
+      <Icons.check className="h-[18px] w-[18px]" />
     </CheckboxPrimitive.Indicator>
   </CheckboxPrimitive.Root>
 ))

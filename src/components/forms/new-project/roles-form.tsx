@@ -2,18 +2,19 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { routes } from '@/constants/routes'
+import { ROUTES } from '@/constants/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { ExperienceLevel, WorkMode } from '@/types/collections'
 import { roleSchema } from '@/lib/validations/role'
-import { useRoles } from '@/hooks/useRoles'
-import { useToast } from '@/hooks/useToast'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { useRoles } from '@/hooks/use-roles'
+import { useToast } from '@/hooks/use-toast'
+import { Alert } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
+import { IconButton } from '@/components/ui/icon-button'
 import {
   Table,
   TableBody,
@@ -23,7 +24,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { RoleInputs } from '@/components/forms/role-inputs'
-import { AddIcon, TrashIcon } from '@/components/icons'
+import { Icons } from '@/components/icons'
 import { useDictionary } from '@/components/providers/dictionary-provider'
 import { useNewProjectFormState } from '@/components/providers/new-project-form-provider'
 
@@ -46,7 +47,6 @@ export const RolesForm = () => {
 
   const form = useForm<z.infer<typeof roleSchema>>({
     resolver: zodResolver(roleSchema),
-    defaultValues,
   })
 
   const onSubmitRole = (values: z.infer<typeof roleSchema>) => {
@@ -65,13 +65,13 @@ export const RolesForm = () => {
         description: t('Roles.the_roles_has_been_added'),
         severity: 'success',
       })
-      router.replace(routes.PROJECTS)
+      router.replace(ROUTES.PROJECTS)
     }
   }
 
   const onOmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    router.replace(routes.PROJECTS)
+    router.replace(ROUTES.PROJECTS)
   }
 
   return (
@@ -85,11 +85,11 @@ export const RolesForm = () => {
             <RoleInputs form={form} />
             <footer>
               <Button
-                variant="accent"
+                variant="outlined"
                 type="submit"
-                className="ml-auto"
+                className="ml-auto block"
                 disabled={isPending}
-                icon={<AddIcon />}
+                icon={<Icons.add />}
               >
                 {t('Roles.add_role')}
               </Button>
@@ -128,7 +128,7 @@ export const RolesForm = () => {
                     .join(', ')}
                 </TableCell>
                 <TableCell className="w-fit">
-                  <Button
+                  <IconButton
                     onClick={() =>
                       setRoles((prev) => {
                         const rolesList = [...prev]
@@ -136,10 +136,10 @@ export const RolesForm = () => {
                         return rolesList
                       })
                     }
-                    icon={<TrashIcon />}
-                    variant="ghost"
-                    size="icon"
-                  />
+                    variant="standard"
+                  >
+                    <Icons.trash />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
@@ -150,14 +150,14 @@ export const RolesForm = () => {
       {error && (
         <section className="p-3">
           <Alert variant="error">
-            <AlertTitle>{t('General.ups')}</AlertTitle>
-            <AlertDescription>{error}</AlertDescription>
+            <Alert.Title>{t('General.ups')}</Alert.Title>
+            <Alert.Description>{error}</Alert.Description>
           </Alert>
         </section>
       )}
 
       <section className="flex justify-end gap-6 p-6">
-        <Button onClick={onOmit} variant="ghost" disabled={isPending}>
+        <Button onClick={onOmit} variant="text" disabled={isPending}>
           {t('Roles.omit')}
         </Button>
         <Button

@@ -1,17 +1,11 @@
-import {
-  EmailIcon,
-  InstagramIcon,
-  LinkedinIcon,
-  TwitterIcon,
-  WebsiteIcon,
-} from '@/components/icons'
+import { Icons } from '@/components/icons'
 
 export const linksIcons = {
-  twitter: TwitterIcon,
-  linkedin: LinkedinIcon,
-  instagram: InstagramIcon,
-  website: WebsiteIcon,
-  email: EmailIcon,
+  twitter: Icons.twitter,
+  linkedin: Icons.linkedin,
+  instagram: Icons.instagram,
+  website: Icons.website,
+  email: Icons.email,
 } as const
 
 export type LinksIconsType = keyof typeof linksIcons

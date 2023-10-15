@@ -1,10 +1,9 @@
 import 'server-only'
 
-import { ERROR_CODES } from '@/constants/errors'
 import { z } from 'zod'
 
 import { ApplicationStatus, ApplicationUpdate } from '@/types/collections'
-import { isPostgresError, PostgresError } from '@/lib/errors'
+import { ERROR_CODES, isPostgresError, PostgresError } from '@/lib/errors'
 import { createRouteHandlerClient } from '@/lib/supabase-server'
 import {
   applicationSchema,
@@ -28,27 +27,12 @@ export const createApplication = async (
       })
     }
 
-    const payload = applicationSchema.safeParse(values)
-
-    if (!payload.success) {
-      const errors = payload.error.issues.map((error) => ({
-        path: error.path,
-        message: error.message,
-      }))
-      throw new PostgresError('The validation has not passed.', {
-        details: JSON.stringify(errors),
-      })
-    }
-
-    const { data, error: insertError } = await supabase
-      .from('applications')
-      .insert({
-        user_id: user.id,
-        project_id: values.project_id,
-        status: values.status ?? ApplicationStatus.StandBy,
-        role_id: values.role_id,
-      })
-      .single()
+    const { error: insertError } = await supabase.from('applications').insert({
+      user_id: user.id,
+      project_id: values.project_id,
+      status: values.status ?? ApplicationStatus.StandBy,
+      role_id: values.role_id,
+    })
 
     if (insertError) {
       if (insertError.code === '23505') {
@@ -61,12 +45,8 @@ export const createApplication = async (
       })
     }
 
-    return { data }
+    return { success: true }
   } catch (error) {
-    if (isPostgresError(error)) {
-      return { error }
-    }
-
     throw error
   }
 }
@@ -86,26 +66,14 @@ export const updateApplicationStatus = async (values: ApplicationUpdate) => {
       })
     }
 
-    const payload = updateApplicationSchema.safeParse(values)
-
-    if (!payload.success) {
-      const errors = payload.error.issues.map((error) => ({
-        path: error.path,
-        message: error.message,
-      }))
-      throw new PostgresError('The validation has not passed.', {
-        details: JSON.stringify(errors),
-      })
-    }
-
-    const { data, error: updateError } = await supabase
+    const { error: updateError } = await supabase
       .from('applications')
       .update({
-        status: payload.data.status,
+        status: values.status,
       })
       .match({
-        role_id: payload.data.role_id,
-        user_id: payload.data.user_id,
+        role_id: values.role_id,
+        user_id: values.user_id,
       })
 
     if (updateError) {
@@ -114,12 +82,49 @@ export const updateApplicationStatus = async (values: ApplicationUpdate) => {
       })
     }
 
-    return { data }
+    return { success: true }
   } catch (error) {
-    if (isPostgresError(error)) {
-      return { error }
+    throw error
+  }
+}
+
+export const removeApplication = async ({
+  user_id,
+  role_id,
+}: {
+  user_id: string
+  role_id: string
+}) => {
+  try {
+    const supabase = createRouteHandlerClient()
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser()
+
+    if (error || !user) {
+      throw new PostgresError('Unauthenticated', {
+        details: error?.message,
+        code: ERROR_CODES.UNAUTHENTICATED,
+      })
     }
 
+    const { error: deleteError } = await supabase
+      .from('applications')
+      .delete()
+      .match({
+        role_id,
+        user_id,
+      })
+
+    if (deleteError) {
+      throw new PostgresError('Error deleting the application.', {
+        details: deleteError.message,
+      })
+    }
+
+    return { success: true }
+  } catch (error) {
     throw error
   }
 }

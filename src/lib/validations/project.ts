@@ -1,75 +1,16 @@
 import * as z from 'zod'
 
-import {
-  InstagramIcon,
-  LinkedinIcon,
-  TwitterIcon,
-  WebsiteIcon,
-} from '@/components/icons'
+import { linkObjectSchema } from './global'
 
 export const SUMMARY_MAX_LENGTH = 85
 export const MAX_CATEGORIES = 2
-const MAX_FILE_SIZE = 500 * 1024
+export const MAX_FILE_SIZE = 250 * 1024
 const ACCEPTED_IMAGE_TYPES = [
   'image/png',
   'image/jpg',
   'image/jpeg',
   'image/webp',
 ]
-
-export const socials = [
-  {
-    name: 'twitter',
-    icon: TwitterIcon,
-    link: 'https://twitter.com/',
-  },
-  {
-    name: 'linkedin',
-    icon: LinkedinIcon,
-    link: 'https://linkedin.com/',
-  },
-  {
-    name: 'instagram',
-    icon: InstagramIcon,
-    link: 'https://instagram.com/',
-  },
-  // {
-  //   name: 'mastodon',
-  //   icon: MastodonOutlineIcon,
-  //   link: 'https://mastodon.',
-  // },
-  {
-    name: 'website',
-    icon: WebsiteIcon,
-    link: 'https://',
-  },
-]
-
-const linkPrefixes: Record<string, string> = socials.reduce(
-  (acc: Record<string, string>, curr) => {
-    const { name, link } = curr
-    acc[name] = link
-    return acc
-  },
-  {}
-)
-
-const linkObjectSchema = z
-  .object({
-    name: z.string(),
-    link: z.string().optional(),
-  })
-  .refine(
-    (value) => {
-      const { name, link } = value
-      if (!link) return true
-      const prefix = linkPrefixes[name]
-      return prefix && link?.startsWith(prefix)
-    },
-    (value) => ({
-      message: `The link have to starts with "${linkPrefixes[value.name]}"`,
-    })
-  )
 
 const locationSchema = z.object({
   country: z

@@ -1,10 +1,10 @@
 import { getDictionary } from '@/lib/dictionaries'
-import { PostgresError } from '@/lib/errors'
 import { fetchUserProjects } from '@/lib/fetching/projects'
 import {
   ProjectCard,
   ProjectCardSkeleton,
 } from '@/components/dashboard/project-card'
+import { Error } from '@/components/error'
 
 interface ProjectsFeedProps {
   locale: string
@@ -13,20 +13,9 @@ export default async function UserProjects({ locale }: ProjectsFeedProps) {
   const { t } = await getDictionary(locale, 'Projects')
   const { data, error } = await fetchUserProjects()
 
-  return error ? (
-    <ErrorHandler error={error} />
-  ) : (
-    data.map((project) => <ProjectCard t={t} {...project} />)
-  )
-}
+  if (error) return <Error error={error} />
 
-const ErrorHandler = ({ error }: { error: PostgresError }) => {
-  return (
-    <div className="col-span-4 text-center">
-      <p className="text-xl font-bold">Upps!</p>
-      <p>{error.message}</p>
-    </div>
-  )
+  return data.map((project) => <ProjectCard t={t} {...project} />)
 }
 
 export const LoadingProjects = () => {

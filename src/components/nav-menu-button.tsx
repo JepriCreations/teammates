@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 
-import { Button } from '@/components/ui/button'
+import { IconButton } from '@/components/ui/icon-button'
 import {
   Sheet,
   SheetContent,
@@ -11,7 +11,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { MenuIcon } from '@/components/icons'
+import { Icons } from '@/components/icons'
 import { NavLink } from '@/components/nav-link'
 
 interface NavMenuButtonProps {
@@ -28,7 +28,9 @@ export const NavMenuButton = ({ mainMenu }: NavMenuButtonProps) => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button icon={<MenuIcon />} size="icon" />
+        <IconButton variant="standard">
+          <Icons.menu />
+        </IconButton>
       </SheetTrigger>
       <SheetContent position="left" size="full">
         <SheetHeader className="mb-3">

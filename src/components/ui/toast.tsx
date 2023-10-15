@@ -4,7 +4,8 @@ import { cva, VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { CloseIcon } from '@/components/icons'
+import { IconButton } from '@/components/ui/icon-button'
+import { Icons } from '@/components/icons'
 
 const ToastProvider = ToastPrimitives.Provider
 
@@ -15,7 +16,7 @@ const ToastViewport = React.forwardRef<
   <ToastPrimitives.Viewport
     ref={ref}
     className={cn(
-      'fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]',
+      'fixed bottom-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:flex-col sm:gap-3 md:bottom-[inherit] md:right-0 md:top-0 md:max-w-[420px]',
       className
     )}
     {...props}
@@ -24,16 +25,19 @@ const ToastViewport = React.forwardRef<
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName
 
 const toastVariants = cva(
-  'group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md pl-6 pr-4 py-4 shadow-xl transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-top-full data-[state=open]:slide-in-from-top-full data-[state=closed]:sm:slide-out-to-right-full data-[state=closed]:sm:slide-out-to-top-0 data-[state=open]:sm:slide-in-from-right-full data-[state=open]:sm:slide-in-from-top-0',
+  'bg-inverseSurface text-inverseOnSurface data-[swipe=move]:transition-none rounded-xs group relative pointer-events-auto flex w-full items-stretch justify-between gap-2 overflow-hidden p-2 shadow-lg transition-all data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=open]:slide-in-from-bottom-full data-[state=open]:md:slide-in-from-right-full data-[state=open]:md:slide-in-from-bottom-0 data-[state=closed]:slide-out-to-bottom data-[state=closed]:md:slide-out-to-right-full data-[state=closed]:md:slide-out-to-bottom-0 data-[swipe=end]:slide-out-to-right-full data-[swipe=end]:slide-out-to-bottom-0 before:inset-y-0 before:w-1 before:left-0 before:m-2 before:rounded-full',
   {
     variants: {
-      variant: {
-        default: 'bg-surfaceContainerLowest text-onSurface',
-        destructive: 'bg-error text-onError',
+      severity: {
+        default: 'before:hidden',
+        success: 'pl-6 before:absolute before:bg-successContainer',
+        error: 'pl-6 before:absolute before:bg-errorContainer',
+        info: 'pl-6 before:absolute before:bg-infoContainer',
+        warning: 'pl-6 before:absolute before:bg-warningContainer',
       },
     },
     defaultVariants: {
-      variant: 'default',
+      severity: 'default',
     },
   }
 )
@@ -42,11 +46,11 @@ const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
     VariantProps<typeof toastVariants>
->(({ className, variant, ...props }, ref) => {
+>(({ className, severity, ...props }, ref) => {
   return (
     <ToastPrimitives.Root
       ref={ref}
-      className={cn(toastVariants({ variant, className }))}
+      className={cn(toastVariants({ severity }), className)}
       {...props}
     />
   )
@@ -58,13 +62,14 @@ const ToastAction = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action>
 >(({ className, ...props }, ref) => (
   <Button
+    variant="text"
+    size="small"
     asChild
-    variant="ghost"
-    className="min-w-0 flex-shrink-0 text-primary hover:bg-primary/5"
+    className="flex-shrink-0 text-inversePrimary"
   >
     <ToastPrimitives.Action
       ref={ref}
-      className={cn('mr-4', className)}
+      className={cn('', className)}
       {...props}
     />
   </Button>
@@ -75,17 +80,19 @@ const ToastClose = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Close>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close>
 >(({ className, ...props }, ref) => (
-  <ToastPrimitives.Close
-    ref={ref}
+  <IconButton
+    asChild
+    variant="standard"
+    size="small"
     className={cn(
-      'absolute right-2 top-2 rounded-md p-1 text-onSurface/50 opacity-0 transition-opacity hover:text-onSurface focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600',
+      'text-inverseOnSurface hover:bg-inverseOnSurface/10',
       className
     )}
-    toast-close=""
-    {...props}
   >
-    <CloseIcon className="h-4 w-4" />
-  </ToastPrimitives.Close>
+    <ToastPrimitives.Close ref={ref} toast-close="" {...props}>
+      <Icons.close size="18" />
+    </ToastPrimitives.Close>
+  </IconButton>
 ))
 ToastClose.displayName = ToastPrimitives.Close.displayName
 
@@ -95,7 +102,7 @@ const ToastTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Title
     ref={ref}
-    className={cn('text-body-md font-semibold', className)}
+    className={cn('text-sm font-semibold', className)}
     {...props}
   />
 ))
@@ -107,7 +114,7 @@ const ToastDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Description
     ref={ref}
-    className={cn('muted text-body-md text-onSurface', className)}
+    className={cn('text-sm opacity-90', className)}
     {...props}
   />
 ))
@@ -116,11 +123,10 @@ ToastDescription.displayName = ToastPrimitives.Description.displayName
 type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
 
 type ToastActionElement = React.ReactElement<typeof ToastAction>
-type ToastSeverity = 'success' | 'error' | 'info' | 'warning'
+
 export {
   type ToastProps,
   type ToastActionElement,
-  type ToastSeverity,
   ToastProvider,
   ToastViewport,
   Toast,

@@ -1,6 +1,13 @@
+import Link from 'next/link'
+import { ROUTES } from '@/constants/routes'
+
+import { getDictionary } from '@/lib/dictionaries'
 import { fetchProjectName } from '@/lib/fetching/projects'
+import { Button } from '@/components/ui/button'
 import { DashboardAppbar } from '@/components/dashboard/appbar'
 import { ProjectSideBar } from '@/components/dashboard/project/sidebar'
+import { Icons } from '@/components/icons'
+import { Imagotype } from '@/components/logo'
 
 interface ProjectLayoutProps {
   children: React.ReactNode
@@ -11,6 +18,7 @@ export default async function ProjectLayout({
   children,
   params,
 }: ProjectLayoutProps) {
+  const { t } = await getDictionary(params.locale)
   const { data: project, error } = await fetchProjectName(params.id)
 
   if (error) {
@@ -19,12 +27,23 @@ export default async function ProjectLayout({
   }
 
   return (
-    <div className="flex min-h-[100dvh]">
+    <main className="min-h-[100dvh] pb-20 md:pb-0">
       <ProjectSideBar projectId={params.id} />
-      <div className="grow">
-        <DashboardAppbar project={project} className="h-14 justify-between" />
-        <main className="mx-auto max-w-6xl p-6">{children}</main>
+      <div className="flex flex-col md:pl-24">
+        <DashboardAppbar className="gap-1">
+          <div className="mr-3">
+            <Imagotype />
+          </div>
+          <Button asChild variant="text">
+            <Link href={ROUTES.PROJECTS}>{t('Dashboard.projects')}</Link>
+          </Button>
+          <Icons.angleRightSmall className="text-outline" />
+          <Button disabled variant="text">
+            {project.name}
+          </Button>
+        </DashboardAppbar>
+        {children}
       </div>
-    </div>
+    </main>
   )
 }

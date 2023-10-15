@@ -20,7 +20,7 @@ export default async function SiteLayout({
   return (
     <>
       <Appbar t={t} session={session} />
-      <main className="container py-24">{children}</main>
+      <main className=" px-3 py-24 md:container">{children}</main>
     </>
   )
 }

@@ -1,10 +1,9 @@
 'use client'
 
 import { ApplicationStatus } from '@/types/collections'
-import { useApplication } from '@/hooks/useApplications'
+import { useApplication } from '@/hooks/use-applications'
 import { Button } from '@/components/ui/button'
-
-import { useDictionary } from './providers/dictionary-provider'
+import { useDictionary } from '@/components/providers/dictionary-provider'
 
 interface ApplicationStateButtonProps {
   role_id: string
@@ -19,20 +18,23 @@ export const ApplicationStateButton = ({
   const { update, isPending } = useApplication()
 
   const onClick = async () => {
-    const { error } = await update({
+    update({
       status: ApplicationStatus.Rejected,
       role_id,
       user_id,
     })
-    if (error) {
-      console.log({ error })
-      //TODO: handle error
-    }
+      .then(() => {
+        //TODO: handle success
+      })
+      .catch((error) => {
+        console.log({ error })
+        //TODO: handle error
+      })
   }
 
   return (
-    <Button variant="secondary" onClick={onClick} loading={isPending}>
-      {t('Applications.reject')}
+    <Button variant="outlined" onClick={onClick} loading={isPending}>
+      {t('Applications.discard')}
     </Button>
   )
 }

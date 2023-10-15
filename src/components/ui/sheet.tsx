@@ -5,9 +5,8 @@ import * as SheetPrimitive from '@radix-ui/react-dialog'
 import { cva, type VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
-import { CloseIcon } from '@/components/icons'
-
-import { Button } from './button'
+import { IconButton } from '@/components/ui/icon-button'
+import { Icons } from '@/components/icons'
 
 const Sheet = SheetPrimitive.Root
 
@@ -31,15 +30,8 @@ interface SheetPortalProps
   extends SheetPrimitive.DialogPortalProps,
     VariantProps<typeof portalVariants> {}
 
-const SheetPortal = ({
-  position,
-  className,
-  children,
-  ...props
-}: SheetPortalProps) => (
-  <SheetPrimitive.Portal className={cn(className)} {...props}>
-    {children}
-  </SheetPrimitive.Portal>
+const SheetPortal = ({ position, children, ...props }: SheetPortalProps) => (
+  <SheetPrimitive.Portal {...props}>{children}</SheetPrimitive.Portal>
 )
 SheetPortal.displayName = SheetPrimitive.Portal.displayName
 
@@ -49,7 +41,7 @@ const SheetOverlay = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
-      'fixed inset-0 z-50 bg-surface/80 backdrop-blur-sm transition-all animate-in duration-100 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in',
+      'fixed inset-0 z-50 bg-surface/80 backdrop-blur-sm transition-all duration-100 animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in',
       className
     )}
     {...props}
@@ -175,13 +167,10 @@ const SheetContent = React.forwardRef<
     >
       {children}
       <SheetPrimitive.Close asChild>
-        <Button
-          icon={<CloseIcon />}
-          size="icon"
-          className="absolute right-4 top-4"
-        >
+        <IconButton variant="standard" className="absolute right-4 top-4">
+          <Icons.close />
           <span className="sr-only">Close</span>
-        </Button>
+        </IconButton>
       </SheetPrimitive.Close>
     </SheetPrimitive.Content>
   </SheetPortal>

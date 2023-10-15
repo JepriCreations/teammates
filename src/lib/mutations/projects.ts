@@ -1,10 +1,9 @@
 import 'server-only'
 
-import { ERROR_CODES } from '@/constants/errors'
 import { z } from 'zod'
 
 import { ProjectUpdate } from '@/types/collections'
-import { isPostgresError, PostgresError } from '@/lib/errors'
+import { ERROR_CODES, isPostgresError, PostgresError } from '@/lib/errors'
 import { createRouteHandlerClient } from '@/lib/supabase-server'
 import { slugify } from '@/lib/utils'
 import { projectSchema, updateProjectSchema } from '@/lib/validations/project'
@@ -99,19 +98,22 @@ export const updateProject = async (values: ProjectUpdate) => {
       )
     }
 
-    const { error: updateError } = await supabase
-      .from('projects')
-      .update({
-        ...values,
-        updated_at: new Date().toISOString().toLocaleString(),
-      })
-      .eq('id', values.id)
+    if (values.id) {
+      const { error: updateError } = await supabase
+        .from('projects')
+        .update({
+          ...values,
+          updated_at: new Date().toISOString().toLocaleString(),
+        })
+        .eq('id', values.id)
 
-    if (updateError) {
-      throw new PostgresError('Error saving the data in the database.', {
-        details: updateError.message,
-      })
+      if (updateError) {
+        throw new PostgresError('Error saving the data in the database.', {
+          details: updateError.message,
+        })
+      }
     }
+
     return { data: { success: true } }
   } catch (error) {
     if (isPostgresError(error)) {
@@ -183,7 +185,7 @@ export const addLike = async ({ project_id }: { project_id: string }) => {
     }
 
     const insertPromise = supabase.from('project_likes').insert({
-      profile_id: user.id,
+      user_id: user.id,
       project_id,
     })
     const updatePromise = supabase.rpc('increment', {
@@ -230,7 +232,7 @@ export const removeLike = async ({ project_id }: { project_id: string }) => {
     const removePromise = supabase
       .from('project_likes')
       .delete()
-      .match({ project_id, profile_id: user.id })
+      .match({ project_id, user_id: user.id })
     const updatePromise = supabase.rpc('increment', {
       table_name: 'projects',
       row_id: project_id,

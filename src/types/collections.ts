@@ -50,7 +50,7 @@ export type ProjectLocation = {
   city: string
   country: string
 }
-export type ProjectLinks = Array<{ link: string; name: string }>
+export type LinkType = { url: string; name: string }
 
 export type ApplicationUpdate = {
   status: ApplicationStatus

@@ -1,10 +1,11 @@
-import { routes } from '@/constants/routes'
+import { ROUTES } from '@/constants/routes'
 
 import { RoleStatus } from '@/types/collections'
 import { Translator } from '@/lib/dictionaries'
 import { cn, formatDate } from '@/lib/utils'
+import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { ViewsIcon } from '@/components/icons'
+import { Icons } from '@/components/icons'
 import { LinkCard } from '@/components/link-card'
 
 interface ProjectCardProps {
@@ -31,12 +32,12 @@ export const ProjectCard = ({
   ).length
 
   return (
-    <LinkCard href={routes.STATISTICS(id)}>
+    <LinkCard href={ROUTES.STATISTICS(id)}>
       <div className="px-4 py-3">
         <div className="flex items-start justify-between gap-6">
           <p className="grow truncate text-lg">{name}</p>
           <span className="flex shrink-0 origin-top-right items-center gap-2 rounded-full bg-onSurface/5 px-2 py-1 text-sm transition-fadeAndMove group-hover:scale-0 group-hover:opacity-0">
-            <ViewsIcon size={16} />
+            <Icons.views size={16} />
             {views[0]?.total_views ?? 0}
           </span>
         </div>
@@ -56,10 +57,10 @@ export const ProjectCard = ({
 
 export const ProjectCardSkeleton = () => {
   return (
-    <div className="card relative h-[130px] rounded-lg px-4 py-3">
+    <Card className="relative h-[130px] rounded-lg px-4 py-3 opacity-50">
       <Skeleton className="h-4 w-[35%]" />
       <Skeleton className="mt-2 h-3 w-[25%]" />
       <Skeleton className="absolute inset-x-0 bottom-0 mx-4 my-3 ml-auto mt-2 block h-3 w-[25%]" />
-    </div>
+    </Card>
   )
 }

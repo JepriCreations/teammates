@@ -54,14 +54,11 @@ export default async function RootLayout({
       className={cn(fontSans.variable)}
     >
       <head />
-      <body className="min-h-[100dvh] overflow-x-hidden bg-background font-sans text-body-md text-onSurface antialiased selection:bg-primary/30">
+      <body className="min-h-[100dvh] max-w-[100hv] overflow-x-hidden bg-background font-sans text-body-md text-onSurface antialiased selection:bg-primary/30">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <DictionaryProvider dict={dict} defaultDict={defaultDict}>
             <SupabaseProvider>
-              <SupabaseAuthProvider
-                serverSession={session}
-                locale={params.locale}
-              >
+              <SupabaseAuthProvider serverSession={session}>
                 {children}
               </SupabaseAuthProvider>
             </SupabaseProvider>

@@ -1,9 +1,9 @@
 import { NextRequest } from 'next/server'
-import { routes } from '@/constants/routes'
+import { ROUTES } from '@/constants/routes'
 
 export const supportedLocales = ['en', 'es']
 export const defaultLocale = 'en'
-export const privatesRoutes = [routes.DASHBOARD]
+export const privatesRoutes = [ROUTES.DASHBOARD]
 
 export const getLocale = (request: NextRequest) => {
   // Get the user's preferred locale from the browser's Accept-Language header

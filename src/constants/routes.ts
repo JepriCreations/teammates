@@ -1,9 +1,12 @@
-export const routes = {
+export const ROUTES = {
   HOME: '/',
   LOGIN: '/login',
   DASHBOARD: '/dashboard',
   PROJECTS: '/dashboard/projects',
-  PROFILE: '/dashboard/profile',
+  ACCOUNT: '/dashboard/account',
+  PROFILE: '/dashboard/account/tabs/profile',
+  USER_APPLICATIONS: '/dashboard/account/tabs/applications',
+  USER_LIKES: '/dashboard/account/tabs/likes',
   NEW_PROJECT: '/dashboard/project/new',
   STATISTICS: (id: string) => `/dashboard/project/${id}`,
   DETAILS: (id: string) => `/dashboard/project/${id}/details`,
@@ -15,13 +18,18 @@ export const routes = {
   PRIVACY: '/privacy',
   BLOG: '/blog',
   ABOUT: '/about',
-  PROJECT: (name: string) => `/projects/${name}`,
+  PROJECT: (slug: string) => `/projects/${slug}`,
 
   // Externals
   GITHUB: 'https://github.com/jepricreations/teammates',
 }
 
-export const slugs = {
-  DETAILS: 'details',
-  ROLES: 'roles',
+export const API_ROUTES = {
+  PROFILES: '/api/profiles',
+}
+
+export const PARAMS_KEYS = {
+  WORK_MODE: 'wm',
+  EXPERIENCE: 'exp',
+  REWARDS: 'rew',
 }

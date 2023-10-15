@@ -4,9 +4,9 @@ import * as React from 'react'
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
 
 import { cn } from '@/lib/utils'
-import { AngleDownSmallIcon } from '@/components/icons'
+import { Icons } from '@/components/icons'
 
-const Accordion = AccordionPrimitive.Root
+const AccordionRoot = AccordionPrimitive.Root
 
 const AccordionItem = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Item>,
@@ -34,7 +34,7 @@ const AccordionTrigger = React.forwardRef<
       {...props}
     >
       {children}
-      <AngleDownSmallIcon className="h-6 w-6 shrink-0 text-outline transition-transform duration-200" />
+      <Icons.angleDownSmall className="h-6 w-6 shrink-0 text-outline transition-transform duration-200" />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
 ))
@@ -57,4 +57,10 @@ const AccordionContent = React.forwardRef<
 ))
 AccordionContent.displayName = AccordionPrimitive.Content.displayName
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
+const Accordion = Object.assign(AccordionRoot, {
+  Item: AccordionItem,
+  Trigger: AccordionTrigger,
+  Content: AccordionContent,
+})
+
+export { Accordion }

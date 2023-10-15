@@ -11,5 +11,9 @@ export default async function Details({ params: { id } }: ProjectDetailsProps) {
 
   if (error || !data) return <Error error={error} />
 
-  return <ProjectDetailsForm data={data} />
+  return (
+    <div className="mx-auto w-full max-w-6xl space-y-3 px-4 pb-6 sm:px-12">
+      <ProjectDetailsForm data={data} />
+    </div>
+  )
 }

@@ -3,15 +3,10 @@
 import { useRouter } from 'next/navigation'
 import { useTheme } from 'next-themes'
 
-import { useToast } from '@/hooks/useToast'
-import { Button } from '@/components/ui/button'
+import { useToast } from '@/hooks/use-toast'
+import { IconButton } from '@/components/ui/icon-button'
 import { ToastAction } from '@/components/ui/toast'
-import {
-  BellExclamationIcon,
-  MoonIcon,
-  RefreshIcon,
-  SunIcon,
-} from '@/components/icons'
+import { Icons } from '@/components/icons'
 
 export const DevToolbar = () => {
   const { toast } = useToast()
@@ -29,8 +24,8 @@ export const DevToolbar = () => {
   }
 
   return (
-    <div className="fixed bottom-0 right-0 z-[53] m-1 flex items-center gap-1 bg-onSurface/10 p-1 backdrop-blur-sm">
-      <div className="flex h-10 w-10 items-center justify-center bg-onSurface/5 p-3 font-mono text-onSurface">
+    <div className="fixed bottom-0 right-0 z-[53] m-1 flex translate-x-[80%] items-center gap-0.5 rounded-sm bg-onSurface/10 p-1 backdrop-blur-sm transition-transform hover:translate-x-0">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-onSurface/5 p-3 font-mono text-body-sm text-onSurface">
         <div className="block sm:hidden">xs</div>
         <div className="hidden sm:block md:hidden lg:hidden xl:hidden 2xl:hidden">
           sm
@@ -40,9 +35,8 @@ export const DevToolbar = () => {
         <div className="hidden xl:block 2xl:hidden">xl</div>
         <div className="hidden 2xl:block">2xl</div>
       </div>
-      <Button
-        variant="ghost"
-        size="icon"
+      <IconButton
+        variant="standard"
         onClick={() =>
           toast({
             title: 'Test toast',
@@ -56,19 +50,18 @@ export const DevToolbar = () => {
           })
         }
       >
-        <BellExclamationIcon />
-      </Button>
-      <Button
-        variant="ghost"
-        size="icon"
+        <Icons.notification />
+      </IconButton>
+      <IconButton
+        variant="standard"
         onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
       >
-        <MoonIcon className="hidden animate-in zoom-in-50 spin-in-45 dark:block" />
-        <SunIcon className="block animate-in zoom-in-50 spin-in-45 dark:hidden" />
-      </Button>
-      <Button variant="ghost" size="icon" onClick={handleRefresh}>
-        <RefreshIcon />
-      </Button>
+        <Icons.darkMode className="hidden animate-in zoom-in-50 spin-in-45 dark:block" />
+        <Icons.lightMode className="block animate-in zoom-in-50 spin-in-45 dark:hidden" />
+      </IconButton>
+      <IconButton variant="standard" onClick={handleRefresh}>
+        <Icons.refresh />
+      </IconButton>
     </div>
   )
 }

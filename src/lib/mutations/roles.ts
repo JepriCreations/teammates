@@ -1,12 +1,11 @@
 import 'server-only'
 
 import { revalidatePath } from 'next/cache'
-import { ERROR_CODES } from '@/constants/errors'
-import { routes } from '@/constants/routes'
+import { ROUTES } from '@/constants/routes'
 import { z } from 'zod'
 
 import { RoleStatus } from '@/types/collections'
-import { isPostgresError, PostgresError } from '@/lib/errors'
+import { ERROR_CODES, isPostgresError, PostgresError } from '@/lib/errors'
 import { createRouteHandlerClient } from '@/lib/supabase-server'
 import { rolesSchema } from '@/lib/validations/role'
 
@@ -55,7 +54,7 @@ export const insertRoles = async (values: z.infer<typeof rolesSchema>) => {
       })
     }
 
-    revalidatePath(routes.HOME)
+    revalidatePath(ROUTES.HOME)
     return { data }
   } catch (error) {
     if (isPostgresError(error)) {
@@ -101,7 +100,7 @@ export const updateRoleStatus = async ({
       })
     }
 
-    revalidatePath(routes.HOME)
+    revalidatePath(ROUTES.HOME)
     return { data }
   } catch (error) {
     if (isPostgresError(error)) {

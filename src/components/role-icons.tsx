@@ -1,21 +1,14 @@
 import { ExperienceLevel, Rewards, WorkMode } from '@/types/collections'
 import { cn } from '@/lib/utils'
-import {
-  ContractIcon,
-  CreditIcon,
-  ExperienceLevelIcon,
-  PercentCircleIcon,
-  PresentialIcon,
-  RemoteIcon,
-} from '@/components/icons'
+import { Icons } from '@/components/icons'
 
 const workModeIcon = (workmode: string, className?: string) => {
   switch (workmode) {
     case WorkMode.Presential: {
-      return <PresentialIcon className={cn('h-4 w-4', className)} />
+      return <Icons.presential className={cn('h-4 w-4', className)} />
     }
     case WorkMode.Remote: {
-      return <RemoteIcon className={cn('h-4 w-4', className)} />
+      return <Icons.remote className={cn('h-4 w-4', className)} />
     }
     default:
       break
@@ -24,32 +17,39 @@ const workModeIcon = (workmode: string, className?: string) => {
 
 const rewardIcon = (rewards: string[], className?: string) => {
   if (rewards.includes(Rewards.Percent) && rewards.includes(Rewards.Contract)) {
-    return <PercentCircleIcon className={cn('h-4 w-4', className)} />
+    return <Icons.percentCircle className={cn('h-4 w-4', className)} />
   }
   //   TODO: Change Combo Icon
 
   if (rewards.includes(Rewards.Percent)) {
-    return <PercentCircleIcon className={cn('h-4 w-4', className)} />
+    return <Icons.percentCircle className={cn('h-4 w-4', className)} />
   }
 
   if (rewards.includes(Rewards.Contract)) {
-    return <ContractIcon className={cn('h-4 w-4', className)} />
+    return <Icons.contract className={cn('h-4 w-4', className)} />
   }
 
   if (rewards.includes(Rewards.Credit)) {
-    return <CreditIcon className={cn('h-4 w-4', className)} />
+    return <Icons.credit className={cn('h-4 w-4', className)} />
   }
 
   return null
 }
 
-const experienceLevelIcon = (exp_level: string, className?: string) => {
-  return (
-    <ExperienceLevelIcon
-      level={(exp_level as ExperienceLevel) ?? ExperienceLevel.Entry}
-      className={cn('h-4 w-4', className)}
-    />
-  )
+const experienceLevelIcon = (
+  exp_level: ExperienceLevel,
+  className?: string
+) => {
+  switch (exp_level) {
+    case ExperienceLevel.Entry:
+      return <Icons.expLevelEntry className={cn('h-4 w-4', className)} />
+    case ExperienceLevel.Intermediate:
+      return <Icons.expLevelIntermediate className={cn('h-4 w-4', className)} />
+    case ExperienceLevel.Expert:
+      return <Icons.expLevelExpert className={cn('h-4 w-4', className)} />
+    default:
+      break
+  }
 }
 
 export const RoleIcon = {

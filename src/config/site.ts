@@ -1,4 +1,4 @@
-import { routes } from '@/constants/routes'
+import { ROUTES } from '@/constants/routes'
 
 export type SiteConfig = typeof siteConfig
 
@@ -13,6 +13,6 @@ export const siteConfig = {
     },
   ],
   links: {
-    github: routes.GITHUB,
+    github: ROUTES.GITHUB,
   },
 }

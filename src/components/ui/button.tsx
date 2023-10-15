@@ -2,64 +2,81 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
-import { LoadingIcon } from '@/components/icons'
+import { CircularProgress } from '@/components/ui/circular-progress'
 
 const buttonVariants = cva(
-  'flex items-center min-w-[120px] justify-center gap-3 rounded-md text-label-lg font-medium outline-none transition-all focus-visible:ring-0 disabled:pointer-events-none',
+  'relative select-none group w-fit overflow-hidden text-label-lg font-medium rounded-2xl transition outline-none disabled:pointer-events-none disabled:text-onSurface/38 disabled:shadow-none',
   {
     variants: {
       size: {
-        default: 'px-4 py-2 h-10',
-        sm: 'py-1 px-3',
-        lg: 'py-3 px-8',
-        icon: 'p-2 min-w-0',
+        default: 'h-10 px-6 min-w-[100px]',
+        small: 'h-8 px-4',
       },
       variant: {
-        default:
+        filled:
+          'bg-primary text-onPrimary hover:shadow-sm focus-visible:shadow-none active:shadow-none disabled:bg-onSurface/12 active:scale-[0.98]',
+        tonal:
+          'bg-secondaryContainer text-onSecondaryContainer disabled:bg-onSurface/12 active:scale-[0.98]',
+        elevated:
+          'bg-surfaceContainerLow shadow-sm text-primary  hover:shadow-md focus-visible:shadow-sm active:shadow-sm disabled:bg-onSurface/12 active:scale-[0.98]',
+        outlined:
+          'border border-outline text-primary bg-surface focus-visible:border-primary active:border-outline disabled:border-onSurface/12 active:scale-[0.98]',
+        text: 'px-3 text-onSurface active:scale-[0.98]',
+        brutalist:
           '-translate-x-0.5 -translate-y-0.5 border-2 border-onSurface bg-surface text-onSurface shadow-[2px_2px_0px_hsl(var(--onSurface))] hover:bg-onSurface/5 focus:bg-onSurface/5 active:translate-x-0 active:translate-y-0 active:shadow-none disabled:translate-x-0 disabled:translate-y-0 disabled:bg-onSurface/12 disabled:border-onSurface/12 disabled:text-onSurface/38 disabled:shadow-none',
-        accent:
-          'bg-primary text-onPrimary hover:bg-primary/80 focus:bg-primary/80 disabled:bg-onSurface/12 disabled:text-onSurface/38 active:scale-95',
-        secondary:
-          'bg-secondaryContainer text-onSecondaryContainer hover:bg-secondaryContainer/80 focus:bg-secondaryContainer/80 disabled:bg-onSurface/12 disabled:text-onSurface/38 active:scale-95',
-        ghost:
-          'text-onSurface hover:bg-onSurface/5 active:scale-95 focus:bg-onSurface/5 disabled:text-onSurface/38 disabled:bg-onSurface/12',
-        link: 'font-normal min-w-0 p-0 h-auto opacity-60 text-onSurface active:scale-95 focus:opacity-100 disabled:text-outline hover:opacity-100 active:opacity-100',
-        outline:
-          'bg-surface border-2 text-onSurface hover:bg-onSurface/5 bg-transparent focus:bg-onSurface/5 border-outline/38 disabled:text-onSurface/38 disabled:bg-onSurface/12 disabled:border-onSurface/12 aria-[invalid=true]:border-error',
         destructive:
-          '-translate-x-0.5 -translate-y-0.5 border-2 border-onErrorContainer bg-errorContainer text-onErrorContainer shadow-[2px_2px_0px_hsl(var(--onErrorContainer))]  hover:bg-errorContainer/80 focus:bg-errorContainer/80 active:translate-x-0 active:translate-y-0 active:shadow-none disabled:translate-x-0  disabled:translate-y-0 disabled:bg-onSurface/12 disabled:text-onSurface/38 disabled:shadow-none disabled:border-onSurface/12',
-      },
-      fullWidth: {
-        true: 'w-full',
-        false: 'w-fit',
+          'bg-error text-onError hover:shadow-sm focus-visible:shadow-none active:shadow-none disabled:bg-onSurface/12 active:scale-[0.98]',
       },
     },
     defaultVariants: {
-      variant: 'default',
       size: 'default',
+      variant: 'filled',
     },
   }
 )
 
+const stateLayerVariants = cva(
+  'transition-opacity absolute inset-0 z-0 opacity-0 group-hover:opacity-8 group-focus:opacity-12 group-active:opacity-12',
+  {
+    variants: {
+      variant: {
+        filled: 'bg-onPrimary',
+        tonal: 'bg-onSecondaryContainer',
+        elevated: 'bg-primary',
+        outlined: 'bg-primary',
+        text: 'bg-primary',
+        brutalist: 'bg-onSurface/38',
+        destructive: 'bg-onError',
+      },
+    },
+    defaultVariants: {
+      variant: 'filled',
+    },
+  }
+)
+
+interface IconProps {
+  className?: string
+}
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
+  icon?: React.ReactElement<IconProps>
   fullWidth?: boolean
   loading?: boolean
-  icon?: React.ReactNode
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       className,
-      variant = 'default',
-      fullWidth = false,
-      loading = false,
-      size = 'default',
-      asChild = false,
+      variant,
+      size,
       icon,
+      fullWidth,
+      loading,
+      asChild = false,
       ...props
     },
     ref
@@ -87,17 +104,31 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           buttonVariants({ size, variant, className }),
           asChild && childClassName,
-          fullWidth ? 'w-full' : 'w-fit'
+          (icon || loading) && (variant !== 'text' ? 'pl-4' : 'pr-4'),
+          fullWidth && 'w-full'
         )}
         disabled={props.disabled || loading}
         {...childProps}
       >
-        {loading ? <LoadingIcon className="h-6 w-6 animate-spin" /> : icon}
-        {children}
+        <span className="relative z-10 flex h-full w-full items-center justify-center">
+          {loading && (
+            <CircularProgress className="mr-2 h-6 w-6 text-onSurface/38" />
+          )}
+          {icon &&
+            !loading &&
+            React.cloneElement(icon as React.ReactElement<any>, {
+              className: cn(
+                'mr-2 text-[18px] flex-shrink-0',
+                icon.props.className
+              ),
+            })}
+          {children}
+        </span>
+        <span className={cn(stateLayerVariants({ variant }))} />
       </Comp>
     )
   }
 )
 Button.displayName = 'Button'
 
-export { Button, buttonVariants }
+export { Button, buttonVariants, stateLayerVariants }

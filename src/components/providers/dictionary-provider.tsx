@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext } from 'react'
+import * as React from 'react'
 import reactStringReplace from 'react-string-replace'
 
 import { Translator } from '@/lib/dictionaries'
@@ -9,7 +9,7 @@ interface ContextI {
   [x: string]: any
 }
 
-const Context = createContext<ContextI>({})
+const Context = React.createContext<ContextI>({})
 
 export const DictionaryProvider = ({
   dict,
@@ -42,12 +42,23 @@ export const DictionaryProvider = ({
     if (replacements && replacements.length > 0) {
       replacements.forEach((replacement, index) => {
         const placeholder = `%${index}`
-        translation = reactStringReplace(
-          translation,
-          placeholder,
-          () => replacement
-        )
+
+        if (typeof replacement === 'string') {
+          return (translation = translation.replace(placeholder, replacement))
+        }
+        if (React.isValidElement(replacement)) {
+          translation = reactStringReplace(translation, placeholder, () =>
+            React.cloneElement(replacement, { key: index })
+          )
+        }
       })
+    }
+
+    const breakRegex = /(\n)/g
+    if (typeof translation === 'string' && translation.match(breakRegex)) {
+      translation = reactStringReplace(translation, breakRegex, () =>
+        React.createElement('br', { key: Math.random() })
+      )
     }
 
     return translation
@@ -57,7 +68,7 @@ export const DictionaryProvider = ({
 }
 
 export const useDictionary = (dictKey?: string) => {
-  const context = useContext(Context)
+  const context = React.useContext(Context)
   if (context === undefined) {
     throw new Error('useDictionary must be used inside DictionaryProvider')
   }

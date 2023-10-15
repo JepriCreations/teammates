@@ -3,10 +3,16 @@
     "about": "About",
     "links": "Links",
     "reject": "Reject",
+    "discard": "Discard",
+    "view_project": "Go to project",
+    "delete": "Delete application",
     "Status": {
       "standby": "Standby",
       "granted": "Granted",
       "rejected": "Rejected"
+    },
+    "Errors": {
+      "removing": "Has been an error while removing the application."
     }
   },
   "Auth": {
@@ -16,7 +22,8 @@
     "login_with": "Sign in with",
     "privacy": "Privacy policy",
     "subtitle": "Unlock the Power of Collaboration and Connect with Your Dream Team!",
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "sign_out": "Sign out"
   },
   "Categories": {
     "art": "Art",
@@ -34,11 +41,17 @@
     "profile": "Profile",
     "projects": "Projects",
     "roles": "Roles",
-    "statistics": "Statistics"
+    "statistics": "Statistics",
+    "discover": "Discover",
+    "likes": "Likes"
   },
   "Errors": {
     "another_try": "Give it another try",
-    "something_went_wrong": "Oh no! Something went wrong..."
+    "something_went_wrong": "Oh no! Something went wrong...",
+    "file_too_large": "File size is over the maximum.",
+    "file_too_small": "File size is under the minimum.",
+    "file_invalid_type": "The file format is invalid.",
+    "too_many_files": "Too many files."
   },
   "General": {
     "cancel": "Cancel",
@@ -49,19 +62,24 @@
     "success": "Success!",
     "than_last_month": "Than last month",
     "ups": "Oops, there has been an error.",
-    "created_at": "Created at"
+    "created_at": "Created at",
+    "click_to_upload": "Click to upload",
+    "or_darg": "or drag and drop.",
+    "show_more": "Show more",
+    "show_less": "Show less"
   },
   "Menus": {
     "about": "About",
     "blog": "Blog",
     "dashboard": "Dashboard",
     "discover": "Discover",
-    "login": "Login"
+    "login": "Login",
+    "explore": "Explore"
   },
   "Project": {
     "application_button": "I am interested",
     "application_sent": "Your application has been sent.",
-    "available_roles": "Apply for the role that best suits your experience.",
+    "available_roles": "Apply for the role that best suits your knowledge.",
     "Errors": {
       "duplicate_application": "You have already applied for this role.",
       "sending_application": "There was an error sending your application.",
@@ -70,7 +88,12 @@
     "no_roles_available": "Currently this project has not roles available.",
     "open_roles": "Open roles",
     "project_description": "About %0",
-    "you_must_login": "To send an application, you must login first"
+    "you_must_login": "To send an application, you must login first",
+    "location": "Location",
+    "social": "Social",
+    "similar_projects": "Similar projects",
+    "no_links": "There are currently no links.",
+    "no_similar_projects": "There is no similar projects."
   },
   "Projects": {
     "active": "Active",
@@ -82,7 +105,7 @@
     "city": "City",
     "city_description": "Specially useful when you project require teammates near you.",
     "country": "Country",
-    "country_not_found": "No country found",
+    "nothing_found": "nothing_found",
     "create_new_project": "Create new project",
     "danger_zone": "Danger zone",
     "description": "Description",
@@ -96,15 +119,14 @@
       "updating": "Has been an error while updating the project."
     },
     "hidden": "Hidden",
-    "icon": "Icon",
-    "icon_description": "The icon image should have an aspect ratio of 1/1 for a better looking. The formats allowed are .png, .jpg, .webp",
+    "icon": "Project icon",
+    "icon_description": "The icon image should have a 1/1 aspect ratio for a better appearance.",
     "likes": "Likes",
     "links": "Links",
     "location": "Location",
     "name": "Project name",
     "new_project": "New Project",
     "new_project_description": "Unlock the power of collaboration: find like-minded teammates to elevate your project and make your vision a resounding success.",
-    "no_category_found": "No category found",
     "optional": "optional",
     "project_details": "Project details",
     "project_roles": "Project roles",
@@ -115,7 +137,7 @@
     "remove_project": "Remove project",
     "remove_title": "Attention!",
     "search_category": "Search category...",
-    "search_country": "Search country...",
+    "select_country": "Select a country...",
     "select_categories": "Select categories",
     "show_danger_zone": "Show danger zone",
     "success_create": "The project has been created.",
@@ -123,6 +145,16 @@
     "summary": "Summary",
     "summary_description": "Summarize what your project aims to achieve in one line.",
     "views": "Views"
+  },
+  "Profile": {
+    "name": "Name",
+    "about": "About",
+    "about_placeholder": "Tell us about yourself! Share your passions, skills, and what motivates you. This is your space to give project owners a glimpse into who you are and how you can contribute to their projects. Feel free to mention your background, interests, and any relevant experiences.",
+    "links": "Links",
+    "social_links": "Social links",
+    "nationality": "Nationality",
+    "email": "Email",
+    "select_nationality": "Select your nationality"
   },
   "Roles": {
     "application": "Application",
@@ -141,6 +173,7 @@
       "intermediate": "Intermediate"
     },
     "new_role": "New role",
+    "archive": "Archive",
     "new_role_description": "Enrich your project with the Perfect Fit: Define the Role that your team needs.",
     "no_role_found": "No role found",
     "no_roles_created": "No roles created yet.",
@@ -175,7 +208,9 @@
   },
   "Site": {
     "subtitle": "The powerhouse platform for connecting visionaries and Cultivating Success. Step into a world of collaboration and innovation.",
-    "title": "Find the next project to be part of."
+    "title": "Find the next project to be part of.",
+    "search_placeholder": "Search projects...",
+    "results": "results"
   },
   "Theme": {
     "dark": "Dark",

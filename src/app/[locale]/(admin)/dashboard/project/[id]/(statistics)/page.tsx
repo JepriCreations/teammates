@@ -13,5 +13,9 @@ export default async function Project({
 
   if (error || !data) return <Error error={error} />
 
-  return <Statistics locale={locale} data={data} />
+  return (
+    <div className="px-4 pb-6 sm:px-12">
+      <Statistics locale={locale} data={data} />
+    </div>
+  )
 }

@@ -1,7 +1,6 @@
 'use client'
 
-import { cn } from '@/lib/utils'
-import { useToast } from '@/hooks/useToast'
+import { useToast } from '@/hooks/use-toast'
 import {
   Toast,
   ToastClose,
@@ -16,40 +15,18 @@ export function Toaster() {
 
   return (
     <ToastProvider>
-      {toasts.map(function ({
-        id,
-        title,
-        description,
-        action,
-        severity,
-        ...props
-      }) {
-        const severityAccent = {
-          success: 'bg-success',
-          error: 'bg-error',
-          info: 'bg-info',
-          warning: 'bg-warning',
-        } as const
-
+      {toasts.map(function ({ id, title, description, action, ...props }) {
         return (
           <Toast key={id} {...props}>
-            <div className="flex items-start gap-6">
-              {severity && (
-                <span
-                  className={cn(
-                    'absolute inset-y-0 left-0 w-1',
-                    severityAccent[severity]
-                  )}
-                />
-              )}
-              <div className="grid grow gap-1">
+            <div className="flex grow flex-wrap items-center justify-end gap-x-3 gap-y-1">
+              <div className="grow">
                 {title && <ToastTitle>{title}</ToastTitle>}
                 {description && (
                   <ToastDescription>{description}</ToastDescription>
                 )}
               </div>
+              {action}
             </div>
-            {action}
             <ToastClose />
           </Toast>
         )

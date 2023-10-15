@@ -14,18 +14,18 @@ export const Error = ({ error }: { error: PostgresError }) => {
   const router = useRouter()
 
   useEffect(() => {
-    // Log the error to an error reporting service
+    // TODO: Log the error to an error reporting service
   }, [error])
 
   return (
     <Alert variant="error">
-      <h2>{t('something_went_wrong')}</h2>
+      <h4 className="mb-2">{t('something_went_wrong')}</h4>
       <p>{error.message}</p>
       {DEBUG && <p className="opacity-60">{error.details}</p>}
       <div className="flex justify-end">
         <Button
-          variant="ghost"
-          className="text-onError hover:bg-onError/10 active:bg-onError/10"
+          variant="text"
+          className="border border-onError text-onError hover:bg-onError/10 active:bg-onError/10"
           onClick={() => router.refresh()}
         >
           {t('another_try')}

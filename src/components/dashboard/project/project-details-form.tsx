@@ -1,38 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 
 import { Project } from '@/types/collections'
-import { useProjects } from '@/hooks/useProjects'
-import { useToast } from '@/hooks/useToast'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion'
+import { useProjects } from '@/hooks/use-projects'
+import { useToast } from '@/hooks/use-toast'
+import { Accordion } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
+import { CircularProgress } from '@/components/ui/circular-progress'
+import { Dialog } from '@/components/ui/dialog'
+import { Divider } from '@/components/ui/divider'
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
+import { TextField } from '@/components/ui/text-field'
 import { ProjectForm } from '@/components/forms/new-project/project-form'
 import { useDictionary } from '@/components/providers/dictionary-provider'
 
@@ -91,42 +79,44 @@ export const ProjectDetailsForm = ({ data }: ProjectDetailsFormProps) => {
 
   return (
     <>
-      <section className="grid grid-cols-3 border-b border-outline/38 p-6">
+      {/* Project status */}
+      <section className="grid grid-cols-1 gap-y-3 md:grid-cols-3">
         <div>
-          <p>{t('project_status')}</p>
+          <p className="text-label-lg">{t('project_status')}</p>
         </div>
-        <div className="col-span-2 flex items-center gap-3">
+        <div className="flex items-center gap-3 md:col-span-2">
           <Switch checked={publish} onCheckedChange={updatePublicState} />
           <p>{publish ? t('public') : t('hidden')}</p>
         </div>
       </section>
+      <Divider />
       <ProjectForm
         defaultValues={defaultValues}
         action="update"
         projectData={{ id: data.id, icon_url: data.icon_url }}
       >
-        <Accordion type="multiple" className="w-full px-6">
-          <AccordionItem value="danger-zone" className="border-none">
-            <AccordionTrigger>{t('show_danger_zone')}</AccordionTrigger>
-            <AccordionContent>
-              <section className="grid grid-cols-3 py-3">
+        <Accordion type="multiple" className="w-full">
+          <Accordion.Item value="danger-zone" className="border-none">
+            <Accordion.Trigger>{t('show_danger_zone')}</Accordion.Trigger>
+            <Accordion.Content>
+              <section className="grid grid-cols-1 gap-y-3 py-3 sm:grid-cols-3">
                 <div>
-                  <p className="text-error">{t('danger_zone')}</p>
+                  <p className="text-label-lg text-error">{t('danger_zone')}</p>
                 </div>
                 <div className="col-span-2 flex items-center gap-3">
                   <Dialog>
-                    <DialogTrigger asChild>
+                    <Dialog.Trigger asChild>
                       <Button variant="destructive">
                         {t('remove_project')}
                       </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>{t('remove_title')}</DialogTitle>
-                        <DialogDescription>
+                    </Dialog.Trigger>
+                    <Dialog.Content>
+                      <Dialog.Header>
+                        <Dialog.Title>{t('remove_title')}</Dialog.Title>
+                        <Dialog.Description>
                           {t('remove_description')}
-                        </DialogDescription>
-                      </DialogHeader>
+                        </Dialog.Description>
+                      </Dialog.Header>
                       <Form {...form}>
                         <form>
                           <FormField
@@ -134,12 +124,11 @@ export const ProjectDetailsForm = ({ data }: ProjectDetailsFormProps) => {
                             name="name"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>{t('name')}</FormLabel>
                                 <FormControl>
-                                  <Input
+                                  <TextField
                                     disabled={isRemoving}
-                                    variant="card"
                                     placeholder={data.name}
+                                    label={t('name')}
                                     {...field}
                                   />
                                 </FormControl>
@@ -149,7 +138,7 @@ export const ProjectDetailsForm = ({ data }: ProjectDetailsFormProps) => {
                           />
                         </form>
                       </Form>
-                      <DialogFooter>
+                      <Dialog.Footer>
                         <Button
                           onClick={(e) => {
                             e.preventDefault()
@@ -160,13 +149,13 @@ export const ProjectDetailsForm = ({ data }: ProjectDetailsFormProps) => {
                         >
                           {t('remove_project')}
                         </Button>
-                      </DialogFooter>
-                    </DialogContent>
+                      </Dialog.Footer>
+                    </Dialog.Content>
                   </Dialog>
                 </div>
               </section>
-            </AccordionContent>
-          </AccordionItem>
+            </Accordion.Content>
+          </Accordion.Item>
         </Accordion>
       </ProjectForm>
     </>
@@ -174,5 +163,11 @@ export const ProjectDetailsForm = ({ data }: ProjectDetailsFormProps) => {
 }
 
 export const LoadingForm = () => {
-  return <div>Loading form...</div>
+  return (
+    <>
+      <section className="grid h-[calc(100dvh-96px)] place-items-center px-3 sm:px-12">
+        <CircularProgress />
+      </section>
+    </>
+  )
 }

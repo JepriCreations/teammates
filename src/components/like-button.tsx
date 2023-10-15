@@ -2,11 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-import { useDebounce } from '@/hooks/useDebounce'
-import { useIsMounted } from '@/hooks/useIsMounted'
-import { useProjects } from '@/hooks/useProjects'
-import { Button } from '@/components/ui/button'
-import { HeartIcon, HeartIconFilled } from '@/components/icons'
+import { useDebounce } from '@/hooks/use-debounce'
+import { useProjects } from '@/hooks/use-projects'
+import { IconButton } from '@/components/ui/icon-button'
+import { Icons } from '@/components/icons'
 
 import { useAuth } from './providers/supabase-auth-provider'
 
@@ -61,28 +60,36 @@ export const LikeButton = ({
   }
 
   return (
-    <div className="flex items-center gap-1">
-      {count && <p className="text-body-md text-current">{count}</p>}
-      <Button
+    <div className="flex items-center gap-1 overflow-hidden rounded-2xl bg-onSurfaceVariant/12 pl-4">
+      <div className="min-w-[20px]">
+        {count && (
+          <p className="text-body-sm text-current animate-in slide-in-from-bottom-full">
+            {count}
+          </p>
+        )}
+      </div>
+      <IconButton
+        variant="standard"
+        size="small"
         disabled={!user}
-        icon={
-          <HeartIcon
-            className={`relative z-10 ${
-              selected
-                ? 'text-red-400 transition-colors delay-100'
-                : 'text-current'
-            }`}
-          />
-        }
-        variant="ghost"
-        size="icon"
         className="relative disabled:bg-transparent"
         onClick={handleOnLike}
       >
+        <Icons.like
+          size={20}
+          className={`relative z-10 ${
+            selected
+              ? 'text-red-400 transition-colors delay-100'
+              : 'text-current'
+          }`}
+        />
         {selected && (
-          <HeartIconFilled className="absolute z-0 m-2 flex items-center justify-center text-red-400 animate-in zoom-in-0" />
+          <Icons.likeFilled
+            size={20}
+            className="absolute z-0 m-2 flex items-center justify-center text-red-400 animate-in zoom-in-0"
+          />
         )}
-      </Button>
+      </IconButton>
     </div>
   )
 }

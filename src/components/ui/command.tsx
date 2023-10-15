@@ -4,11 +4,11 @@ import * as React from 'react'
 import { DialogProps } from '@radix-ui/react-dialog'
 import { Command as CommandPrimitive } from 'cmdk'
 
-import { cn } from '@/lib/utils'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
-import { SearchIcon } from '@/components/icons'
+import { cn, createComponentWithStatics } from '@/lib/utils'
+import { Dialog } from '@/components/ui/dialog'
+import { Icons } from '@/components/icons'
 
-const Command = React.forwardRef<
+const CommandRoot = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive>
 >(({ className, ...props }, ref) => (
@@ -21,18 +21,18 @@ const Command = React.forwardRef<
     {...props}
   />
 ))
-Command.displayName = CommandPrimitive.displayName
+CommandRoot.displayName = CommandPrimitive.displayName
 
 interface CommandDialogProps extends DialogProps {}
 
 const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
   return (
     <Dialog {...props}>
-      <DialogContent className="overflow-hidden p-0 shadow-2xl">
-        <Command className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-outline [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
+      <Dialog.Content className="overflow-hidden p-0 shadow-2xl">
+        <CommandRoot className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-outline [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
           {children}
-        </Command>
-      </DialogContent>
+        </CommandRoot>
+      </Dialog.Content>
     </Dialog>
   )
 }
@@ -45,11 +45,11 @@ const CommandInput = React.forwardRef<
     className="flex items-center border-b border-outline/38 px-4"
     cmdk-input-wrapper=""
   >
-    <SearchIcon className="mr-4 shrink-0 text-outline" />
+    <Icons.search className="mr-4 shrink-0 text-onSurface/50" />
     <CommandPrimitive.Input
       ref={ref}
       className={cn(
-        'flex h-14 w-full rounded-none bg-transparent py-3 outline-none placeholder:text-outline disabled:cursor-not-allowed disabled:opacity-50',
+        'flex h-14 w-full rounded-none bg-transparent py-3 outline-none placeholder:text-onSurfaceVariant/50 disabled:cursor-not-allowed disabled:opacity-50',
         className
       )}
       {...props}
@@ -65,7 +65,10 @@ const CommandList = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.List
     ref={ref}
-    className={cn('max-h-[300px] overflow-y-auto overflow-x-hidden', className)}
+    className={cn(
+      'max-h-[300px] overflow-y-auto overflow-x-hidden py-2',
+      className
+    )}
     {...props}
   />
 ))
@@ -78,7 +81,7 @@ const CommandEmpty = React.forwardRef<
 >((props, ref) => (
   <CommandPrimitive.Empty
     ref={ref}
-    className="py-6 text-center text-outline"
+    className="relative flex h-12 items-center rounded-none py-2 pl-8 pr-3 text-onSurface/50"
     {...props}
   />
 ))
@@ -107,7 +110,7 @@ const CommandSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.Separator
     ref={ref}
-    className={cn('-mx-1 h-px bg-outline', className)}
+    className={cn('-mx-1 h-px bg-outlineVariant/38', className)}
     {...props}
   />
 ))
@@ -120,8 +123,7 @@ const CommandItem = React.forwardRef<
   <CommandPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex h-12 cursor-default select-none items-center rounded-none py-2 pl-12 pr-3 outline-none transition-colors aria-selected:bg-primary/38 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-      className
+      'relative flex h-12 cursor-pointer select-none items-center rounded-none px-3 py-2 text-body-sm text-onSurface outline-none transition-colors active:bg-onSurface/12 aria-selected:bg-onSurface/8 data-[disabled]:pointer-events-none data-[disabled]:text-onSurface/38 [&>span>svg]:text-onSurfaceVariant data-[disabled]:[&>span>svg]:text-onSurface/38'
     )}
     {...props}
   />
@@ -142,14 +144,14 @@ const CommandShortcut = ({
 }
 CommandShortcut.displayName = 'CommandShortcut'
 
-export {
-  Command,
-  CommandDialog,
-  CommandInput,
-  CommandList,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-  CommandShortcut,
-  CommandSeparator,
-}
+const Command = Object.assign(CommandRoot, {
+  Dialog: CommandDialog,
+  Input: CommandInput,
+  List: CommandList,
+  Empty: CommandEmpty,
+  Group: CommandGroup,
+  Item: CommandItem,
+  Shortcut: CommandShortcut,
+  Separator: CommandSeparator,
+})
+export { Command }

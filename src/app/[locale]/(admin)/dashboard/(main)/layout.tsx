@@ -1,29 +1,22 @@
-import Link from 'next/link'
-import { routes } from '@/constants/routes'
-
-import { getDictionary } from '@/lib/dictionaries'
 import { DashboardAppbar } from '@/components/dashboard/appbar'
-
-import { Sidebar } from './components/sidebar'
+import { Sidebar } from '@/components/dashboard/sidebar'
+import { Logo } from '@/components/logo'
+import { ModeToggle } from '@/components/mode-toggle'
 
 interface DashboardLayoutProps {
   children: React.ReactNode
-  params: { locale: string }
 }
 
-export default async function SiteLayout({
-  children,
-  params,
-}: DashboardLayoutProps) {
-  const { t } = await getDictionary(params.locale)
-
+export default async function SiteLayout({ children }: DashboardLayoutProps) {
   return (
-    <main className="flex min-h-[100dvh]">
+    <main className="min-h-[100dvh] pb-20">
       <Sidebar />
-      <div className="grow">
+      <div className="flex flex-col md:pl-24">
         <DashboardAppbar>
-          <div className="grow" />
-          <Link href={routes.HOME}>{t('Auth.discover')}</Link>
+          <Logo />
+          <section className="flex grow items-center justify-end">
+            <ModeToggle />
+          </section>
         </DashboardAppbar>
         {children}
       </div>

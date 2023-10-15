@@ -11,10 +11,8 @@ import { z } from 'zod'
 
 import { ExperienceLevel, Rewards, Roles, WorkMode } from '@/types/collections'
 import { Translator } from '@/lib/dictionaries'
-import { cn } from '@/lib/utils'
 import { roleSchema } from '@/lib/validations/role'
 import { Checkbox } from '@/components/ui/checkbox'
-import { CommandItem } from '@/components/ui/command'
 import {
   FormControl,
   FormDescription,
@@ -24,16 +22,9 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from '@/components/ui/select'
+import { Select } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { Combobox } from '@/components/combobox'
-import { CheckIcon } from '@/components/icons'
 import { useDictionary } from '@/components/providers/dictionary-provider'
 
 const rewardsDescriptions = (t: Translator) => ({
@@ -58,43 +49,28 @@ export const RoleInputs = ({ form, disabled }: RoleInputsProps) => {
           name="name"
           render={({ field: { value: fieldValue, ...field } }) => (
             <FormItem>
-              <FormLabel>{t('role')}</FormLabel>
               <FormControl>
                 <Combobox
                   disabled={disabled}
-                  value={fieldValue}
-                  triggerContent={
-                    fieldValue?.length ? t(fieldValue) : t('select_a_role')
+                  label={t('role')}
+                  placeholder={t('select_a_role')}
+                  emptyState={t('no_category_found')}
+                  displayValue={(role: { label: string; value: Roles }) =>
+                    role.label
                   }
-                  commandProps={{
-                    placeholder: t('search_category'),
-                    emptyText: t('no_category_found'),
-                    content: (
-                      <ScrollArea className="h-64 w-full">
-                        {ROLES(t).map(({ value, label }) => (
-                          <CommandItem
-                            key={value}
-                            value={value}
-                            onSelect={(val) => {
-                              form.clearErrors(field.name)
-                              field.onChange(val as Roles)
-                            }}
-                          >
-                            <CheckIcon
-                              className={cn(
-                                'absolute left-2 flex h-6 w-6',
-                                value === fieldValue
-                                  ? 'opacity-100'
-                                  : 'opacity-0'
-                              )}
-                            />
-                            {label}
-                          </CommandItem>
-                        ))}
-                      </ScrollArea>
-                    ),
+                  onValueChange={(newValue) => {
+                    if (newValue) {
+                      form.setValue('name', newValue.value)
+                      form.clearErrors(field.name)
+                    }
                   }}
-                />
+                >
+                  {ROLES(t).map((role) => (
+                    <Combobox.Item key={role.value} value={role}>
+                      {role.label}
+                    </Combobox.Item>
+                  ))}
+                </Combobox>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -105,7 +81,6 @@ export const RoleInputs = ({ form, disabled }: RoleInputsProps) => {
           name="exp_level"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('experience_level')}</FormLabel>
               <FormControl>
                 <Select
                   disabled={disabled}
@@ -114,20 +89,17 @@ export const RoleInputs = ({ form, disabled }: RoleInputsProps) => {
                   }
                   value={field.value}
                 >
-                  <SelectTrigger>
-                    {field.value ? (
-                      <span>{t(`Levels.${field.value}`)}</span>
-                    ) : (
-                      <span className="text-outline">{t('select_level')}</span>
-                    )}
-                  </SelectTrigger>
-                  <SelectContent>
+                  <Select.Trigger
+                    placeholder={t('select_level')}
+                    label={t('experience_level')}
+                  />
+                  <Select.Content>
                     {EXPERIENCE_LEVEL(t).map(({ value, label }) => (
-                      <SelectItem key={value} value={value}>
+                      <Select.Item key={value} value={value}>
                         {label}
-                      </SelectItem>
+                      </Select.Item>
                     ))}
-                  </SelectContent>
+                  </Select.Content>
                 </Select>
               </FormControl>
               <FormMessage />
@@ -167,23 +139,25 @@ export const RoleInputs = ({ form, disabled }: RoleInputsProps) => {
           </FormItem>
         )}
       />
-      <FormField
-        control={form.control}
-        name="description"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{t('role_description')}</FormLabel>
-            <FormControl>
-              <Textarea
-                disabled={disabled}
-                className="min-h-[150px]"
-                {...field}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      <div className="mt-3">
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Textarea
+                  disabled={disabled}
+                  className="min-h-[150px]"
+                  label={t('role_description')}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
       <FormField
         control={form.control}
         name="rewards"

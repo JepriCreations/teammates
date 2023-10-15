@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { routes } from '@/constants/routes'
+import { ROUTES } from '@/constants/routes'
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 
 import type { Database } from '@/types/supabase'
@@ -11,7 +11,7 @@ export async function authMiddleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname
   const res = NextResponse.next()
 
-  const matcher = [...privatesRoutes, routes.LOGIN]
+  const matcher = [...privatesRoutes, ROUTES.LOGIN]
 
   const depensOnSession = matcher.some((path) =>
     supportedLocales.some((loc) => pathname.startsWith(`/${loc}` + path))
@@ -20,7 +20,7 @@ export async function authMiddleware(req: NextRequest) {
   if (!depensOnSession) return res
 
   const isAuthPage = supportedLocales.some((loc) =>
-    pathname.startsWith(`/${loc}` + routes.LOGIN)
+    pathname.startsWith(`/${loc}` + ROUTES.LOGIN)
   )
   const isPrivatePage = privatesRoutes.some((path) => {
     return supportedLocales.some((loc) => pathname.startsWith(`/${loc}` + path))
@@ -34,7 +34,7 @@ export async function authMiddleware(req: NextRequest) {
   if (isAuthPage) {
     if (session) {
       return NextResponse.redirect(
-        new URL(`/${locale + routes.PROJECTS}`, req.url)
+        new URL(`/${locale + ROUTES.PROJECTS}`, req.url)
       )
     }
   }
@@ -47,7 +47,7 @@ export async function authMiddleware(req: NextRequest) {
 
     return NextResponse.redirect(
       new URL(
-        `/${locale + routes.LOGIN}?from=${encodeURIComponent(from)}`,
+        `/${locale + ROUTES.LOGIN}?from=${encodeURIComponent(from)}`,
         req.url
       )
     )

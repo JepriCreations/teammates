@@ -59,3 +59,9 @@ export function isPostgresError(error: unknown): error is PostgresError {
     typeof error === 'object' && error !== null && '__PostgresError' in error
   )
 }
+
+export const ERROR_CODES = {
+  UNAUTHENTICATED: 'unauthenticated',
+  DUPLICATE_NAME: 'duplicate_name',
+  DUPLICATE_APPLICATION: 'duplicate_application',
+}

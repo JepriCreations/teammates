@@ -1,32 +1,35 @@
 'use client'
 
-import { countries } from '@/constants/countries'
+import { COUNTRIES } from '@/constants/countries'
 import { categories } from '@/constants/projects'
+import { ErrorCode } from 'react-dropzone'
 import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
-import { capitalize, cn } from '@/lib/utils'
+import { Translator } from '@/lib/dictionaries'
+import { cn } from '@/lib/utils'
+import { SOCIALS } from '@/lib/validations/global'
 import {
   createProjectSchema,
   MAX_CATEGORIES,
-  socials,
+  MAX_FILE_SIZE,
   SUMMARY_MAX_LENGTH,
 } from '@/lib/validations/project'
-import { CommandItem } from '@/components/ui/command'
+import { Dropzone, IMAGE_MIME_TYPE } from '@/components/ui/drop-zone'
 import {
   FormControl,
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { TextField } from '@/components/ui/text-field'
 import { Textarea } from '@/components/ui/textarea'
 import { Combobox } from '@/components/combobox'
-import { CheckIcon, ImageUploadIcon } from '@/components/icons'
+import { Icons } from '@/components/icons'
 import { useDictionary } from '@/components/providers/dictionary-provider'
+
+import { Divider } from '../ui/divider'
 
 interface ProjectInputsProps {
   form: UseFormReturn<z.infer<typeof createProjectSchema>>
@@ -34,19 +37,31 @@ interface ProjectInputsProps {
   disabled?: boolean
 }
 
+type Category = {
+  value: string
+  label: string
+}
+
+const customFileErrorMessages = (t: Translator): Record<ErrorCode, string> => ({
+  [ErrorCode.FileTooLarge]: t('Errors.file_too_large'),
+  [ErrorCode.FileTooSmall]: t('Errors.file_too_small'),
+  [ErrorCode.FileInvalidType]: t('Errors.file_invalid_type'),
+  [ErrorCode.TooManyFiles]: t('Errors.too_many_files'),
+})
+
 export const ProjectInputs = ({
   form,
   icon_url = '',
   disabled,
 }: ProjectInputsProps) => {
-  const { t } = useDictionary('Projects')
-  const { t: categoriesT } = useDictionary('Categories')
+  const { t } = useDictionary()
+  const { t: tCategories } = useDictionary('Categories')
 
   return (
     <>
-      <section className="grid grid-cols-3 border-b border-outline/38 p-6">
+      <section className="grid grid-cols-1 gap-y-3 md:grid-cols-3">
         <div>
-          <p>{t('basic_info')}</p>
+          <p className="text-label-lg">{t('Projects.basic_info')}</p>
         </div>
         <div className="col-span-2 grid grid-cols-1 gap-3">
           <FormField
@@ -54,9 +69,12 @@ export const ProjectInputs = ({
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('name')}</FormLabel>
                 <FormControl>
-                  <Input disabled={disabled} variant="card" {...field} />
+                  <TextField
+                    label={t('Projects.name')}
+                    disabled={disabled}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -67,15 +85,18 @@ export const ProjectInputs = ({
             name="summary"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('summary')}</FormLabel>
                 <FormControl>
-                  <Input disabled={disabled} variant="card" {...field} />
+                  <TextField
+                    label={t('Projects.summary')}
+                    disabled={disabled}
+                    {...field}
+                  />
                 </FormControl>
-                <FormDescription>
-                  {t('summary_description')}
+                <FormDescription className="flex gap-4">
+                  {t('Projects.summary_description')}
                   <span
                     className={cn(
-                      'block',
+                      'ml-auto block shrink-0',
                       field.value.length > SUMMARY_MAX_LENGTH && 'text-error'
                     )}
                   >
@@ -88,9 +109,10 @@ export const ProjectInputs = ({
           />
         </div>
       </section>
-      <section className="grid grid-cols-3 border-b border-outline/38 p-6">
+      <Divider />
+      <section className="grid grid-cols-1 gap-y-3 md:grid-cols-3">
         <div>
-          <p>{t('details')}</p>
+          <p className="text-label-lg">{t('Projects.details')}</p>
         </div>
         <div className="col-span-2 grid grid-cols-1 gap-3">
           <div className="flex gap-3">
@@ -98,21 +120,17 @@ export const ProjectInputs = ({
               <FormField
                 control={form.control}
                 name="file"
-                render={({ field: { value, onChange, ...field } }) => (
+                render={({ field: { onChange, ...field } }) => (
                   <FormItem>
-                    <FormLabel>{t('icon')}</FormLabel>
                     <FormControl>
-                      <Input
+                      <Dropzone
                         disabled={disabled}
-                        leftSection={
-                          <ImageUploadIcon className="text-outline" />
-                        }
-                        type="file"
-                        accept="image/*"
-                        variant="card"
-                        onChange={(event) => {
-                          const file =
-                            event.target.files && event.target.files[0]
+                        accept={IMAGE_MIME_TYPE}
+                        className="flex gap-3"
+                        maxSize={MAX_FILE_SIZE}
+                        maxFiles={1}
+                        onDropAccepted={(files) => {
+                          const file = files[0]
                           if (file) {
                             onChange(file)
                             form.clearErrors(field.name)
@@ -120,96 +138,114 @@ export const ProjectInputs = ({
                             form.resetField(field.name)
                           }
                         }}
+                        onDropRejected={(fileRejections) => {
+                          if (fileRejections.length > 0) {
+                            form.setError(field.name, {
+                              message:
+                                customFileErrorMessages(t)[
+                                  fileRejections[0].errors[0].code as ErrorCode
+                                ],
+                            })
+                          }
+                        }}
                         {...field}
-                      />
+                      >
+                        <Dropzone.Preview>
+                          {form.getValues('file') !== undefined || icon_url ? (
+                            /**
+                             * use of <img/> instead of next <Image/> to avoid caching
+                             * and always show the last updated icon
+                             */
+                            <img
+                              src={
+                                form.getValues('file')
+                                  ? URL.createObjectURL(form.getValues('file'))
+                                  : icon_url
+                              }
+                              alt="preview"
+                              className="h-full w-full object-fill animate-in zoom-in-50"
+                            />
+                          ) : (
+                            <>
+                              <Dropzone.Idle>
+                                <Icons.imageUpload />
+                              </Dropzone.Idle>
+                              <Dropzone.Accept>
+                                <Icons.checkSquare />
+                              </Dropzone.Accept>
+                              <Dropzone.Reject>
+                                <Icons.errorSquare />
+                              </Dropzone.Reject>
+                            </>
+                          )}
+                        </Dropzone.Preview>
+                        <Dropzone.Content>
+                          <Dropzone.Label>{t('Projects.icon')}</Dropzone.Label>
+                          <p>
+                            <span className="font-medium underline">
+                              {t('General.click_to_upload')}
+                            </span>{' '}
+                            <span className="opacity-50">
+                              {t('General.or_drag')}
+                            </span>
+                          </p>
+                          <p className="text-body-sm opacity-50">
+                            {`PNG, JPG or WEBP (max. ${
+                              MAX_FILE_SIZE / 1024
+                            }kb)`}
+                          </p>
+                        </Dropzone.Content>
+                      </Dropzone>
                     </FormControl>
-                    <FormDescription>{t('icon_description')}</FormDescription>
+                    <FormDescription>
+                      {t('Projects.icon_description')}
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <div className="relative mt-[28px] h-20 w-20 shrink-0 overflow-hidden rounded-md border-2 border-outline/38 bg-onSurface/10">
-              {(form.getValues('file') !== undefined || icon_url) && (
-                /**
-                 * use of <img/> instead of next <Image/> to avoid chaching
-                 * and always show the last updated icon
-                 */
-                <img
-                  src={
-                    form.getValues('file')
-                      ? URL.createObjectURL(form.getValues('file'))
-                      : icon_url
-                  }
-                  alt="preview"
-                  sizes="(max-width: 80px) 100vw"
-                  className="h-full w-full animate-in zoom-in-50"
-                />
-              )}
-            </div>
           </div>
           <FormField
             control={form.control}
             name="categories"
-            render={({ field: { value, ...field } }) => (
+            render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('categories')}</FormLabel>
                 <FormControl>
                   <Combobox
                     disabled={disabled}
-                    value={value}
-                    triggerContent={
-                      value.length
-                        ? value
-                            .map(
-                              (category) =>
-                                categories(categoriesT).find(
-                                  (c) => c.value === category
-                                )?.label
-                            )
-                            .join(', ')
-                        : t('select_categories')
+                    multiple
+                    label={t('Projects.categories')}
+                    placeholder={t('Projects.select_categories')}
+                    emptyState={t('Projects.nothing_found')}
+                    displayValue={(categories: Category[]) =>
+                      categories.map((c: Category) => c.label).join(' & ')
                     }
-                    commandProps={{
-                      placeholder: t('search_category'),
-                      emptyText: t('no_category_found'),
-                      content: (
-                        <ScrollArea className="h-72 w-full">
-                          {categories(categoriesT).map((category) => (
-                            <CommandItem
-                              value={category.value}
-                              key={category.value}
-                              onSelect={(val) => {
-                                const index = value.indexOf(val)
-                                if (index !== -1) {
-                                  form.setValue(
-                                    'categories',
-                                    value.filter((v) => v !== val)
-                                  )
-                                } else {
-                                  if (value.length >= MAX_CATEGORIES) return
-                                  form.clearErrors(field.name)
-                                  form.setValue('categories', [...value, val])
-                                }
-                              }}
-                            >
-                              <CheckIcon
-                                className={cn(
-                                  'absolute left-2 flex h-6 w-6',
-                                  value.includes(category.value)
-                                    ? 'opacity-100'
-                                    : 'opacity-0'
-                                )}
-                              />
-                              {category.label}
-                            </CommandItem>
-                          ))}
-                        </ScrollArea>
-                      ),
+                    defaultValue={categories(tCategories).filter((c) =>
+                      field.value.includes(c.value)
+                    )}
+                    maxItems={MAX_CATEGORIES}
+                    closeOnSelect={false}
+                    onValueChange={(newValue) => {
+                      if (newValue) {
+                        form.setValue(
+                          'categories',
+                          newValue.map((v: Category) => v.value)
+                        )
+                        form.clearErrors(field.name)
+                      }
                     }}
-                  />
+                  >
+                    {categories(tCategories).map((category) => (
+                      <Combobox.Item key={category.value} value={category}>
+                        {category.label}
+                      </Combobox.Item>
+                    ))}
+                  </Combobox>
                 </FormControl>
-                <FormDescription>{t('categories_max')}</FormDescription>
+                <FormDescription>
+                  {t('Projects.categories_max')}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -219,13 +255,12 @@ export const ProjectInputs = ({
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('description')}</FormLabel>
                 <FormControl>
                   <Textarea
                     disabled={disabled}
-                    variant="card"
-                    placeholder={t('description_placeholder')}
-                    className="min-h-[240px]"
+                    label={t('Projects.description')}
+                    placeholder={t('Projects.description_placeholder')}
+                    className="min-h-[280px]"
                     {...field}
                   />
                 </FormControl>
@@ -235,55 +270,41 @@ export const ProjectInputs = ({
           />
         </div>
       </section>
-
-      <section className="grid grid-cols-3 border-b border-outline/38 p-6">
+      <Divider />
+      <section className="grid grid-cols-1 gap-y-3 md:grid-cols-3">
         <div>
-          <p>{t('location')}</p>
+          <p className="text-label-lg">{t('Projects.location')}</p>
         </div>
         <div className="col-span-2 grid grid-cols-1 gap-3">
           <FormField
             control={form.control}
             name="location.country"
-            render={({ field: { value, ...field } }) => (
+            render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('country')}</FormLabel>
                 <FormControl>
                   <Combobox
                     disabled={disabled}
-                    value={value}
-                    triggerContent={value.length ? value : 'Select a country'}
-                    commandProps={{
-                      placeholder: t('search_country'),
-                      emptyText: t('country_not_found'),
-                      content: (
-                        <ScrollArea className="h-72 w-full">
-                          {countries.map((country) => (
-                            <CommandItem
-                              value={country}
-                              key={country}
-                              onSelect={(val) => {
-                                form.clearErrors(field.name)
-                                form.setValue(
-                                  'location.country',
-                                  capitalize(val)
-                                )
-                              }}
-                            >
-                              <CheckIcon
-                                className={cn(
-                                  'absolute left-2 flex h-6 w-6',
-                                  country === value
-                                    ? 'opacity-100'
-                                    : 'opacity-0'
-                                )}
-                              />
-                              {country}
-                            </CommandItem>
-                          ))}
-                        </ScrollArea>
-                      ),
+                    label={t('Projects.country')}
+                    placeholder={t('Projects.select_country')}
+                    emptyState={t('Projects.nothing_found')}
+                    displayValue={(country: string) => country}
+                    defaultValue={
+                      COUNTRIES[field.value as keyof typeof COUNTRIES]?.name ??
+                      ''
+                    }
+                    onValueChange={(newValue) => {
+                      if (newValue) {
+                        form.setValue('location.country', newValue)
+                        form.clearErrors(field.name)
+                      }
                     }}
-                  />
+                  >
+                    {Object.entries(COUNTRIES).map(([key, country]) => (
+                      <Combobox.Item key={key} value={key}>
+                        {country.name}
+                      </Combobox.Item>
+                    ))}
+                  </Combobox>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -294,25 +315,30 @@ export const ProjectInputs = ({
             name="location.city"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('city')}</FormLabel>
                 <FormControl>
-                  <Input variant="card" disabled={disabled} {...field} />
+                  <TextField
+                    label={t('Projects.city')}
+                    disabled={disabled}
+                    {...field}
+                  />
                 </FormControl>
-                <FormDescription>{t('city_description')}</FormDescription>
+                <FormDescription>
+                  {t('Projects.city_description')}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
       </section>
-
-      <section className="grid grid-cols-3 border-b border-outline/38 p-6">
+      <Divider />
+      <section className="grid grid-cols-1 gap-y-3 md:grid-cols-3">
         <div>
-          <p>{t('links')}</p>
-          <p className="text-body-md text-outline">{`(${t('optional')})`}</p>
+          <p className="text-label-lg">{t('Projects.links')}</p>
+          <p className="muted text-body-sm">{`(${t('Projects.optional')})`}</p>
         </div>
         <div className="col-span-2 grid grid-cols-1 gap-3">
-          {socials.map(({ name, icon: Icon }, index) => (
+          {SOCIALS.map(({ name, icon: Icon }, index) => (
             <FormField
               key={name}
               control={form.control}
@@ -320,13 +346,12 @@ export const ProjectInputs = ({
               render={({ field: { value, onChange, ...field } }) => (
                 <FormItem>
                   <FormControl nested index={index}>
-                    <Input
+                    <TextField
                       disabled={disabled}
-                      variant="card"
-                      leftSection={<Icon className="text-outline" />}
-                      placeholder={name}
+                      label={name}
+                      leadingIcon={<Icon />}
                       value={
-                        value.find((link) => link.name === name)?.link || ''
+                        value.find((link) => link.name === name)?.url || ''
                       }
                       onChange={(event) => {
                         const { value: val } = event.target
@@ -335,7 +360,7 @@ export const ProjectInputs = ({
                         const index = newValue.findIndex((i) => i.name === name)
                         newValue.splice(index, 1, {
                           name,
-                          link: !val ? undefined : val,
+                          url: !val ? undefined : val,
                         })
                         onChange(newValue)
                       }}

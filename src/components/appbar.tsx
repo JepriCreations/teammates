@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { routes } from '@/constants/routes'
+import { ROUTES } from '@/constants/routes'
 import { Session } from '@supabase/supabase-js'
 
 import { Translator } from '@/lib/dictionaries'
@@ -12,15 +12,15 @@ import { NavMenuButton } from '@/components/nav-menu-button'
 const menu = [
   {
     id: 'discover',
-    slug: routes.HOME,
+    slug: ROUTES.HOME,
   },
   {
     id: 'blog',
-    slug: routes.BLOG,
+    slug: ROUTES.BLOG,
   },
   {
     id: 'about',
-    slug: routes.ABOUT,
+    slug: ROUTES.ABOUT,
   },
 ]
 
@@ -57,7 +57,7 @@ export const Appbar = ({ t, session }: AppbarProps) => {
 
           <div className="top-0 flex h-full w-fit items-center justify-center sm:absolute sm:inset-x-0 sm:mx-auto">
             <Link
-              href={routes.HOME}
+              href={ROUTES.HOME}
               className="transition-opacity hover:opacity-70 "
             >
               <Logo height={24} />
@@ -69,12 +69,12 @@ export const Appbar = ({ t, session }: AppbarProps) => {
               <ModeToggle />
             </div>
             {session ? (
-              <Button asChild className="min-w-0">
-                <Link href={routes.PROJECTS}>{t('dashboard')}</Link>
+              <Button variant="brutalist" asChild>
+                <Link href={ROUTES.PROJECTS}>{t('dashboard')}</Link>
               </Button>
             ) : (
-              <Button asChild>
-                <Link href={routes.LOGIN}>{t('login')}</Link>
+              <Button variant="brutalist" asChild>
+                <Link href={ROUTES.LOGIN}>{t('login')}</Link>
               </Button>
             )}
           </div>

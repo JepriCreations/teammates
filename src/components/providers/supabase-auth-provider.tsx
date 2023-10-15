@@ -6,8 +6,7 @@ import { Session } from '@supabase/supabase-js'
 import useSWR from 'swr'
 
 import { Profile } from '@/types/collections'
-
-import { useSupabase } from './supabase-provider'
+import { useSupabase } from '@/components/providers/supabase-provider'
 
 interface ContextI {
   user: Profile | null | undefined
@@ -28,11 +27,9 @@ const Context = createContext<ContextI>({
 
 export const SupabaseAuthProvider = ({
   serverSession,
-  locale,
   children,
 }: {
   serverSession?: Session | null
-  locale?: string
   children: React.ReactNode
 }) => {
   const { supabase } = useSupabase()
@@ -40,10 +37,12 @@ export const SupabaseAuthProvider = ({
   const router = useRouter()
 
   const getProfile = async (): Promise<Profile | null> => {
+    if (!serverSession) return null
+
     const { data: profile, error } = await supabase
       .from('profiles')
       .select()
-      .eq('id', serverSession?.user.id)
+      .eq('id', serverSession.user.id)
       .single()
 
     const avatar = profile?.avatar_url
@@ -71,7 +70,7 @@ export const SupabaseAuthProvider = ({
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: `${location.origin}/${locale}/auth/callback`,
+        redirectTo: `${location.origin}/api/auth/callback`,
       },
     })
 

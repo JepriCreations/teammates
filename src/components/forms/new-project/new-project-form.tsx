@@ -1,5 +1,6 @@
 'use client'
 
+import { Card } from '@/components/ui/card'
 import { useDictionary } from '@/components/providers/dictionary-provider'
 
 import { ProjectForm } from './project-form'
@@ -7,15 +8,19 @@ import { ProjectForm } from './project-form'
 export const NewProjectForm = () => {
   const { t } = useDictionary('Projects')
   return (
-    <main className="min-h-[calc(100dvh)] pb-16 pt-28">
-      <section className="sticky top-[63px] z-40 mx-auto max-w-3xl rounded-t-lg border-b border-outline/38 bg-surface">
-        <div className="card p-6">
-          <p className="mb-2 text-lg font-medium">{t('create_new_project')}</p>
-          <p className="text-outline">{t('new_project_description')}</p>
-        </div>
-      </section>
-      <div className="card relative mx-auto max-w-3xl">
-        <ProjectForm action="create" />
+    <main className="py-6">
+      <div className="mx-auto max-w-3xl">
+        <Card className="bg-surfaceContainerHigh/38">
+          <Card.Header>
+            <Card.Title>{t('create_new_project')}</Card.Title>
+            <Card.Description className="balance">
+              {t('new_project_description')}
+            </Card.Description>
+          </Card.Header>
+          <Card.Content>
+            <ProjectForm action="create" />
+          </Card.Content>
+        </Card>
       </div>
     </main>
   )
