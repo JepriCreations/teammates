@@ -56,10 +56,12 @@ export const RolesForm = () => {
 
   const onSubmit = async () => {
     if (projectId) {
-      const { error } = await addRoles(roles, projectId)
+      const { error } = await addRoles(projectId, roles)
+
       if (error) {
-        setError(error?.message ?? t('Roles.errors.saving'))
+        return setError(error?.message ?? t('Roles.errors.saving'))
       }
+
       toast({
         title: t('General.success'),
         description: t('Roles.the_roles_has_been_added'),

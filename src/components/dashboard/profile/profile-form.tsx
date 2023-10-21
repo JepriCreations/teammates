@@ -55,7 +55,7 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
       nationality: values.nationality,
       links: values.links.concat({
         name: 'email',
-        url: `mailto:${values.email}`,
+        url: `mailto:${values.email ?? ''}`,
       }),
     }
     mutation.update({ data: parsedValues })
@@ -204,7 +204,12 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
               </Form.Item>
             )}
           />
-          <Button type="submit" className="ml-auto block" loading={isPending}>
+          <Button
+            type="submit"
+            className="ml-auto block"
+            loading={isPending}
+            disabled={!form.formState.isDirty}
+          >
             {t('General.save_changes')}
           </Button>
         </form>

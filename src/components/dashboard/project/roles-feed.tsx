@@ -43,7 +43,7 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
   const onArchive = async (role_id: string) => {
     setUpdating(role_id)
     const { error } = await updateRoleStatus({
-      role_id,
+      id: role_id,
       status: RoleStatus.Archived,
     })
     if (error) {
@@ -71,7 +71,7 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
     updateStatus(index, status)
 
     const { error } = await updateRoleStatus({
-      role_id,
+      id: role_id,
       status,
     })
 

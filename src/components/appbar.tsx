@@ -4,6 +4,7 @@ import { Session } from '@supabase/supabase-js'
 
 import { Translator } from '@/lib/dictionaries'
 import { Button } from '@/components/ui/button'
+import { Icons } from '@/components/icons'
 import { Logo } from '@/components/logo'
 import { ModeToggle } from '@/components/mode-toggle'
 import { NavLink } from '@/components/nav-link'
@@ -55,12 +56,12 @@ export const Appbar = ({ t, session }: AppbarProps) => {
             ))}
           </ul>
 
-          <div className="top-0 flex h-full w-fit items-center justify-center sm:absolute sm:inset-x-0 sm:mx-auto">
+          <div className="top-0 flex h-full w-fit items-center justify-center gap-1 sm:absolute sm:inset-x-0 sm:mx-auto">
             <Link
               href={ROUTES.HOME}
-              className="transition-opacity hover:opacity-70 "
+              className="transition-opacity hover:opacity-70"
             >
-              <Logo height={24} />
+              <Logo className="h-6" />
             </Link>
           </div>
 
@@ -69,12 +70,30 @@ export const Appbar = ({ t, session }: AppbarProps) => {
               <ModeToggle />
             </div>
             {session ? (
-              <Button variant="brutalist" asChild>
-                <Link href={ROUTES.PROJECTS}>{t('dashboard')}</Link>
+              <Button
+                variant="brutalist"
+                className="min-w-0 px-4 sm:min-w-[100px] sm:px-6"
+                asChild
+              >
+                <Link href={ROUTES.PROJECTS}>
+                  <span className="sm:hidden">
+                    <Icons.dashboard />
+                  </span>
+                  <span className="hidden sm:inline">{t('dashboard')}</span>
+                </Link>
               </Button>
             ) : (
-              <Button variant="brutalist" asChild>
-                <Link href={ROUTES.LOGIN}>{t('login')}</Link>
+              <Button
+                variant="brutalist"
+                className="min-w-0 px-4 sm:min-w-[100px] sm:px-6"
+                asChild
+              >
+                <Link href={ROUTES.LOGIN}>
+                  <span className="sm:hidden">
+                    <Icons.account />
+                  </span>
+                  <span className="hidden sm:inline">{t('login')}</span>
+                </Link>
               </Button>
             )}
           </div>

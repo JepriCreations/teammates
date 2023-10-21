@@ -93,7 +93,7 @@ export const fetchProjectBySlug = async (slug: string) => {
   const { data: projectData, error } = await supabase
     .from('projects')
     .select(
-      `id, updated_at, name, summary, categories, icon_url, description, links, location->>city, location->>country, likes,
+      `id, updated_at, name, summary, categories, icon_url, description, links, location->>city, location->>country,
   roles(id, name, exp_level, rewards, work_mode, status, description)`
     )
     .eq('slug', slug)
@@ -108,7 +108,13 @@ export const fetchProjectBySlug = async (slug: string) => {
     }
   }
 
-  const { data: similarProjects } = await supabase
+  const likesPromise = supabase
+    .from('project_statistics')
+    .select('likes_count')
+    .eq('project_id', projectData.id)
+    .single()
+
+  const similarProjectsPromise = supabase
     .from('projects')
     .select('slug, name, categories, icon_url')
     .eq('public', true)
@@ -116,23 +122,27 @@ export const fetchProjectBySlug = async (slug: string) => {
     .neq('slug', slug)
     .limit(4)
 
-  let doesUserLike = false
-
-  if (user && projectData) {
-    const userLikeCheck = await supabase
+  const userLikesPromise =
+    user &&
+    supabase
       .from('project_likes')
       .select('*', { count: 'exact', head: true })
       .match({ user_id: user.id, project_id: projectData.id })
       .single()
 
-    doesUserLike = Boolean(userLikeCheck.count && userLikeCheck.count > 0)
-  }
+  const [likes, similarProjects, userLikes] = await Promise.all([
+    likesPromise,
+    similarProjectsPromise,
+    userLikesPromise,
+  ])
 
   const data = {
     ...projectData,
-    liked: doesUserLike,
-    similarProjects: similarProjects ?? [],
+    likes: likes.data?.likes_count ?? 0,
+    liked: Boolean(userLikes?.count && userLikes.count > 0),
+    similarProjects: similarProjects.data ?? [],
   }
+
   if (!DEBUG) await updateProjectViews(data.id)
 
   return { data }

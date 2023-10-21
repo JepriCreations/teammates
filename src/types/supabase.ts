@@ -88,7 +88,7 @@ export interface Database {
           id: string
           links: Json | null
           name: string | null
-          nationality: string
+          nationality: string | null
           updated_at: string | null
         }
         Insert: {
@@ -98,7 +98,7 @@ export interface Database {
           id: string
           links?: Json | null
           name?: string | null
-          nationality?: string
+          nationality?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -108,7 +108,7 @@ export interface Database {
           id?: string
           links?: Json | null
           name?: string | null
-          nationality?: string
+          nationality?: string | null
           updated_at?: string | null
         }
         Relationships: [
@@ -184,7 +184,6 @@ export interface Database {
           description: string
           icon_url: string | null
           id: string
-          likes: number
           links: Json[]
           location: Json | null
           name: string
@@ -200,7 +199,6 @@ export interface Database {
           description?: string
           icon_url?: string | null
           id?: string
-          likes?: number
           links?: Json[]
           location?: Json | null
           name?: string
@@ -216,7 +214,6 @@ export interface Database {
           description?: string
           icon_url?: string | null
           id?: string
-          likes?: number
           links?: Json[]
           location?: Json | null
           name?: string
@@ -292,6 +289,7 @@ export interface Database {
         Row: {
           current_month_hits: number | null
           current_month_views: number | null
+          likes_count: number | null
           percent_hits: number | null
           percent_views: number | null
           prev_month_hits: number | null

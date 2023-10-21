@@ -44,7 +44,7 @@ export const NewRoleDialog = ({ projectId }: NewRoleDialogProps) => {
 
   const onSubmit = async (values: z.infer<typeof roleSchema>) => {
     if (projectId) {
-      const { error } = await addRoles([values], projectId)
+      const { error } = await addRoles(projectId, [values])
       if (error) {
         return toast({
           title: 'Error',

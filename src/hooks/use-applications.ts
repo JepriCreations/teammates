@@ -16,9 +16,8 @@ export const useApplication = () => {
     try {
       setIsPending(true)
 
-      const { error } = await fetcher({
+      const { error } = await fetcher.post({
         url: URL,
-        method: 'POST',
         data: values,
       })
 
@@ -38,9 +37,8 @@ export const useApplication = () => {
     try {
       setIsPending(true)
 
-      const { error } = await fetcher({
+      const { error } = await fetcher.patch({
         url: URL,
-        method: 'PATCH',
         data: values,
       })
 
@@ -65,9 +63,8 @@ export const useApplication = () => {
   }) => {
     try {
       setIsPending(true)
-      const { error } = await fetcher({
+      const { error } = await fetcher.delete({
         url: URL,
-        method: 'DELETE',
         body: { user_id, role_id },
       })
 

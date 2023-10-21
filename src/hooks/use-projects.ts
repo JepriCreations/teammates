@@ -3,60 +3,30 @@ import { useRouter } from 'next/navigation'
 import { ROUTES } from '@/constants/routes'
 import { z } from 'zod'
 
-import { Project, ProjectUpdate } from '@/types/collections'
-import { PostgresError } from '@/lib/errors'
-import { createProjectSchema } from '@/lib/validations/project'
-import { useSupabase } from '@/components/providers/supabase-provider'
+import { Project } from '@/types/collections'
+import { fetcher } from '@/lib/fetcher'
+import {
+  createProjectSchema,
+  updateProjectSchema,
+} from '@/lib/validations/project'
 
 export const useProjects = () => {
-  const { supabase } = useSupabase()
   const router = useRouter()
   const [isPending, setIsPending] = useState(false)
   const [isRemoving, setIsRemoving] = useState(false)
 
-  const update = async (values: ProjectUpdate & { file?: File }) => {
+  const update = async (
+    id: string,
+    values: z.infer<typeof updateProjectSchema>
+  ) => {
     try {
-      if (!values?.id) throw 'The project id has not been provided.'
+      if (!id) throw 'The project id has not been provided.'
 
       setIsPending(true)
-      const { file, ...rest } = values
-      let valuesToUpdate = { ...rest }
-
-      if (file) {
-        const bucketPath = values.id
-
-        const { error: storageError } = await supabase.storage
-          .from('icons')
-          .update(bucketPath, file, {
-            cacheControl: '3600',
-            upsert: true,
-          })
-
-        if (storageError) throw storageError
-
-        const { data: fileUrl } = supabase.storage
-          .from('icons')
-          .getPublicUrl(bucketPath)
-
-        valuesToUpdate = Object.assign(
-          { icon_url: fileUrl.publicUrl },
-          valuesToUpdate
-        )
-      }
-
-      const resp = await fetch(`${location.origin}/api/projects`, {
-        method: 'PATCH',
-        body: JSON.stringify(valuesToUpdate),
+      const { error } = await fetcher.patch({
+        url: `${location.origin}/api/projects`,
+        data: { id, ...values },
       })
-      if (!resp.ok) {
-        throw new Error('Failed to fetch data')
-      }
-
-      const {
-        error,
-        data,
-      }: { error: PostgresError | null; data: { success: true } } =
-        await resp.json()
 
       if (error) {
         throw error
@@ -64,7 +34,7 @@ export const useProjects = () => {
 
       router.refresh()
 
-      return { data }
+      return { data: { success: true } }
     } catch (error: any) {
       console.log({ error })
       return { error }
@@ -76,43 +46,17 @@ export const useProjects = () => {
   const create = async (values: z.infer<typeof createProjectSchema>) => {
     try {
       setIsPending(true)
-      const { file, ...rest } = values
 
-      const resp = await fetch(`${location.origin}/api/projects`, {
-        method: 'POST',
-        body: JSON.stringify(rest),
+      const { error, data } = await fetcher.post<Project>({
+        url: `${location.origin}/api/projects`,
+        data: values,
       })
-
-      if (!resp.ok) {
-        throw new Error('Failed to fetch data')
-      }
-
-      const { error, data }: { error: PostgresError | null; data: Project } =
-        await resp.json()
 
       if (error || !data) {
         throw error
       }
 
-      const bucketPath = data.id
-
-      const { error: storageError } = await supabase.storage
-        .from('icons')
-        .upload(bucketPath, file, {
-          cacheControl: '3600',
-          upsert: false,
-        })
-
-      if (!storageError) {
-        const { data: fileUrl } = supabase.storage
-          .from('icons')
-          .getPublicUrl(bucketPath)
-
-        await update({ id: data.id, icon_url: fileUrl.publicUrl })
-      }
-
       router.refresh()
-
       return { data }
     } catch (error: any) {
       return { error }
@@ -125,16 +69,17 @@ export const useProjects = () => {
     try {
       setIsRemoving(true)
 
-      const resp = await fetch(`${location.origin}/api/projects`, {
-        method: 'DELETE',
-        body: JSON.stringify({ id: project_id }),
+      const { error } = await fetcher.delete({
+        url: `${location.origin}/api/projects`,
+        body: { id: project_id },
       })
 
-      if (!resp.ok) {
-        throw new Error('Failed to fetch data')
+      if (error) {
+        throw error
       }
-      router.refresh()
+
       router.replace(ROUTES.PROJECTS)
+      router.refresh()
       return {}
     } catch (error) {
       setIsRemoving(false)
@@ -144,14 +89,15 @@ export const useProjects = () => {
 
   const addLike = async (project_id: string) => {
     try {
-      const resp = await fetch(`${location.origin}/api/projects/likes`, {
-        method: 'POST',
-        body: JSON.stringify({ project_id }),
+      const { error } = await fetcher.post({
+        url: `${location.origin}/api/projects/likes`,
+        body: { project_id },
       })
 
-      if (!resp.ok) {
-        throw new Error('Failed to fetch data')
+      if (error) {
+        throw error
       }
+
       router.refresh()
       return {}
     } catch (error) {
@@ -161,14 +107,15 @@ export const useProjects = () => {
 
   const removeLike = async (project_id: string) => {
     try {
-      const resp = await fetch(`${location.origin}/api/projects/likes`, {
-        method: 'DELETE',
-        body: JSON.stringify({ project_id }),
+      const { error } = await fetcher.delete({
+        url: `${location.origin}/api/projects/likes`,
+        body: { project_id },
       })
 
-      if (!resp.ok) {
-        throw new Error('Failed to fetch data')
+      if (error) {
+        throw error
       }
+
       router.refresh()
       return {}
     } catch (error) {

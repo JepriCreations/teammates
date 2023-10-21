@@ -13,6 +13,7 @@ export const siteConfig = {
     },
   ],
   links: {
+    website: 'teammates.mov',
     github: ROUTES.GITHUB,
   },
 }

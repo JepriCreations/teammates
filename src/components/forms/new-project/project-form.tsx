@@ -111,20 +111,20 @@ export const ProjectForm = ({
   const onUpdate = async (values: z.infer<typeof updateProjectSchema>) => {
     if (!projectData?.id) return
 
-    const { data } = await update({ id: projectData.id, ...values })
+    const { error } = await update(projectData.id, values)
 
-    if (data?.success) {
+    if (error) {
       return toast({
-        title: t('General.success'),
-        description: t('Projects.success_update'),
-        severity: 'success',
+        title: t('General.ups'),
+        description: t('Projects.errors.updating'),
+        severity: 'error',
       })
     }
 
     return toast({
-      title: t('General.ups'),
-      description: t('Projects.errors.updating'),
-      severity: 'error',
+      title: t('General.success'),
+      description: t('Projects.success_update'),
+      severity: 'success',
     })
   }
 

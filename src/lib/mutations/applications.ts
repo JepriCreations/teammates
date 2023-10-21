@@ -3,12 +3,9 @@ import 'server-only'
 import { z } from 'zod'
 
 import { ApplicationStatus, ApplicationUpdate } from '@/types/collections'
-import { ERROR_CODES, isPostgresError, PostgresError } from '@/lib/errors'
+import { ERROR_CODES, PostgresError } from '@/lib/errors'
 import { createRouteHandlerClient } from '@/lib/supabase-server'
-import {
-  applicationSchema,
-  updateApplicationSchema,
-} from '@/lib/validations/application'
+import { applicationSchema } from '@/lib/validations/application'
 
 export const createApplication = async (
   values: z.infer<typeof applicationSchema>

@@ -23,7 +23,7 @@ const buttonVariants = cva(
           'border border-outline text-primary bg-surface focus-visible:border-primary active:border-outline disabled:border-onSurface/12 active:scale-[0.98]',
         text: 'px-3 text-onSurface active:scale-[0.98]',
         brutalist:
-          '-translate-x-0.5 -translate-y-0.5 border-2 border-onSurface bg-surface text-onSurface shadow-[2px_2px_0px_hsl(var(--onSurface))] hover:bg-onSurface/5 focus:bg-onSurface/5 active:translate-x-0 active:translate-y-0 active:shadow-none disabled:translate-x-0 disabled:translate-y-0 disabled:bg-onSurface/12 disabled:border-onSurface/12 disabled:text-onSurface/38 disabled:shadow-none',
+          '-translate-x-0.5 -translate-y-0.5 border-2 border-onSurface bg-surface text-onSurface shadow-[2px_2px_0px_hsl(var(--onSurface))] active:translate-x-0 active:translate-y-0 active:shadow-none disabled:translate-x-0 disabled:translate-y-0 disabled:bg-onSurface/12 disabled:border-onSurface/12 disabled:text-onSurface/38 disabled:shadow-none',
         destructive:
           'bg-error text-onError hover:shadow-sm focus-visible:shadow-none active:shadow-none disabled:bg-onSurface/12 active:scale-[0.98]',
       },
@@ -45,7 +45,7 @@ const stateLayerVariants = cva(
         elevated: 'bg-primary',
         outlined: 'bg-primary',
         text: 'bg-primary',
-        brutalist: 'bg-onSurface/38',
+        brutalist: 'bg-onSurface',
         destructive: 'bg-onError',
       },
     },

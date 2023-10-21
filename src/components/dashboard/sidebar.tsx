@@ -44,7 +44,7 @@ export const Sidebar = () => {
           <Tooltip>
             <Tooltip.Trigger asChild>
               <IconButton
-                loading={isAuthenticating}
+                loading={Boolean(isAuthenticating)}
                 variant="standard"
                 className="h-12 w-12 rounded-full"
                 onClick={signOut}

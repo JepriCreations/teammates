@@ -1,12 +1,12 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { ROUTES } from '@/constants/routes'
 
+import { siteConfig } from '@/config/site'
 import { getDictionary } from '@/lib/dictionaries'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { SignInForm } from '@/components/forms/sign-in-form'
 import { Logo } from '@/components/logo'
-import { SignInForm } from '@/components/sign-in-form'
 
 interface LoginProps {
   params: { locale: string }
@@ -16,21 +16,19 @@ export default async function Login({ params: { locale } }: LoginProps) {
 
   return (
     <>
-      <div className="fixed inset-x-0 top-0 z-50">
-        <div className="mx-auto flex w-full max-w-5xl items-center justify-between p-6">
-          <Link href={ROUTES.HOME}>
-            <Logo height={32} />
-          </Link>
-          <Button asChild variant="tonal">
-            <Link href={ROUTES.HOME}>{t('discover')}</Link>
-          </Button>
-        </div>
+      <div className="mx-auto flex h-16 w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-3 sm:px-6">
+        <Link href={ROUTES.HOME}>
+          <Logo />
+        </Link>
+        <Button asChild variant="tonal">
+          <Link href={ROUTES.HOME}>{t('discover')}</Link>
+        </Button>
       </div>
-      <main className="mx-auto flex min-h-[100dvh] max-w-5xl flex-col items-center justify-center py-20">
+      <main className="mx-3 flex min-h-[calc(100dvh-64px)] max-w-5xl flex-col items-center justify-center sm:mx-auto">
         <div className="relative">
           <Card
             variant="filled"
-            className="relative z-10 p-14 text-center shadow-lg"
+            className="relative z-10 p-7 text-center shadow-lg sm:p-14"
           >
             <h2 className="mb-3">{t('welcome')}</h2>
             <p className="muted max-w-sm text-body-lg">{t('subtitle')}</p>
@@ -40,47 +38,15 @@ export default async function Login({ params: { locale } }: LoginProps) {
               {t('an_account_will_be_created')}
             </p>
           </Card>
-          <Image
-            src="/images/il-login-1.png"
-            alt="entrepreneur"
-            width={461 / 1.3}
-            height={552 / 1.3}
-            className="absolute right-0 top-0 z-0 translate-x-3/4 translate-y-[10%] dark:hidden"
-          />
-          <Image
-            src="/images/il-login-2.png"
-            alt="entrepreneur"
-            width={238 / 1.3}
-            height={380 / 1.3}
-            className="absolute left-0 top-0 z-0 -translate-x-3/4 dark:hidden"
-          />
-          <Image
-            src="/images/il-login-3.png"
-            alt="entrepreneur"
-            width={167 / 1.3}
-            height={173 / 1.3}
-            className="absolute bottom-0 left-0 z-0 -translate-x-3/4 dark:hidden"
-          />
         </div>
         <div className="mb-2 mt-11 flex items-center gap-3">
           <Link href={ROUTES.HOME} className="hover:opacity-70">
-            teammates.mov
+            {siteConfig.links.website}
           </Link>
           <div>|</div>
           <Link href={ROUTES.PRIVACY} className="hover:opacity-70">
             {t('privacy')}
           </Link>
-        </div>
-        <div className="text-sm">
-          {t('illustrations_by', [
-            <a
-              href="https://popsy.co"
-              target="_blank"
-              className="hover:text-orange-400"
-            >
-              popsy.co
-            </a>,
-          ])}
         </div>
       </main>
     </>

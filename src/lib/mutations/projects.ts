@@ -2,13 +2,17 @@ import 'server-only'
 
 import { z } from 'zod'
 
-import { ProjectUpdate } from '@/types/collections'
 import { ERROR_CODES, isPostgresError, PostgresError } from '@/lib/errors'
 import { createRouteHandlerClient } from '@/lib/supabase-server'
 import { slugify } from '@/lib/utils'
-import { projectSchema, updateProjectSchema } from '@/lib/validations/project'
+import {
+  createProjectSchema,
+  updateProjectSchema,
+} from '@/lib/validations/project'
 
-export const createProject = async (values: z.infer<typeof projectSchema>) => {
+export const createProject = async (
+  values: z.infer<typeof createProjectSchema>
+) => {
   try {
     const supabase = createRouteHandlerClient()
     const {
@@ -17,32 +21,21 @@ export const createProject = async (values: z.infer<typeof projectSchema>) => {
     } = await supabase.auth.getUser()
 
     if (error || !user) {
-      throw new PostgresError('You must log in.', {
+      throw new PostgresError('Unauthenticated', {
         details: error?.message,
         code: ERROR_CODES.UNAUTHENTICATED,
       })
     }
 
-    const payload = projectSchema.safeParse(values)
-
-    if (!payload.success) {
-      const errors = payload.error.issues.map((error) => ({
-        path: error.path,
-        message: error.message,
-      }))
-      console.log({ payloadErrors: errors })
-      throw new PostgresError(
-        'The form validation has not passed. Check that all the fields have valid values.'
-      )
-    }
-    const slug = slugify(payload.data.name)
+    const slug = slugify(values.name)
+    const { file, ...rest } = values
 
     const { data, error: insertError } = await supabase
       .from('projects')
       .insert({
         slug,
         created_by: user.id,
-        ...payload.data,
+        ...rest,
       })
       .select('id')
       .single()
@@ -60,6 +53,34 @@ export const createProject = async (values: z.infer<typeof projectSchema>) => {
       })
     }
 
+    if (file) {
+      const bucketPath = data.id
+      const { error: storageError } = await supabase.storage
+        .from('icons')
+        .update(bucketPath, file, {
+          cacheControl: '3600',
+          upsert: true,
+        })
+
+      if (storageError) {
+        throw new PostgresError('Error saving image.', {
+          details: storageError.message,
+        })
+      }
+
+      const { data: fileUrl } = supabase.storage
+        .from('icons')
+        .getPublicUrl(bucketPath)
+
+      const icon_url = fileUrl.publicUrl + `?t=${Date.now()}`
+
+      await supabase.from('projects').update({
+        icon_url,
+      })
+
+      return { ...data, icon_url }
+    }
+
     return { data }
   } catch (error) {
     if (isPostgresError(error)) {
@@ -71,8 +92,13 @@ export const createProject = async (values: z.infer<typeof projectSchema>) => {
   }
 }
 
-export const updateProject = async (values: ProjectUpdate) => {
+export const updateProject = async (
+  id: string,
+  values: z.infer<typeof updateProjectSchema>
+) => {
   try {
+    if (!id) throw new PostgresError('The id has not been passed.')
+
     const supabase = createRouteHandlerClient()
     const {
       data: { user },
@@ -80,38 +106,50 @@ export const updateProject = async (values: ProjectUpdate) => {
     } = await supabase.auth.getUser()
 
     if (error || !user) {
-      throw new PostgresError('You must log in.', {
+      throw new PostgresError('Unauthenticated', {
         details: error?.message,
         code: ERROR_CODES.UNAUTHENTICATED,
       })
     }
 
-    const payload = updateProjectSchema.safeParse(values)
-    if (!payload.success) {
-      const errors = payload.error.issues.map((error) => ({
-        path: error.path,
-        message: error.message,
-      }))
-      console.log({ payloadErrors: errors })
-      throw new PostgresError(
-        'The form validation has not passed. Check that all the fields have valid values.'
-      )
-    }
+    const { file, ...rest } = values
+    let valuesToUpdate = Object.assign(rest)
 
-    if (values.id) {
-      const { error: updateError } = await supabase
-        .from('projects')
-        .update({
-          ...values,
-          updated_at: new Date().toISOString().toLocaleString(),
+    if (file) {
+      const bucketPath = id
+
+      const { error: storageError } = await supabase.storage
+        .from('icons')
+        .update(bucketPath, file, {
+          cacheControl: '3600',
+          upsert: true,
         })
-        .eq('id', values.id)
 
-      if (updateError) {
+      if (storageError) {
         throw new PostgresError('Error saving the data in the database.', {
-          details: updateError.message,
+          details: storageError.message,
         })
       }
+
+      const { data: fileUrl } = supabase.storage
+        .from('icons')
+        .getPublicUrl(bucketPath)
+
+      valuesToUpdate.icon_url = fileUrl.publicUrl + `?t=${Date.now()}`
+    }
+
+    const { error: updateError } = await supabase
+      .from('projects')
+      .update({
+        ...valuesToUpdate,
+        updated_at: new Date().toLocaleString(),
+      })
+      .eq('id', id)
+
+    if (updateError) {
+      throw new PostgresError('Error saving the data in the database.', {
+        details: updateError.message,
+      })
     }
 
     return { data: { success: true } }
@@ -126,6 +164,8 @@ export const updateProject = async (values: ProjectUpdate) => {
 
 export const removeProject = async (id: string) => {
   try {
+    if (!id) throw new PostgresError('The id has not been passed.')
+
     const supabase = createRouteHandlerClient()
     const {
       data: { user },
@@ -133,13 +173,11 @@ export const removeProject = async (id: string) => {
     } = await supabase.auth.getUser()
 
     if (error || !user) {
-      throw new PostgresError('You must log in.', {
+      throw new PostgresError('Unauthenticated', {
         details: error?.message,
         code: ERROR_CODES.UNAUTHENTICATED,
       })
     }
-
-    if (!id) throw new PostgresError('The id has not been passed.')
 
     const { error: deleteError } = await supabase
       .from('projects')
@@ -171,6 +209,9 @@ export const updateProjectViews = async (id: string) => {
 
 export const addLike = async ({ project_id }: { project_id: string }) => {
   try {
+    if (!project_id)
+      throw new PostgresError('The project id has not been passed.')
+
     const supabase = createRouteHandlerClient()
     const {
       data: { user },
@@ -184,27 +225,18 @@ export const addLike = async ({ project_id }: { project_id: string }) => {
       })
     }
 
-    const insertPromise = supabase.from('project_likes').insert({
+    const { error: insertError } = await supabase.from('project_likes').insert({
       user_id: user.id,
       project_id,
     })
-    const updatePromise = supabase.rpc('increment', {
-      table_name: 'projects',
-      row_id: project_id,
-      field_name: 'likes',
-      x: 1,
-    })
 
-    const [insert, update] = await Promise.all([insertPromise, updatePromise])
-
-    const promiseError = insert.error || update.error
-    if (promiseError) {
+    if (insertError) {
       throw new PostgresError('Error updating likes.', {
-        details: promiseError.message,
+        details: insertError.message,
       })
     }
 
-    return { data: update.data }
+    return { data: { success: true } }
   } catch (error) {
     if (isPostgresError(error)) {
       return { error }
@@ -216,6 +248,9 @@ export const addLike = async ({ project_id }: { project_id: string }) => {
 
 export const removeLike = async ({ project_id }: { project_id: string }) => {
   try {
+    if (!project_id)
+      throw new PostgresError('The project id has not been passed.')
+
     const supabase = createRouteHandlerClient()
     const {
       data: { user },
@@ -229,27 +264,18 @@ export const removeLike = async ({ project_id }: { project_id: string }) => {
       })
     }
 
-    const removePromise = supabase
+    const { error: deleteError } = await supabase
       .from('project_likes')
       .delete()
       .match({ project_id, user_id: user.id })
-    const updatePromise = supabase.rpc('increment', {
-      table_name: 'projects',
-      row_id: project_id,
-      field_name: 'likes',
-      x: -1,
-    })
 
-    const [remove, update] = await Promise.all([removePromise, updatePromise])
-
-    const promiseError = remove.error || update.error
-    if (promiseError) {
+    if (deleteError) {
       throw new PostgresError('Error updating likes.', {
-        details: promiseError.message,
+        details: deleteError.message,
       })
     }
 
-    return { data: update.data }
+    return { data: { success: true } }
   } catch (error) {
     if (isPostgresError(error)) {
       console.log({ error })

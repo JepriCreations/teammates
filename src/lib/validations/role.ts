@@ -1,6 +1,12 @@
 import * as z from 'zod'
 
-import { ExperienceLevel, Rewards, Roles, WorkMode } from '@/types/collections'
+import {
+  ExperienceLevel,
+  Rewards,
+  Roles,
+  RoleStatus,
+  WorkMode,
+} from '@/types/collections'
 
 export const roleSchema = z.object({
   name: z.nativeEnum(Roles),
@@ -17,6 +23,11 @@ export const roleSchema = z.object({
 })
 export const rolesInsertSchema = z.object({
   project_id: z.string().uuid(),
+})
+
+export const updateRoleStatusSchema = z.object({
+  id: z.string().uuid(),
+  status: z.nativeEnum(RoleStatus),
 })
 
 export const rolesSchema = z.array(roleSchema.merge(rolesInsertSchema))

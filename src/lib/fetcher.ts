@@ -1,14 +1,12 @@
-import axios, { AxiosError, AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 
 import { RequestError } from '@/lib/errors'
 
-export const fetcher = async <T = any>({
-  url,
-  method = 'GET',
-  options,
-  data,
-  body,
-}: {
+type FetcherResponse<T> =
+  | { data: T; error?: undefined }
+  | { data?: undefined; error: RequestError }
+
+type FetcherOptions = {
   url: string
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'HEAD'
   options?: AxiosRequestConfig & {
@@ -16,7 +14,17 @@ export const fetcher = async <T = any>({
   }
   data?: any
   body?: any
-}): Promise<
+}
+
+type UnMethodOptions = Omit<FetcherOptions, 'method'>
+
+const request = async <T = any>({
+  url,
+  method = 'GET',
+  options,
+  data,
+  body,
+}: FetcherOptions): Promise<
   { data: T; error?: undefined } | { data?: undefined; error: RequestError }
 > => {
   try {
@@ -53,4 +61,27 @@ export const fetcher = async <T = any>({
     const errorData = error.response?.data
     return { error: errorData }
   }
+}
+
+const fetchWithMethod = async <T = any>(
+  method: FetcherOptions['method'],
+  options: UnMethodOptions
+): Promise<FetcherResponse<T>> => {
+  return fetcher.request({ method, ...options })
+}
+
+export const fetcher = {
+  get: <T = any>(options: UnMethodOptions): Promise<FetcherResponse<T>> =>
+    fetchWithMethod('GET', options),
+  post: <T = any>(options: UnMethodOptions): Promise<FetcherResponse<T>> =>
+    fetchWithMethod('POST', options),
+  put: <T = any>(options: UnMethodOptions): Promise<FetcherResponse<T>> =>
+    fetchWithMethod('PUT', options),
+  patch: <T = any>(options: UnMethodOptions): Promise<FetcherResponse<T>> =>
+    fetchWithMethod('PATCH', options),
+  delete: <T = any>(options: UnMethodOptions): Promise<FetcherResponse<T>> =>
+    fetchWithMethod('DELETE', options),
+  head: <T = any>(options: UnMethodOptions): Promise<FetcherResponse<T>> =>
+    fetchWithMethod('HEAD', options),
+  request,
 }

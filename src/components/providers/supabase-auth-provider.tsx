@@ -1,7 +1,13 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Session } from '@supabase/supabase-js'
 import useSWR from 'swr'
 
@@ -12,9 +18,11 @@ interface ContextI {
   user: Profile | null | undefined
   error: any
   isLoading: boolean
-  isAuthenticating: boolean
+  isAuthenticating: string | boolean
   signOut: () => Promise<void>
   signInWithGithub: () => Promise<string | undefined>
+  signInWithGoogle: () => Promise<string | undefined>
+  signInWithOtp: (email: string) => Promise<string | undefined>
 }
 const Context = createContext<ContextI>({
   user: null,
@@ -23,6 +31,8 @@ const Context = createContext<ContextI>({
   isAuthenticating: false,
   signOut: async () => {},
   signInWithGithub: async () => undefined,
+  signInWithGoogle: async () => undefined,
+  signInWithOtp: async () => undefined,
 })
 
 export const SupabaseAuthProvider = ({
@@ -33,8 +43,12 @@ export const SupabaseAuthProvider = ({
   children: React.ReactNode
 }) => {
   const { supabase } = useSupabase()
-  const [isAuthenticating, setIsAuthenticating] = useState(false)
+  const [isAuthenticating, setIsAuthenticating] = useState<string | boolean>(
+    false
+  )
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const from = searchParams.get('from')
 
   const getProfile = async (): Promise<Profile | null> => {
     if (!serverSession) return null
@@ -66,16 +80,64 @@ export const SupabaseAuthProvider = ({
 
   // Sign-In with Github
   const signInWithGithub = async () => {
-    setIsAuthenticating(true)
+    setIsAuthenticating('github')
+    const baseUrl = `${location.origin}/api/auth/callback`
+    const url = from ? baseUrl + `?from=${from}` : baseUrl
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: `${location.origin}/api/auth/callback`,
+        redirectTo: url,
       },
     })
 
     if (error) {
       console.log({ error })
+      setIsAuthenticating(false)
+      return error.message
+    }
+  }
+
+  // Sign-In with Google
+  const signInWithGoogle = async () => {
+    setIsAuthenticating('google')
+    const baseUrl = `${location.origin}/api/auth/callback`
+    const url = from ? baseUrl + `?from=${from}` : baseUrl
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
+        redirectTo: url,
+      },
+    })
+
+    if (error) {
+      console.log({ error })
+      setIsAuthenticating(false)
+      return error.message
+    }
+  }
+
+  // Sign-In with Magic Link
+  const signInWithOtp = async (email: string) => {
+    setIsAuthenticating('otp')
+    const baseUrl = `${location.origin}/api/auth/callback`
+    const url = from ? baseUrl + `?from=${from}` : baseUrl
+
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: url,
+      },
+    })
+
+    if (error) {
+      console.log({ error })
+      setIsAuthenticating(false)
       return error.message
     }
   }
@@ -109,6 +171,8 @@ export const SupabaseAuthProvider = ({
     isAuthenticating,
     signOut,
     signInWithGithub,
+    signInWithGoogle,
+    signInWithOtp,
   }
 
   return <Context.Provider value={exposed}>{children}</Context.Provider>

@@ -62,6 +62,8 @@ export const Icons = {
   account: LocalIcons.AccountIcon,
   applications: LocalIcons.ApplicationsIcon,
   more: LocalIcons.MoreIcon,
+  dashboard: LocalIcons.DashboardIcon,
+  mailCheck: LocalIcons.MailCheckIcon,
 
   // Brand Icons
   github: LocalIcons.GithubIcon,

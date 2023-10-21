@@ -11,9 +11,8 @@ export const useProfile = () => {
   const update = async ({ data }: { data: any }) => {
     try {
       setIsPending(true)
-      await fetcher({
+      await fetcher.patch({
         url: location.origin + API_ROUTES.PROFILES,
-        method: 'PATCH',
         data,
       })
       router.refresh()

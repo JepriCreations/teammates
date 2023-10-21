@@ -1,21 +1,9 @@
-import { type NextRequest } from 'next/server'
+import { apiMiddleware } from '@/middlewares/apiMiddleware'
 import { authMiddleware } from '@/middlewares/authMiddleware'
+import { chain } from '@/middlewares/chain'
 import { intlMiddleware } from '@/middlewares/intlMiddleware'
 
-export async function middleware(req: NextRequest) {
-  // Call the intlMiddleware first
-  const intlResponse = await intlMiddleware(req)
+const middlewares = [apiMiddleware, intlMiddleware, authMiddleware]
+export default chain(middlewares)
 
-  // If intlMiddleware fails return
-  if (!intlResponse.ok) {
-    return intlResponse
-  }
-
-  // Call the authMiddleware
-  const authResponse = await authMiddleware(req)
-
-  // Return the response from authMiddleware
-  return authResponse
-}
-
-export const config = { matcher: ['/((?!api|_next|favicon.*).*)'] }
+export const config = { matcher: ['/((?!_next|favicon.*).*)'] }

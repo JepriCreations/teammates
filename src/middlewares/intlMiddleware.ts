@@ -1,18 +1,36 @@
-import { NextRequest, NextResponse } from 'next/server'
+import {
+  NextFetchEvent,
+  NextMiddleware,
+  NextRequest,
+  NextResponse,
+} from 'next/server'
 
 import { getLocale, supportedLocales } from './utils'
 
-export async function intlMiddleware(req: NextRequest) {
-  const locale = getLocale(req)
-  const pathname = req.nextUrl.pathname
+export function intlMiddleware(middleware: NextMiddleware) {
+  return async (req: NextRequest, event: NextFetchEvent) => {
+    const locale = getLocale(req)
+    const pathname = req.nextUrl.pathname
+    const search = req.nextUrl.search
 
-  const pathnameIsMissingLocale = supportedLocales.every(
-    (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
-  )
+    if (pathname.startsWith(`/api/`)) {
+      return middleware(req, event)
+    }
 
-  if (pathnameIsMissingLocale) {
-    return NextResponse.redirect(new URL(`/${locale}/${pathname}`, req.url))
+    const pathnameIsMissingLocale = supportedLocales.every(
+      (locale) =>
+        !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
+    )
+
+    if (pathnameIsMissingLocale) {
+      const redirectUrl = new URL(`/${locale}/${pathname}`, req.url)
+      if (search) {
+        redirectUrl.search = search
+      }
+
+      return NextResponse.redirect(redirectUrl)
+    }
+
+    return middleware(req, event)
   }
-
-  return NextResponse.next()
 }

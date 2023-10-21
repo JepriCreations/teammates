@@ -9,6 +9,8 @@ export const dynamic = 'force-dynamic'
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code')
+  const from = requestUrl.searchParams.get('from')
+  const redirectTo = requestUrl.origin + (from ?? ROUTES.PROJECTS)
 
   if (code) {
     const supabase = createRouteHandlerClient()
@@ -16,5 +18,5 @@ export async function GET(request: NextRequest) {
   }
 
   // URL to redirect to after sign in process completes
-  return NextResponse.redirect(requestUrl.origin + ROUTES.PROJECTS)
+  return NextResponse.redirect(redirectTo)
 }

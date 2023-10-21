@@ -6,6 +6,7 @@
     "discard": "Discard",
     "view_project": "Go to project",
     "delete": "Delete application",
+    "nothing_to_show": "When you apply for a project role, it will appear here.",
     "Status": {
       "standby": "Standby",
       "granted": "Granted",
@@ -15,6 +16,9 @@
       "removing": "Has been an error while removing the application."
     }
   },
+  "Likes": {
+    "nothing_to_show": "The projects you like will appear here."
+  },
   "Auth": {
     "an_account_will_be_created": "An account will be created if you don't have one.",
     "discover": "Discover projects",
@@ -23,7 +27,13 @@
     "privacy": "Privacy policy",
     "subtitle": "Unlock the Power of Collaboration and Connect with Your Dream Team!",
     "welcome": "Welcome",
-    "sign_out": "Sign out"
+    "sign_out": "Sign out",
+    "or": "or",
+    "email": "Email",
+    "signInSubmit": "Sign in with magic link",
+    "description": "You don't need a password. How great is that?\nAn email will be send to you with a magic link to sign in.",
+    "submitted_description": "We have sent you an email with the magic link. Check your email",
+    "submitted_title": "Submitted"
   },
   "Categories": {
     "art": "Art",
@@ -144,7 +154,9 @@
     "success_update": "The project has been updated.",
     "summary": "Summary",
     "summary_description": "Summarize what your project aims to achieve in one line.",
-    "views": "Views"
+    "views": "Views",
+    "no_projects_to_show": "There is no projects to show.",
+    "no_projects": "This looks very empty. \nCreate your first project."
   },
   "Profile": {
     "name": "Name",

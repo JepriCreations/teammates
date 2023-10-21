@@ -41,6 +41,16 @@ const ApplicationsFeed = async ({ locale }: { locale: string }) => {
 
   if (error || !data) return <Error error={error} />
 
+  if (data.length === 0) {
+    return (
+      <div>
+        <p className="muted balance text-center text-body-lg">
+          {t('Applications.nothing_to_show')}
+        </p>
+      </div>
+    )
+  }
+
   return (
     <section className="space-y-3">
       {data.map(

@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { COUNTRIES } from '@/constants/countries'
 import { ROUTES } from '@/constants/routes'
 
+import { getDictionary } from '@/lib/dictionaries'
 import { fetchUserLikes } from '@/lib/fetching/profiles'
 import {
   CardContent,
@@ -18,20 +19,31 @@ interface PageProps {
   params: { locale: string }
 }
 
-export default function LikesTab({}: PageProps) {
+export default function LikesTab({ params }: PageProps) {
   return (
     <section className="z-0 mx-auto w-full max-w-2xl grow overflow-auto px-3 py-6">
       <Suspense fallback={<Loading />}>
-        <LikesFeed />
+        <LikesFeed locale={params.locale} />
       </Suspense>
     </section>
   )
 }
 
-const LikesFeed = async () => {
+const LikesFeed = async ({ locale }: { locale: string }) => {
+  const { t } = await getDictionary(locale)
   const { error, data } = await fetchUserLikes()
 
   if (error || !data) return <Error error={error} />
+
+  if (data.length === 0) {
+    return (
+      <div>
+        <p className="muted balance text-center text-body-lg">
+          {t('Likes.nothing_to_show')}
+        </p>
+      </div>
+    )
+  }
 
   return (
     <section className="grid gap-3 sm:grid-cols-2">

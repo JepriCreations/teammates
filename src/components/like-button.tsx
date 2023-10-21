@@ -6,8 +6,7 @@ import { useDebounce } from '@/hooks/use-debounce'
 import { useProjects } from '@/hooks/use-projects'
 import { IconButton } from '@/components/ui/icon-button'
 import { Icons } from '@/components/icons'
-
-import { useAuth } from './providers/supabase-auth-provider'
+import { useAuth } from '@/components/providers/supabase-auth-provider'
 
 interface LikeButtonProps {
   id: string

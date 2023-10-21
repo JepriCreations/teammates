@@ -33,7 +33,7 @@ const textareaVariants = cva(
 )
 
 const filledLabel = [
-  'h-6 w-[97%] bg-surfaceContainer left-0 top-0 pl-4 pt-2 rounded-tl-[calc(var(--radius)-10px)]',
+  'h-6 w-[calc(100%-10px)] bg-surfaceContainer left-0 top-0 pl-4 pt-2 rounded-tl-[calc(var(--radius)-10px)]',
   'peer-placeholder-shown/input:leading-[2.5] peer-placeholder-shown/input:bg-transparent',
   'peer-[]/leading:before:mr-9',
   'peer-disabled/input:bg-transparent',

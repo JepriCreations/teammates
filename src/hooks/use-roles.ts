@@ -2,40 +2,34 @@ import { useState } from 'react'
 import { z } from 'zod'
 
 import { RoleStatus } from '@/types/collections'
-import { PostgresError } from '@/lib/errors'
+import { fetcher } from '@/lib/fetcher'
 import { roleSchema } from '@/lib/validations/role'
 
 export const useRoles = () => {
   const [isPending, setIsPending] = useState(false)
 
   const addRoles = async (
-    data: z.infer<typeof roleSchema>[],
-    project_id: string
+    project_id: string,
+    roles: z.infer<typeof roleSchema>[]
   ) => {
     try {
       setIsPending(true)
 
-      const values = data.map((role) => ({
+      const values = roles.map((role) => ({
         ...role,
         project_id,
       }))
 
-      const resp = await fetch(`${location.origin}/api/roles`, {
-        method: 'POST',
-        body: JSON.stringify(values),
+      const { error } = await fetcher.post({
+        url: `${location.origin}/api/roles`,
+        body: values,
       })
-        .then((resp) => resp.json())
-        .then(
-          (resp: {
-            error: PostgresError | null
-            data: { id: string } | null
-          }) => resp
-        )
-      if (resp.error) {
-        throw resp.error
+
+      if (error) {
+        throw error
       }
 
-      return { data: resp.data }
+      return { data: { success: true } }
     } catch (error: any) {
       return { error }
     } finally {
@@ -44,31 +38,25 @@ export const useRoles = () => {
   }
 
   const updateRoleStatus = async ({
-    role_id,
+    id,
     status,
   }: {
-    role_id: string
+    id: string
     status: RoleStatus
   }) => {
     try {
       setIsPending(true)
 
-      const resp = await fetch(`${location.origin}/api/roles`, {
-        method: 'PATCH',
-        body: JSON.stringify({ role_id, status }),
+      const { error } = await fetcher.patch({
+        url: `${location.origin}/api/roles`,
+        body: { id, status },
       })
-        .then((resp) => resp.json())
-        .then(
-          (resp: {
-            error: PostgresError | null
-            data: { id: string } | null
-          }) => resp
-        )
-      if (resp.error) {
-        throw resp.error
+
+      if (error) {
+        throw error
       }
 
-      return { data: resp.data }
+      return { data: { success: true } }
     } catch (error: any) {
       return { error }
     } finally {

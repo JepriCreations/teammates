@@ -18,26 +18,13 @@ export const insertRoles = async (values: z.infer<typeof rolesSchema>) => {
     } = await supabase.auth.getUser()
 
     if (error || !user) {
-      throw new PostgresError('You must log in.', {
+      throw new PostgresError('Unauthenticated', {
         details: error?.message,
         code: ERROR_CODES.UNAUTHENTICATED,
       })
     }
 
-    const payload = rolesSchema.safeParse(values)
-
-    if (!payload.success) {
-      const errors = payload.error.issues.map((error) => ({
-        path: error.path,
-        message: error.message,
-      }))
-      console.log({ payloadErrors: errors })
-      throw new PostgresError(
-        'The form validation has not passed. Check that all the fields have valid values.'
-      )
-    }
-
-    const dataToUpdate = payload.data.map((role) => ({
+    const dataToUpdate = values.map((role) => ({
       ...role,
       status: RoleStatus.Open,
       created_by: user.id,
@@ -67,11 +54,11 @@ export const insertRoles = async (values: z.infer<typeof rolesSchema>) => {
 }
 
 export const updateRoleStatus = async ({
+  id,
   status,
-  role_id,
 }: {
+  id: string
   status: string
-  role_id: string
 }) => {
   try {
     const supabase = createRouteHandlerClient()
@@ -81,7 +68,7 @@ export const updateRoleStatus = async ({
     } = await supabase.auth.getUser()
 
     if (error || !user) {
-      throw new PostgresError('You must log in.', {
+      throw new PostgresError('Unauthenticated', {
         details: error?.message,
         code: ERROR_CODES.UNAUTHENTICATED,
       })
@@ -90,7 +77,7 @@ export const updateRoleStatus = async ({
     const { data, error: updateError } = await supabase
       .from('roles')
       .update({ status })
-      .eq('id', role_id)
+      .eq('id', id)
       .select('id')
       .single()
 
