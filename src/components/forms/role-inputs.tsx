@@ -5,11 +5,12 @@ import {
   REWARDS,
   ROLES,
   WORK_MODE,
+  type Category,
 } from '@/constants/projects'
 import { type UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
-import { ExperienceLevel, Rewards, Roles, WorkMode } from '@/types/collections'
+import { ExperienceLevel, Rewards, WorkMode } from '@/types/collections'
 import { Translator } from '@/lib/dictionaries'
 import { roleSchema } from '@/lib/validations/role'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -35,10 +36,11 @@ const rewardsDescriptions = (t: Translator) => ({
 
 interface RoleInputsProps {
   form: UseFormReturn<z.infer<typeof roleSchema>>
+  categories: string[]
   disabled?: boolean
 }
 
-export const RoleInputs = ({ form, disabled }: RoleInputsProps) => {
+export const RoleInputs = ({ form, categories, disabled }: RoleInputsProps) => {
   const { t } = useDictionary('Roles')
 
   return (
@@ -55,7 +57,7 @@ export const RoleInputs = ({ form, disabled }: RoleInputsProps) => {
                   label={t('role')}
                   placeholder={t('select_a_role')}
                   emptyState={t('no_category_found')}
-                  displayValue={(role: { label: string; value: Roles }) =>
+                  displayValue={(role: { label: string; value: string }) =>
                     role.label
                   }
                   onValueChange={(newValue) => {
@@ -65,7 +67,7 @@ export const RoleInputs = ({ form, disabled }: RoleInputsProps) => {
                     }
                   }}
                 >
-                  {ROLES(t).map((role) => (
+                  {ROLES(t, categories as Category[]).map((role) => (
                     <Combobox.Item key={role.value} value={role}>
                       {role.label}
                     </Combobox.Item>

@@ -15,10 +15,10 @@ export default async function Roles({ params: { id } }: ProjectRolesProps) {
   return (
     <>
       <div className="px-4 pb-6 sm:px-12">
-        <RolesFeed projectId={id} data={data} />
+        <RolesFeed projectId={id} data={data.roles} />
       </div>
       <div className="fixed bottom-4 right-4 mb-20 md:bottom-8 md:right-8 md:mb-0">
-        <NewRoleDialog projectId={id} />
+        <NewRoleDialog projectId={id} categories={data.categories} />
       </div>
     </>
   )

@@ -39,7 +39,7 @@ const defaultValues = {
 export const RolesForm = () => {
   const { toast } = useToast()
   const { t } = useDictionary()
-  const { projectId } = useNewProjectFormState()
+  const { projectId, categories } = useNewProjectFormState()
   const [error, setError] = useState(null)
   const { isPending, addRoles } = useRoles()
   const [roles, setRoles] = useState<z.infer<typeof roleSchema>[]>([])
@@ -84,7 +84,7 @@ export const RolesForm = () => {
             onSubmit={form.handleSubmit(onSubmitRole)}
             className="grid gap-3"
           >
-            <RoleInputs form={form} />
+            <RoleInputs form={form} categories={categories} />
             <footer>
               <Button
                 variant="outlined"

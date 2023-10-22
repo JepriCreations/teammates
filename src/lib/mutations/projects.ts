@@ -57,10 +57,7 @@ export const createProject = async (
       const bucketPath = data.id
       const { error: storageError } = await supabase.storage
         .from('icons')
-        .update(bucketPath, file, {
-          cacheControl: '3600',
-          upsert: true,
-        })
+        .upload(bucketPath, file)
 
       if (storageError) {
         throw new PostgresError('Error saving image.', {
@@ -74,9 +71,12 @@ export const createProject = async (
 
       const icon_url = fileUrl.publicUrl + `?t=${Date.now()}`
 
-      await supabase.from('projects').update({
-        icon_url,
-      })
+      await supabase
+        .from('projects')
+        .update({
+          icon_url,
+        })
+        .eq('id', data.id)
 
       return { ...data, icon_url }
     }
@@ -126,6 +126,7 @@ export const updateProject = async (
         })
 
       if (storageError) {
+        console.log({ storageError })
         throw new PostgresError('Error saving the data in the database.', {
           details: storageError.message,
         })

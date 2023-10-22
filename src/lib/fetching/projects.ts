@@ -287,7 +287,9 @@ export const fetchProjectStatistics = async (projectId: string) => {
       count,
     })) || []
 
-  const startDate = new Date(viewsWithData[viewsWithData.length - 1].date)
+  const startDate = viewsWithData.length
+    ? new Date(viewsWithData[viewsWithData.length - 1].date)
+    : new Date()
   startDate.setDate(startDate.getDate() - 6)
 
   const views = [
@@ -355,7 +357,7 @@ export const fetchProjectRoles = async (projectId: string) => {
 
     const { data, error } = await supabase
       .from('projects')
-      .select('roles(*, applications(created_at, status))')
+      .select('categories, roles(*, applications(created_at, status))')
       .eq('id', projectId)
       .neq('roles.status', RoleStatus.Archived)
       .order('created_at', { foreignTable: 'roles', ascending: false })
@@ -374,7 +376,7 @@ export const fetchProjectRoles = async (projectId: string) => {
       ).length,
     }))
 
-    return { data: roles }
+    return { data: { roles, categories: data.categories } }
   } catch (error: any) {
     if (isPostgresError(error)) {
       console.log({ error })

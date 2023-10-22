@@ -3,13 +3,12 @@ import * as z from 'zod'
 import {
   ExperienceLevel,
   Rewards,
-  Roles,
   RoleStatus,
   WorkMode,
 } from '@/types/collections'
 
 export const roleSchema = z.object({
-  name: z.nativeEnum(Roles),
+  name: z.string().nonempty(),
   exp_level: z.nativeEnum(ExperienceLevel),
   rewards: z
     .array(z.nativeEnum(Rewards))

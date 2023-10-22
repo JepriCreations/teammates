@@ -1,90 +1,112 @@
 {
   "Applications": {
     "about": "About",
-    "links": "Links",
-    "reject": "Reject",
-    "discard": "Discard",
-    "view_project": "Go to project",
     "delete": "Delete application",
-    "nothing_to_show": "When you apply for a project role, it will appear here.",
-    "Status": {
-      "standby": "Standby",
-      "granted": "Granted",
-      "rejected": "Rejected"
-    },
+    "discard": "Discard",
     "Errors": {
       "removing": "Has been an error while removing the application."
-    }
-  },
-  "Likes": {
-    "nothing_to_show": "The projects you like will appear here."
+    },
+    "links": "Links",
+    "nothing_to_show": "When you apply for a project role, it will appear here.",
+    "reject": "Reject",
+    "Status": {
+      "granted": "Granted",
+      "rejected": "Rejected",
+      "standby": "Standby"
+    },
+    "view_project": "Go to project"
   },
   "Auth": {
     "an_account_will_be_created": "An account will be created if you don't have one.",
+    "description": "You don't need a password. How great is that?\nAn email will be send to you with a magic link to sign in.",
     "discover": "Discover projects",
+    "email": "Email",
     "illustrations_by": "Illustrations by %0",
     "login_with": "Sign in with",
-    "privacy": "Privacy policy",
-    "subtitle": "Unlock the Power of Collaboration and Connect with Your Dream Team!",
-    "welcome": "Welcome",
-    "sign_out": "Sign out",
     "or": "or",
-    "email": "Email",
+    "privacy": "Privacy policy",
+    "sign_out": "Sign out",
     "signInSubmit": "Sign in with magic link",
-    "description": "You don't need a password. How great is that?\nAn email will be send to you with a magic link to sign in.",
     "submitted_description": "We have sent you an email with the magic link. Check your email",
-    "submitted_title": "Submitted"
+    "submitted_title": "Submitted",
+    "subtitle": "Unlock the Power of Collaboration and Connect with Your Dream Team!",
+    "welcome": "Welcome"
   },
   "Categories": {
+    "agriculture": "Agriculture and Farming",
     "art": "Art",
-    "health": "Health",
-    "literature": "Literature",
+    "education": "Education and Learning",
+    "entertainment": "Entertainment and Media",
+    "environment": "Environment and Sustainability",
+    "fashion": "Fashion and Beauty",
+    "finance": "Finance and Fintech",
+    "food": "Food and Culinary",
+    "health": "Health and Wellness",
+    "lifestyle": "Home and Lifestyle",
+    "music": "Music and Audio",
+    "nonprofit": "Social Impact and Nonprofits",
+    "retail": "Retail and E-Commerce",
     "science": "Science",
-    "technology": "Technology"
+    "sports": "Sports",
+    "technology": "Technology",
+    "travel": "Travel and Adventure"
   },
   "Dashboard": {
     "account": "Account",
     "applications": "Applications",
     "details": "Details",
+    "discover": "Discover",
+    "likes": "Likes",
     "overview": "Overview",
     "preferences": "Preferences",
     "profile": "Profile",
     "projects": "Projects",
     "roles": "Roles",
-    "statistics": "Statistics",
-    "discover": "Discover",
-    "likes": "Likes"
+    "statistics": "Statistics"
   },
   "Errors": {
     "another_try": "Give it another try",
-    "something_went_wrong": "Oh no! Something went wrong...",
+    "file_invalid_type": "The file format is invalid.",
     "file_too_large": "File size is over the maximum.",
     "file_too_small": "File size is under the minimum.",
-    "file_invalid_type": "The file format is invalid.",
+    "something_went_wrong": "Oh no! Something went wrong...",
     "too_many_files": "Too many files."
   },
   "General": {
     "cancel": "Cancel",
+    "click_to_upload": "Click to upload",
     "continue": "Continue",
+    "created_at": "Created at",
+    "or_darg": "or drag and drop.",
     "save": "Save",
     "save_changes": "Save changes",
     "saving": "Saving",
+    "show_less": "Show less",
+    "show_more": "Show more",
     "success": "Success!",
     "than_last_month": "Than last month",
-    "ups": "Oops, there has been an error.",
-    "created_at": "Created at",
-    "click_to_upload": "Click to upload",
-    "or_darg": "or drag and drop.",
-    "show_more": "Show more",
-    "show_less": "Show less"
+    "ups": "Oops, there has been an error."
+  },
+  "Likes": {
+    "nothing_to_show": "The projects you like will appear here."
   },
   "Menus": {
     "about": "About",
     "blog": "Blog",
     "dashboard": "Dashboard",
     "discover": "Discover",
-    "login": "Login",
-    "explore": "Explore"
+    "explore": "Explore",
+    "login": "Login"
+  },
+  "Profile": {
+    "about": "About",
+    "about_placeholder": "Tell us about yourself! Share your passions, skills, and what motivates you. This is your space to give project owners a glimpse into who you are and how you can contribute to their projects. Feel free to mention your background, interests, and any relevant experiences.",
+    "email": "Email",
+    "links": "Links",
+    "name": "Name",
+    "nationality": "Nationality",
+    "select_nationality": "Select your nationality",
+    "social_links": "Social links"
   },
   "Project": {
     "application_button": "I am interested",
@@ -95,15 +117,15 @@
       "sending_application": "There was an error sending your application.",
       "unauthenticated": "You must log in to send an application."
     },
+    "location": "Location",
+    "no_links": "There are currently no links.",
     "no_roles_available": "Currently this project has not roles available.",
+    "no_similar_projects": "There is no similar projects.",
     "open_roles": "Open roles",
     "project_description": "About %0",
-    "you_must_login": "To send an application, you must login first",
-    "location": "Location",
-    "social": "Social",
     "similar_projects": "Similar projects",
-    "no_links": "There are currently no links.",
-    "no_similar_projects": "There is no similar projects."
+    "social": "Social",
+    "you_must_login": "To send an application, you must login first"
   },
   "Projects": {
     "active": "Active",
@@ -115,7 +137,6 @@
     "city": "City",
     "city_description": "Specially useful when you project require teammates near you.",
     "country": "Country",
-    "nothing_found": "nothing_found",
     "create_new_project": "Create new project",
     "danger_zone": "Danger zone",
     "description": "Description",
@@ -137,60 +158,73 @@
     "name": "Project name",
     "new_project": "New Project",
     "new_project_description": "Unlock the power of collaboration: find like-minded teammates to elevate your project and make your vision a resounding success.",
+    "no_projects": "This looks very empty. \nCreate your first project.",
+    "no_projects_to_show": "There is no projects to show.",
+    "nothing_found": "nothing_found",
     "optional": "optional",
     "project_details": "Project details",
     "project_roles": "Project roles",
     "project_statistics": "Project statistics",
     "project_status": "Project status",
     "public": "Public",
-    "remove_description": "Are you sure you want to remove the project? This action can't be undone. To continue write down the project name.",
+    "remove_description": "Are you sure you want to remove the project? This action can't be undone. \nTo continue write down the project name.",
     "remove_project": "Remove project",
     "remove_title": "Attention!",
     "search_category": "Search category...",
-    "select_country": "Select a country...",
     "select_categories": "Select categories",
+    "select_country": "Select a country...",
     "show_danger_zone": "Show danger zone",
     "success_create": "The project has been created.",
     "success_update": "The project has been updated.",
     "summary": "Summary",
     "summary_description": "Summarize what your project aims to achieve in one line.",
-    "views": "Views",
-    "no_projects_to_show": "There is no projects to show.",
-    "no_projects": "This looks very empty. \nCreate your first project."
-  },
-  "Profile": {
-    "name": "Name",
-    "about": "About",
-    "about_placeholder": "Tell us about yourself! Share your passions, skills, and what motivates you. This is your space to give project owners a glimpse into who you are and how you can contribute to their projects. Feel free to mention your background, interests, and any relevant experiences.",
-    "links": "Links",
-    "social_links": "Social links",
-    "nationality": "Nationality",
-    "email": "Email",
-    "select_nationality": "Select your nationality"
+    "views": "Views"
   },
   "Roles": {
+    "add_role": "Add role",
     "application": "Application",
     "applications": "Applications",
-    "add_role": "Add role",
+    "archive": "Archive",
+    "illustrator": "Illustrator",
+    "teacher": "Teacher",
+    "actor": "Actor",
+    "director": "Director",
+    "video_producer": "Video Producer",
+    "sound_producer": "Sound Producer",
+    "photographer": "Photographer",
+    "makeup_artist": "Makeup Artist",
+    "musician": "Musician",
+    "composer": "Composer",
+    "singer": "Singer",
+    "voice_actor": "Voice Actor",
+    "announcer": "Announcer",
+    "coach": "Coach",
+    "guide": "Guide",
+    "instructor": "Instructor",
     "content_creator": "Content creator",
-    "designer": "Designer",
+    "customer_support": "Customer Support",
+    "developer": "Developer",
     "errors": {
       "removing": "Has been an error while removing the role.",
       "saving": "Has been an error while saving the new roles."
     },
     "experience_level": "Experience level",
+    "graphic_designer": "Graphic Designer",
+    "investor_manager": "Investor Manager",
+    "legal_counsel": "Legal Counsel",
     "Levels": {
       "entry": "Entry",
       "expert": "Expert",
       "intermediate": "Intermediate"
     },
+    "marketer": "Marketer",
     "new_role": "New role",
-    "archive": "Archive",
     "new_role_description": "Enrich your project with the Perfect Fit: Define the Role that your team needs.",
     "no_role_found": "No role found",
     "no_roles_created": "No roles created yet.",
     "omit": "Omit for now",
-    "role_details": "Role details",
+    "other": "Other",
+    "product_manager": "Product Manager",
     "rewards": "Rewards",
     "Rewards": {
       "contract": "Contract",
@@ -202,14 +236,16 @@
     },
     "role": "Role",
     "role_description": "Role description",
+    "role_details": "Role details",
+    "sales": "Sales",
     "save_roles": "Save roles",
     "search_role": "Search role...",
     "select_a_role": "Select a role",
     "select_level": "Select a level",
     "Status": {
+      "archived": "Archived",
       "closed": "Closed",
-      "open": "Open",
-      "archived": "Archived"
+      "open": "Open"
     },
     "the_roles_has_been_added": "The roles has been added to the project.",
     "work_mode": "Work mode",
@@ -219,10 +255,10 @@
     }
   },
   "Site": {
-    "subtitle": "The powerhouse platform for connecting visionaries and Cultivating Success. Step into a world of collaboration and innovation.",
-    "title": "Find the next project to be part of.",
+    "results": "results",
     "search_placeholder": "Search projects...",
-    "results": "results"
+    "subtitle": "The powerhouse platform for connecting visionaries and Cultivating Success. Step into a world of collaboration and innovation.",
+    "title": "Find the next project to be part of."
   },
   "Theme": {
     "dark": "Dark",

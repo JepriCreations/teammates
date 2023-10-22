@@ -32,7 +32,7 @@ export const ProjectDetailsForm = ({ data }: ProjectDetailsFormProps) => {
   const { t } = useDictionary('Projects')
   const router = useRouter()
   const { toast } = useToast()
-  const { update, remove, isRemoving } = useProjects()
+  const { update } = useProjects()
   const [publish, setPublish] = useState(data.public)
 
   const location = data.location as { country: string; city: string }
@@ -50,15 +50,9 @@ export const ProjectDetailsForm = ({ data }: ProjectDetailsFormProps) => {
     links: JSON.parse(JSON.stringify(data.links)),
   }
 
-  const form = useForm({
-    defaultValues: {
-      name: '',
-    },
-  })
-
   const updatePublicState = async (value: boolean) => {
     setPublish(value)
-    const { error } = await update({ id: data.id, public: value })
+    const { error } = await update(data.id, { public: value })
     if (error) {
       setPublish((prev) => !prev)
       return toast({
@@ -68,13 +62,6 @@ export const ProjectDetailsForm = ({ data }: ProjectDetailsFormProps) => {
       })
     }
     router.refresh()
-  }
-
-  const handleRemove = ({ name }: { name: string }) => {
-    if (name !== data.name) {
-      return form.setError('name', { message: t('errors.incorrect_name') })
-    }
-    remove(data.id)
   }
 
   return (
@@ -94,71 +81,93 @@ export const ProjectDetailsForm = ({ data }: ProjectDetailsFormProps) => {
         defaultValues={defaultValues}
         action="update"
         projectData={{ id: data.id, icon_url: data.icon_url }}
-      >
-        <Accordion type="multiple" className="w-full">
-          <Accordion.Item value="danger-zone" className="border-none">
-            <Accordion.Trigger>{t('show_danger_zone')}</Accordion.Trigger>
-            <Accordion.Content>
-              <section className="grid grid-cols-1 gap-y-3 py-3 sm:grid-cols-3">
-                <div>
-                  <p className="text-label-lg text-error">{t('danger_zone')}</p>
-                </div>
-                <div className="col-span-2 flex items-center gap-3">
-                  <Dialog>
-                    <Dialog.Trigger asChild>
-                      <Button variant="destructive">
-                        {t('remove_project')}
-                      </Button>
-                    </Dialog.Trigger>
-                    <Dialog.Content>
-                      <Dialog.Header>
-                        <Dialog.Title>{t('remove_title')}</Dialog.Title>
-                        <Dialog.Description>
-                          {t('remove_description')}
-                        </Dialog.Description>
-                      </Dialog.Header>
-                      <Form {...form}>
-                        <form>
-                          <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormControl>
-                                  <TextField
-                                    disabled={isRemoving}
-                                    placeholder={data.name}
-                                    label={t('name')}
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </form>
-                      </Form>
-                      <Dialog.Footer>
-                        <Button
-                          onClick={(e) => {
-                            e.preventDefault()
-                            handleRemove(form.getValues())
-                          }}
-                          loading={isRemoving}
-                          variant="destructive"
-                        >
-                          {t('remove_project')}
-                        </Button>
-                      </Dialog.Footer>
-                    </Dialog.Content>
-                  </Dialog>
-                </div>
-              </section>
-            </Accordion.Content>
-          </Accordion.Item>
-        </Accordion>
-      </ProjectForm>
+      />
+      <Accordion type="multiple" className="w-full">
+        <Accordion.Item value="danger-zone" className="border-none">
+          <Accordion.Trigger>{t('show_danger_zone')}</Accordion.Trigger>
+          <Accordion.Content>
+            <section className="grid grid-cols-1 gap-y-3 py-3 sm:grid-cols-3">
+              <div>
+                <p className="text-label-lg text-error">{t('danger_zone')}</p>
+              </div>
+              <div className="col-span-2 flex items-center gap-3">
+                <RemoveProjectDialog
+                  projectId={data.id}
+                  projectName={data.name}
+                />
+              </div>
+            </section>
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
     </>
+  )
+}
+
+const RemoveProjectDialog = ({
+  projectName,
+  projectId,
+}: {
+  projectName: string
+  projectId: string
+}) => {
+  const { t } = useDictionary('Projects')
+  const { remove, isRemoving } = useProjects()
+
+  const form = useForm({
+    defaultValues: {
+      name: '',
+    },
+  })
+
+  const handleRemove = ({ name }: { name: string }) => {
+    if (name !== projectName) {
+      return form.setError('name', { message: t('errors.incorrect_name') })
+    }
+    remove(projectId)
+  }
+
+  return (
+    <Dialog>
+      <Dialog.Trigger asChild>
+        <Button variant="destructive">{t('remove_project')}</Button>
+      </Dialog.Trigger>
+      <Dialog.Content className="md:max-w-md">
+        <Dialog.Header>
+          <Dialog.Title>{t('remove_title')}</Dialog.Title>
+          <Dialog.Description>{t('remove_description')}</Dialog.Description>
+        </Dialog.Header>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleRemove)}
+            className="space-y-3"
+          >
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <TextField
+                      disabled={isRemoving}
+                      placeholder={projectName}
+                      label={t('name')}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Dialog.Footer>
+              <Button type="submit" loading={isRemoving} variant="destructive">
+                {t('remove_project')}
+              </Button>
+            </Dialog.Footer>
+          </form>
+        </Form>
+      </Dialog.Content>
+    </Dialog>
   )
 }
 

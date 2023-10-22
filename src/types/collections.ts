@@ -17,11 +17,6 @@ export enum Rewards {
   Credit = 'credit',
 }
 
-export enum Roles {
-  ContentCreator = 'content_creator',
-  Designer = 'designer',
-}
-
 export enum RoleStatus {
   Open = 'open',
   Closed = 'closed',

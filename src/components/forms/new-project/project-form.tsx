@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { type Category } from '@/constants/projects'
 import { ROUTES } from '@/constants/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -105,7 +106,7 @@ export const ProjectForm = ({
       severity: 'success',
     })
 
-    onNext(data.id)
+    onNext({ projectId: data.id, categories: values.categories as Category[] })
   }
 
   const onUpdate = async (values: z.infer<typeof updateProjectSchema>) => {

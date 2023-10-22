@@ -222,7 +222,7 @@ export const ComboboxRoot = <TValue,>({
         </span>
       </Trigger>
       <Popover.Content
-        className="w-full min-w-[var(--radix-popover-trigger-width)] p-0"
+        className="-mt-1 w-full min-w-[var(--radix-popover-trigger-width)] p-0"
         align="start"
       >
         <Command filter={filterFn} shouldFilter={shouldFilter}>

@@ -1,20 +1,29 @@
 'use client'
 
 import { createContext, useContext, useReducer } from 'react'
+import { type Category } from '@/constants/projects'
 
 interface State {
   step: number
   projectId: string | undefined
+  categories: Category[]
 }
 
 interface NewProjectFormContext extends State {
-  onNext: (id: string) => void
+  onNext: ({
+    projectId,
+    categories,
+  }: {
+    projectId: string
+    categories: Category[]
+  }) => void
 }
 
 const NewProjectFormContext = createContext<NewProjectFormContext>({
   onNext: () => {},
   step: 0,
   projectId: undefined,
+  categories: [],
 })
 
 interface NewProjectFormProviderProps {
@@ -32,11 +41,18 @@ export const NewProjectFormProvider = ({
     {
       step: 0,
       projectId: undefined,
+      categories: [],
     }
   )
 
-  const handleNext = (projectId: string) => {
-    setState({ step: state.step + 1, projectId })
+  const handleNext = ({
+    projectId,
+    categories,
+  }: {
+    projectId: string
+    categories: Category[]
+  }) => {
+    setState({ step: state.step + 1, projectId, categories })
   }
 
   return (

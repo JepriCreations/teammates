@@ -15,6 +15,7 @@ import {
   MAX_FILE_SIZE,
   SUMMARY_MAX_LENGTH,
 } from '@/lib/validations/project'
+import { Divider } from '@/components/ui/divider'
 import { Dropzone, IMAGE_MIME_TYPE } from '@/components/ui/drop-zone'
 import {
   FormControl,
@@ -28,8 +29,6 @@ import { Textarea } from '@/components/ui/textarea'
 import { Combobox } from '@/components/combobox'
 import { Icons } from '@/components/icons'
 import { useDictionary } from '@/components/providers/dictionary-provider'
-
-import { Divider } from '../ui/divider'
 
 interface ProjectInputsProps {
   form: UseFormReturn<z.infer<typeof createProjectSchema>>
@@ -287,7 +286,9 @@ export const ProjectInputs = ({
                     label={t('Projects.country')}
                     placeholder={t('Projects.select_country')}
                     emptyState={t('Projects.nothing_found')}
-                    displayValue={(country: string) => country}
+                    displayValue={(country: string) =>
+                      COUNTRIES[country as keyof typeof COUNTRIES]?.name
+                    }
                     defaultValue={
                       COUNTRIES[field.value as keyof typeof COUNTRIES]?.name ??
                       ''

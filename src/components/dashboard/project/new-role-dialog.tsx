@@ -28,9 +28,13 @@ const defaultValues = {
 
 interface NewRoleDialogProps {
   projectId: string
+  categories: string[]
 }
 
-export const NewRoleDialog = ({ projectId }: NewRoleDialogProps) => {
+export const NewRoleDialog = ({
+  projectId,
+  categories,
+}: NewRoleDialogProps) => {
   const { toast } = useToast()
   const { t } = useDictionary()
   const router = useRouter()
@@ -72,7 +76,7 @@ export const NewRoleDialog = ({ projectId }: NewRoleDialogProps) => {
           <Fab.Label>{t('Roles.new_role')}</Fab.Label>
         </Fab>
       </Dialog.Trigger>
-      <Dialog.Content className="sm:max-w-[90%] md:max-w-3xl">
+      <Dialog.Content>
         <Dialog.Header>
           <Dialog.Title>{t('Roles.new_role')}</Dialog.Title>
           <Dialog.Description>
@@ -82,7 +86,11 @@ export const NewRoleDialog = ({ projectId }: NewRoleDialogProps) => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-3">
             <div className="mt-3">
-              <RoleInputs disabled={isPending} form={form} />
+              <RoleInputs
+                disabled={isPending}
+                form={form}
+                categories={categories}
+              />
             </div>
             <Dialog.Footer>
               <Button
