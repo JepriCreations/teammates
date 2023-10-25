@@ -11,11 +11,15 @@ export default async function Project({
 }: ProjectProps) {
   const { error, data } = await fetchProjectStatistics(id)
 
-  if (error || !data) return <Error error={error} />
-
   return (
     <div className="px-4 pb-6 sm:px-12">
-      <Statistics locale={locale} data={data} />
+      {error ? (
+        <div className="mx-auto max-w-4xl">
+          <Error error={error} />
+        </div>
+      ) : (
+        <Statistics locale={locale} data={data} />
+      )}
     </div>
   )
 }

@@ -13,18 +13,13 @@ const ACCEPTED_IMAGE_TYPES = [
 ]
 
 const locationSchema = z.object({
-  country: z
-    .string()
-    .min(1, {
-      message: 'This value is required.',
-    })
-    .max(15, { message: 'That is too long. Make it less than 15 characters.' }),
+  country: z.string().nonempty(),
   city: z
     .string()
     .min(3, {
       message: 'At least 3 characters.',
     })
-    .max(25, { message: 'That is too long. Make it less than 15 characters.' }),
+    .max(25, { message: 'That is too long. Make it less than 25 characters.' }),
 })
 
 export const fileSchema = z
@@ -65,4 +60,6 @@ export const projectSchema = z.object({
 export const createProjectSchema = projectSchema.merge(
   z.object({ file: fileSchema })
 )
-export const updateProjectSchema = createProjectSchema.partial()
+export const updateProjectSchema = projectSchema
+  .merge(z.object({ file: fileSchema.optional() }))
+  .partial()

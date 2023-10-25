@@ -27,7 +27,7 @@ const SearchBarInput = React.forwardRef<
     ref={ref}
     type="search"
     className={cn(
-      'h-full grow bg-transparent px-4 text-body-lg text-onSurface outline-none placeholder:text-body-lg placeholder:text-onSurfaceVariant disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-onSurface/38 disabled:placeholder:text-onSurface/38',
+      'h-full w-full grow bg-transparent px-4 text-body-lg text-onSurface outline-none placeholder:text-body-lg placeholder:text-onSurfaceVariant disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-onSurface/38 disabled:placeholder:text-onSurface/38',
       className
     )}
     {...props}

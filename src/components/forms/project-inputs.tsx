@@ -1,7 +1,7 @@
 'use client'
 
 import { COUNTRIES } from '@/constants/countries'
-import { categories } from '@/constants/projects'
+import { CATEGORIES } from '@/constants/projects'
 import { ErrorCode } from 'react-dropzone'
 import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
@@ -212,31 +212,36 @@ export const ProjectInputs = ({
               <FormItem>
                 <FormControl>
                   <Combobox
+                    value={field.value}
                     disabled={disabled}
                     multiple
                     label={t('Projects.categories')}
                     placeholder={t('Projects.select_categories')}
                     emptyState={t('Projects.nothing_found')}
-                    displayValue={(categories: Category[]) =>
-                      categories.map((c: Category) => c.label).join(' & ')
+                    displayValue={(categories: string[]) =>
+                      categories
+                        .map(
+                          (category) =>
+                            CATEGORIES(tCategories).find(
+                              (c) => c.value === category
+                            )?.label
+                        )
+                        .join(' & ')
                     }
-                    defaultValue={categories(tCategories).filter((c) =>
-                      field.value.includes(c.value)
-                    )}
+                    defaultValue={CATEGORIES(tCategories)
+                      .filter((c) => field.value.includes(c.value))
+                      .map((c) => c.value)}
                     maxItems={MAX_CATEGORIES}
                     closeOnSelect={false}
                     onValueChange={(newValue) => {
-                      if (newValue) {
-                        form.setValue(
-                          'categories',
-                          newValue.map((v: Category) => v.value)
-                        )
-                        form.clearErrors(field.name)
-                      }
+                      field.onChange(newValue)
                     }}
                   >
-                    {categories(tCategories).map((category) => (
-                      <Combobox.Item key={category.value} value={category}>
+                    {CATEGORIES(tCategories).map((category) => (
+                      <Combobox.Item
+                        key={category.value}
+                        value={category.value}
+                      >
                         {category.label}
                       </Combobox.Item>
                     ))}
@@ -282,6 +287,7 @@ export const ProjectInputs = ({
               <FormItem>
                 <FormControl>
                   <Combobox
+                    value={field.value}
                     disabled={disabled}
                     label={t('Projects.country')}
                     placeholder={t('Projects.select_country')}
@@ -294,10 +300,7 @@ export const ProjectInputs = ({
                       ''
                     }
                     onValueChange={(newValue) => {
-                      if (newValue) {
-                        form.setValue('location.country', newValue)
-                        form.clearErrors(field.name)
-                      }
+                      field.onChange(newValue)
                     }}
                   >
                     {Object.entries(COUNTRIES).map(([key, country]) => (

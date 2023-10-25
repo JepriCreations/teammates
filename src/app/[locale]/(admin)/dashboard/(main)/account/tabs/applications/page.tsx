@@ -39,7 +39,7 @@ const ApplicationsFeed = async ({ locale }: { locale: string }) => {
   const { t } = await getDictionary(locale)
   const { error, data } = await fetchUserApplications()
 
-  if (error || !data) return <Error error={error} />
+  if (error) return <Error error={error} />
 
   if (data.length === 0) {
     return (

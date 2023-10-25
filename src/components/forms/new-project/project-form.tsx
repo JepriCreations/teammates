@@ -48,7 +48,7 @@ export const ProjectForm = ({
   const { onNext } = useNewProjectFormState()
   const router = useRouter()
   const { isPending, create, update } = useProjects()
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
   const isUpdating = action === 'update'
 
   const form = useForm<z.infer<typeof createProjectSchema>>({
@@ -84,18 +84,18 @@ export const ProjectForm = ({
   const onCreate = async (values: z.infer<typeof createProjectSchema>) => {
     const { error, data } = await create(values)
 
-    if (error || !data) {
+    if (error) {
       if (error.code === ERROR_CODES.DUPLICATE_NAME) {
         form.setError(
           'name',
           {
             type: 'custom',
-            message: t('Projects.errors.duplicate_name'),
+            message: t('Projects.Errors.duplicate_name'),
           },
           { shouldFocus: true }
         )
       } else {
-        setError(error?.message ?? t('Projects.errors.saving'))
+        setError(t('Projects.Errors.saving'))
       }
       return
     }
@@ -117,7 +117,7 @@ export const ProjectForm = ({
     if (error) {
       return toast({
         title: t('General.ups'),
-        description: t('Projects.errors.updating'),
+        description: t('Projects.Errors.updating'),
         severity: 'error',
       })
     }

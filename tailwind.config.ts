@@ -95,6 +95,7 @@ const config = {
       },
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
+        emoji: ['var(--emoji)'],
       },
       fontSize: {
         'display-lg': ['3.56rem', { lineHeight: '4rem' }],

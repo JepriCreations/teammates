@@ -22,6 +22,7 @@ interface StatisticsProps {
       date: string
       count: number
     }[]
+    likes: number
   }
 }
 
@@ -33,9 +34,9 @@ export const Statistics = async ({ locale, data }: StatisticsProps) => {
   return (
     <section className="grid grid-cols-1 gap-4 sm:grid-cols-4">
       <Card className="flex flex-col items-center justify-center space-y-2 p-6">
-        <Icons.likesTag size={62} className="text-pink-500" />
+        <Icons.likesTag className="h-16 w-16 text-pink-500" />
         <div>
-          <p className="text-center text-4xl font-bold">120</p>
+          <p className="text-center text-4xl font-bold">{data.likes}</p>
           <p className="text-center text-outline">{t('likes')}</p>
         </div>
       </Card>

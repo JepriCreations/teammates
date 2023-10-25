@@ -9,22 +9,23 @@ export const useProfile = () => {
   const [isPending, setIsPending] = useState(false)
 
   const update = async ({ data }: { data: any }) => {
-    try {
-      setIsPending(true)
-      await fetcher.patch({
+    setIsPending(true)
+    return fetcher
+      .patch({
         url: location.origin + API_ROUTES.PROFILES,
         data,
       })
-      router.refresh()
-    } catch (error) {
-      console.log({ error })
-    } finally {
-      setIsPending(false)
-    }
+      .then((resp) => {
+        if (!resp.error) {
+          router.refresh()
+        }
+        setIsPending(false)
+        return resp
+      })
   }
 
   return {
-    mutation: { update },
+    update,
     isPending,
   }
 }

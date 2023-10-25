@@ -24,7 +24,7 @@ export default function ProfileTab({}: PageProps) {
 const UserProfile = async () => {
   const { error, data } = await fetchUserProfile()
 
-  if (error || !data) return <Error error={error} />
+  if (error) return <Error error={error} />
 
   return <ProfileForm profile={data} />
 }

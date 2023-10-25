@@ -13,7 +13,7 @@ interface ProjectCardProps {
   name: string
   public: boolean
   updated_at: string
-  views: { total_views: number | null }[]
+  total_views: number
   roles: { status: string }[]
   t: Translator
 }
@@ -23,7 +23,7 @@ export const ProjectCard = ({
   name,
   public: isPublic,
   updated_at,
-  views,
+  total_views,
   roles,
   t,
 }: ProjectCardProps) => {
@@ -38,7 +38,7 @@ export const ProjectCard = ({
           <p className="grow truncate text-lg">{name}</p>
           <span className="flex shrink-0 origin-top-right items-center gap-2 rounded-full bg-onSurface/5 px-2 py-1 text-sm transition-fadeAndMove group-hover:scale-0 group-hover:opacity-0">
             <Icons.views size={16} />
-            {views[0]?.total_views ?? 0}
+            {total_views ?? 0}
           </span>
         </div>
         <p className="muted text-sm">{`${openRoles} open roles`}</p>

@@ -60,6 +60,22 @@ export function isPostgresError(error: unknown): error is PostgresError {
   )
 }
 
+export type ErrorType = {
+  message: string
+  details?: string
+  hint?: string
+  code?: string | number
+}
+
+export const newError = (error: any): ErrorType => {
+  return {
+    message: error?.message ?? '',
+    details: error?.details ?? '',
+    hint: error?.hint ?? '',
+    code: error?.code ?? '',
+  }
+}
+
 export const ERROR_CODES = {
   UNAUTHENTICATED: 'unauthenticated',
   DUPLICATE_NAME: 'duplicate_name',

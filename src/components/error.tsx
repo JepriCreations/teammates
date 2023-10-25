@@ -3,13 +3,13 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { PostgresError } from '@/lib/errors'
+import { ErrorType } from '@/lib/errors'
 import { DEBUG } from '@/lib/utils'
 import { Alert } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { useDictionary } from '@/components/providers/dictionary-provider'
 
-export const Error = ({ error }: { error: PostgresError }) => {
+export const Error = ({ error }: { error: ErrorType }) => {
   const { t } = useDictionary('Errors')
   const router = useRouter()
 

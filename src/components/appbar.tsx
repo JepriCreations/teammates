@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { ROUTES } from '@/constants/routes'
-import { Session } from '@supabase/supabase-js'
 
 import { Translator } from '@/lib/dictionaries'
 import { Button } from '@/components/ui/button'
@@ -27,11 +26,14 @@ const menu = [
 
 interface AppbarProps {
   t: Translator
-  session: Session | null
+  loggedIn: boolean
 }
 
-export const Appbar = ({ t, session }: AppbarProps) => {
-  const menuItems = menu.map((item) => ({ ...item, title: t(item.id) }))
+export const Appbar = ({ t, loggedIn }: AppbarProps) => {
+  const menuItems = menu.map((item) => ({
+    ...item,
+    title: t(`Menus.${item.id}`),
+  }))
 
   return (
     <div className="fixed inset-x-0 top-0 z-40 px-3 sm:container">
@@ -69,7 +71,7 @@ export const Appbar = ({ t, session }: AppbarProps) => {
             <div className="hidden sm:block">
               <ModeToggle />
             </div>
-            {session ? (
+            {loggedIn ? (
               <Button
                 variant="brutalist"
                 className="min-w-0 px-4 sm:min-w-[100px] sm:px-6"
@@ -79,7 +81,9 @@ export const Appbar = ({ t, session }: AppbarProps) => {
                   <span className="sm:hidden">
                     <Icons.dashboard />
                   </span>
-                  <span className="hidden sm:inline">{t('dashboard')}</span>
+                  <span className="hidden sm:inline">
+                    {t('Menus.dashboard')}
+                  </span>
                 </Link>
               </Button>
             ) : (
@@ -92,7 +96,7 @@ export const Appbar = ({ t, session }: AppbarProps) => {
                   <span className="sm:hidden">
                     <Icons.account />
                   </span>
-                  <span className="hidden sm:inline">{t('login')}</span>
+                  <span className="hidden sm:inline">{t('Menus.login')}</span>
                 </Link>
               </Button>
             )}

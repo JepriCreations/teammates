@@ -10,7 +10,12 @@ interface ProjectRolesProps {
 export default async function Roles({ params: { id } }: ProjectRolesProps) {
   const { data, error } = await fetchProjectRoles(id)
 
-  if (!data || error) return <Error error={error} />
+  if (error)
+    return (
+      <div className="mx-auto w-full max-w-4xl">
+        <Error error={error} />
+      </div>
+    )
 
   return (
     <>

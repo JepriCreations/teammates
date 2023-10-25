@@ -33,6 +33,7 @@
     "welcome": "Welcome"
   },
   "Categories": {
+    "clear": "Clear",
     "agriculture": "Agriculture and Farming",
     "art": "Art",
     "education": "Education and Learning",
@@ -85,7 +86,8 @@
     "show_more": "Show more",
     "success": "Success!",
     "than_last_month": "Than last month",
-    "ups": "Oops, there has been an error."
+    "ups": "Oops, there has been an error.",
+    "page_not_found": "The page you are looking for doesn't exist."
   },
   "Likes": {
     "nothing_to_show": "The projects you like will appear here."
@@ -106,7 +108,11 @@
     "name": "Name",
     "nationality": "Nationality",
     "select_nationality": "Select your nationality",
-    "social_links": "Social links"
+    "social_links": "Social links",
+    "success_update": "Your profile has been updated.",
+    "Errors": {
+      "updating": "Has been an error while updating your profile."
+    }
   },
   "Project": {
     "application_button": "I am interested",
@@ -125,7 +131,8 @@
     "project_description": "About %0",
     "similar_projects": "Similar projects",
     "social": "Social",
-    "you_must_login": "To send an application, you must login first"
+    "you_must_login": "To send an application, you must login first",
+    "the_project_has_been_removed": "The project has been removed."
   },
   "Projects": {
     "active": "Active",
@@ -143,11 +150,12 @@
     "description_placeholder": "Craft a captivating and concise description that showcases the core of your project. Clearly convey your project's purpose, goals, and any specific requirements to attract potential teammates. A well-written description will help others visualize themselves joining your project and contribute their skills and passion. By providing a clear and engaging summary, you increase the likelihood of finding like-minded individuals eager to collaborate and bring your project to life.",
     "details": "Project details",
     "disabled": "Disabled",
-    "errors": {
+    "Errors": {
       "duplicate_name": "The name already exist, please use another.",
       "incorrect_name": "The project name is incorrect.",
       "saving": "Has been an error while saving data.",
-      "updating": "Has been an error while updating the project."
+      "updating": "Has been an error while updating the project.",
+      "removing": "Has been an error removing the project."
     },
     "hidden": "Hidden",
     "icon": "Project icon",
@@ -204,7 +212,7 @@
     "content_creator": "Content creator",
     "customer_support": "Customer Support",
     "developer": "Developer",
-    "errors": {
+    "Errors": {
       "removing": "Has been an error while removing the role.",
       "saving": "Has been an error while saving the new roles."
     },
@@ -258,7 +266,8 @@
     "results": "results",
     "search_placeholder": "Search projects...",
     "subtitle": "The powerhouse platform for connecting visionaries and Cultivating Success. Step into a world of collaboration and innovation.",
-    "title": "Find the next project to be part of."
+    "title": "Find the next project to be part of.",
+    "no_results": "We couldn't find any project."
   },
   "Theme": {
     "dark": "Dark",

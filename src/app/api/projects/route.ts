@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { PostgresError } from '@/lib/errors'
+import { newError, PostgresError } from '@/lib/errors'
 import {
   createProject,
   removeProject,
@@ -24,17 +24,14 @@ export async function POST(request: Request) {
         path: error.path,
         message: error.message,
       }))
-      console.log({ payloadErrors: errors })
-      throw new PostgresError(
-        'The form validation has not passed. Check that all the fields have valid values.'
-      )
+      throw new PostgresError('The validation has not passed.', {
+        details: JSON.stringify(errors),
+      })
     }
     const result = await createProject(payload.data)
     return NextResponse.json(result)
-  } catch (error: any) {
-    return NextResponse.json({
-      error: new PostgresError(error.message),
-    })
+  } catch (error) {
+    return NextResponse.json({ error: newError(error) })
   }
 }
 
@@ -56,29 +53,30 @@ export async function PATCH(request: Request) {
         path: error.path,
         message: error.message,
       }))
-      console.log({ payloadErrors: errors })
-      throw new PostgresError(
-        'The form validation has not passed. Check that all the fields have valid values.'
-      )
+      throw new PostgresError('The validation has not passed.', {
+        details: JSON.stringify(errors),
+      })
     }
 
     const result = await updateProject(id, payload.data)
     return NextResponse.json(result)
-  } catch (error: any) {
-    return NextResponse.json({
-      error: new PostgresError(error.message),
-    })
+  } catch (error) {
+    return NextResponse.json({ error: newError(error) })
   }
 }
 
 export async function DELETE(request: Request) {
   try {
     const body = await request.json()
-    const result = await removeProject(body?.id)
+    const id = body?.id
+
+    if (!id) {
+      throw new PostgresError('Project id is required.')
+    }
+
+    const result = await removeProject(id)
     return NextResponse.json(result)
-  } catch (error: any) {
-    return NextResponse.json({
-      error: new PostgresError(error.message),
-    })
+  } catch (error) {
+    return NextResponse.json({ error: newError(error) })
   }
 }

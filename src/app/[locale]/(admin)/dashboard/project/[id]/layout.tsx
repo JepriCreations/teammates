@@ -19,12 +19,7 @@ export default async function ProjectLayout({
   params,
 }: ProjectLayoutProps) {
   const { t } = await getDictionary(params.locale)
-  const { data: project, error } = await fetchProjectName(params.id)
-
-  if (error) {
-    // TODO: handle error
-    return <div>{error.message}</div>
-  }
+  const { data: project } = await fetchProjectName(params.id)
 
   return (
     <main className="min-h-[100dvh] pb-20 md:pb-0">
@@ -39,7 +34,7 @@ export default async function ProjectLayout({
           </Button>
           <Icons.angleRightSmall className="text-outline" />
           <Button disabled variant="text">
-            {project.name}
+            {project?.name}
           </Button>
         </DashboardAppbar>
         {children}

@@ -116,7 +116,7 @@ const categoryConstructor = (t: Translator, value: string) => ({
   value,
   label: t(value),
 })
-export const categories = (t: Translator) =>
+export const CATEGORIES = (t: Translator) =>
   [
     categoryConstructor(t, 'agriculture'),
     categoryConstructor(t, 'art'),
@@ -136,3 +136,23 @@ export const categories = (t: Translator) =>
     categoryConstructor(t, 'technology'),
     categoryConstructor(t, 'travel'),
   ] as const
+
+export const CATEGORIES_ICONS = {
+  agriculture: '🌾',
+  art: '🎨',
+  education: '🎓',
+  entertainment: '🎬',
+  environment: '🌍',
+  fashion: '👗',
+  finance: '💰',
+  food: '🍳',
+  health: '❤️',
+  lifestyle: '🏠',
+  music: '🎼',
+  nonprofit: '👥',
+  retail: '🛍️',
+  science: '🧪',
+  sports: '⚽',
+  technology: '🤖',
+  travel: '🛫',
+} as const

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { isPostgresError, PostgresError } from '@/lib/errors'
+import { newError, PostgresError } from '@/lib/errors'
 import {
   createApplication,
   removeApplication,
@@ -32,11 +32,7 @@ export async function POST(request: Request) {
     const result = await createApplication(payload.data)
     return NextResponse.json(result)
   } catch (error: any) {
-    if (isPostgresError(error)) {
-      return NextResponse.json(error, { status: 500 })
-    }
-
-    return NextResponse.json(new PostgresError(error.message), { status: 500 })
+    return NextResponse.json({ error: newError(error) })
   }
 }
 
@@ -60,11 +56,7 @@ export async function PATCH(request: Request) {
     const result = await updateApplicationStatus(payload.data)
     return NextResponse.json(result)
   } catch (error: any) {
-    if (isPostgresError(error)) {
-      return NextResponse.json(error, { status: 500 })
-    }
-
-    return NextResponse.json(new PostgresError(error.message), { status: 500 })
+    return NextResponse.json({ error: newError(error) })
   }
 }
 
@@ -81,10 +73,6 @@ export async function DELETE(request: Request) {
     const result = await removeApplication({ user_id, role_id })
     return NextResponse.json(result)
   } catch (error: any) {
-    if (isPostgresError(error)) {
-      return NextResponse.json(error, { status: 500 })
-    }
-
-    return NextResponse.json(new PostgresError(error.message), { status: 500 })
+    return NextResponse.json({ error: newError(error) })
   }
 }

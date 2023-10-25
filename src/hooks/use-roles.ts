@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { API_ROUTES } from '@/constants/routes'
 import { z } from 'zod'
 
 import { RoleStatus } from '@/types/collections'
@@ -7,62 +9,55 @@ import { roleSchema } from '@/lib/validations/role'
 
 export const useRoles = () => {
   const [isPending, setIsPending] = useState(false)
+  const router = useRouter()
 
-  const addRoles = async (
+  const create = async (
     project_id: string,
     roles: z.infer<typeof roleSchema>[]
   ) => {
-    try {
-      setIsPending(true)
+    setIsPending(true)
 
-      const values = roles.map((role) => ({
-        ...role,
-        project_id,
-      }))
+    const values = roles.map((role) => ({
+      ...role,
+      project_id,
+    }))
 
-      const { error } = await fetcher.post({
-        url: `${location.origin}/api/roles`,
+    return fetcher
+      .post({
+        url: location.origin + API_ROUTES.ROLES,
         body: values,
       })
-
-      if (error) {
-        throw error
-      }
-
-      return { data: { success: true } }
-    } catch (error: any) {
-      return { error }
-    } finally {
-      setIsPending(false)
-    }
+      .then((resp) => {
+        if (!resp.error) {
+          router.refresh()
+        }
+        setIsPending(false)
+        return resp
+      })
   }
 
-  const updateRoleStatus = async ({
+  const updateStatus = async ({
     id,
     status,
   }: {
     id: string
     status: RoleStatus
   }) => {
-    try {
-      setIsPending(true)
+    setIsPending(true)
 
-      const { error } = await fetcher.patch({
-        url: `${location.origin}/api/roles`,
+    return fetcher
+      .patch({
+        url: location.origin + API_ROUTES.ROLES,
         body: { id, status },
       })
-
-      if (error) {
-        throw error
-      }
-
-      return { data: { success: true } }
-    } catch (error: any) {
-      return { error }
-    } finally {
-      setIsPending(false)
-    }
+      .then((resp) => {
+        if (!resp.error) {
+          router.refresh()
+        }
+        setIsPending(false)
+        return resp
+      })
   }
 
-  return { addRoles, updateRoleStatus, isPending }
+  return { create, updateStatus, isPending }
 }

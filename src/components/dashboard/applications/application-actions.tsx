@@ -24,23 +24,22 @@ export const ApplicationDropdownMenu = ({
   const { t } = useDictionary()
   const { remove, isPending } = useApplication()
 
-  const handleRemove = (e: React.MouseEvent) => {
+  const handleRemove = async (e: React.MouseEvent) => {
     e.preventDefault()
-    remove({ user_id: userId, role_id: roleId })
-      .then(() => {
-        setOpen(false)
-      })
-      .catch((error) => {
-        if (DEBUG) {
-          console.log({ error })
-        }
+    const { error } = await remove({ user_id: userId, role_id: roleId })
 
-        toast({
-          title: 'Error',
-          description: t('Applications.Errors.removing'),
-          severity: 'error',
-        })
+    if (error) {
+      if (DEBUG) {
+        console.log({ error })
+      }
+      toast({
+        title: 'Error',
+        description: t('Applications.Errors.removing'),
+        severity: 'error',
       })
+    }
+
+    setOpen(false)
   }
 
   return (

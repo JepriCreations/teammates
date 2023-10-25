@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { PostgresError } from '@/lib/errors'
+import { newError, PostgresError } from '@/lib/errors'
 import { updateProfile } from '@/lib/mutations/profiles'
 import { parseFormData } from '@/lib/utils'
 import { profileSchema } from '@/lib/validations/profile'
@@ -24,9 +24,7 @@ export async function PATCH(request: Request) {
 
     const result = await updateProfile(payload.data)
     return NextResponse.json(result)
-  } catch (error: any) {
-    return NextResponse.json({
-      error: new PostgresError(error.message),
-    })
+  } catch (error) {
+    return NextResponse.json({ error: newError(error) })
   }
 }

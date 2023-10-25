@@ -19,7 +19,6 @@ interface ProjectCardProps {
   updated_at: string
   icon_url: string | null
   roles: Partial<Role>[]
-  results: number
   locale: string
 }
 
@@ -31,7 +30,6 @@ export const ProjectCard = async ({
   updated_at,
   icon_url,
   roles,
-  results,
   locale,
 }: ProjectCardProps) => {
   const { t } = await getDictionary(locale)
@@ -67,7 +65,7 @@ export const ProjectCard = async ({
           <div id="roles-container" className="flex grow gap-3 pr-4">
             {roles.map((role) => (
               <div
-                key={`${name}-${role.name}`}
+                key={role.id}
                 className="flex items-center gap-2 rounded-full border border-outline px-4 py-1"
               >
                 <span className="mr-2 grow truncate">

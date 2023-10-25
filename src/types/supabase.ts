@@ -38,7 +38,7 @@ export interface Database {
         Row: {
           created_at: string
           created_at_time: string
-          project_id: string
+          project_id: string | null
           role_id: string
           status: string
           user_id: string
@@ -46,7 +46,7 @@ export interface Database {
         Insert: {
           created_at?: string
           created_at_time?: string
-          project_id: string
+          project_id?: string | null
           role_id: string
           status: string
           user_id: string
@@ -54,7 +54,7 @@ export interface Database {
         Update: {
           created_at?: string
           created_at_time?: string
-          project_id?: string
+          project_id?: string | null
           role_id?: string
           status?: string
           user_id?: string
@@ -65,6 +65,12 @@ export interface Database {
             columns: ["project_id"]
             referencedRelation: "projects"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "applications_project_id_fkey"
+            columns: ["project_id"]
+            referencedRelation: "project_statistics"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "applications_role_id_fkey"
@@ -144,6 +150,12 @@ export interface Database {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "project_likes_project_id_fkey"
+            columns: ["project_id"]
+            referencedRelation: "project_statistics"
+            referencedColumns: ["project_id"]
+          },
+          {
             foreignKeyName: "project_likes_user_id_fkey"
             columns: ["user_id"]
             referencedRelation: "profiles"
@@ -173,11 +185,18 @@ export interface Database {
             columns: ["project_id"]
             referencedRelation: "projects"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_views_project_id_fkey"
+            columns: ["project_id"]
+            referencedRelation: "project_statistics"
+            referencedColumns: ["project_id"]
           }
         ]
       }
       projects: {
         Row: {
+          archive: boolean
           categories: string[]
           created_at: string
           created_by: string
@@ -193,6 +212,7 @@ export interface Database {
           updated_at: string
         }
         Insert: {
+          archive?: boolean
           categories: string[]
           created_at?: string
           created_by: string
@@ -208,6 +228,7 @@ export interface Database {
           updated_at?: string
         }
         Update: {
+          archive?: boolean
           categories?: string[]
           created_at?: string
           created_by?: string
@@ -280,6 +301,12 @@ export interface Database {
             columns: ["project_id"]
             referencedRelation: "projects"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "roles_project_id_fkey"
+            columns: ["project_id"]
+            referencedRelation: "project_statistics"
+            referencedColumns: ["project_id"]
           }
         ]
       }
@@ -290,28 +317,25 @@ export interface Database {
           current_month_hits: number | null
           current_month_views: number | null
           likes_count: number | null
-          percent_hits: number | null
-          percent_views: number | null
           prev_month_hits: number | null
           prev_month_views: number | null
           project_id: string | null
           total_hits: number | null
           total_views: number | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "project_views_project_id_fkey"
-            columns: ["project_id"]
-            referencedRelation: "projects"
-            referencedColumns: ["id"]
-          }
-        ]
+        Relationships: []
       }
     }
     Functions: {
       delete_avatar: {
         Args: {
           avatar_url: string
+        }
+        Returns: Record<string, unknown>
+      }
+      delete_icon: {
+        Args: {
+          icon_url: string
         }
         Returns: Record<string, unknown>
       }
@@ -329,6 +353,31 @@ export interface Database {
         Returns: {
           created_at: string
           count: number
+        }[]
+      }
+      get_projects: {
+        Args: {
+          public_projects?: boolean
+          country?: string
+          search?: string
+          work_mode_filter?: string[]
+          experience?: string[]
+          rewards_filter?: string[]
+          roles_filter?: string[]
+          category?: string
+          page?: number
+          result_offset?: number
+        }
+        Returns: {
+          id: string
+          slug: string
+          updated_at: string
+          name: string
+          summary: string
+          categories: string[]
+          icon_url: string
+          public: boolean
+          roles: Json
         }[]
       }
       increment: {

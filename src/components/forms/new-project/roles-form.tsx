@@ -41,7 +41,7 @@ export const RolesForm = () => {
   const { t } = useDictionary()
   const { projectId, categories } = useNewProjectFormState()
   const [error, setError] = useState(null)
-  const { isPending, addRoles } = useRoles()
+  const { isPending, create } = useRoles()
   const [roles, setRoles] = useState<z.infer<typeof roleSchema>[]>([])
   const router = useRouter()
 
@@ -56,10 +56,10 @@ export const RolesForm = () => {
 
   const onSubmit = async () => {
     if (projectId) {
-      const { error } = await addRoles(projectId, roles)
+      const { error } = await create(projectId, roles)
 
       if (error) {
-        return setError(error?.message ?? t('Roles.errors.saving'))
+        return setError(t('Roles.Errors.saving'))
       }
 
       toast({
@@ -165,7 +165,7 @@ export const RolesForm = () => {
         <Button
           onClick={onSubmit}
           loading={isPending}
-          disabled={!Boolean(roles.length)}
+          disabled={!Boolean(roles.length) || isPending}
         >
           {isPending ? `${t('General.saving')}...` : t('Roles.save_roles')}
         </Button>

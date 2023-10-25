@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { ROUTES } from '@/constants/routes'
 
 import { Role, RoleStatus } from '@/types/collections'
@@ -30,10 +29,9 @@ interface RolesFeed {
 
 export const RolesFeed = ({ projectId, data }: RolesFeed) => {
   const { toast } = useToast()
-  const router = useRouter()
   const { t } = useDictionary()
   const [roles, setRoles] = useState(data)
-  const { updateRoleStatus } = useRoles()
+  const { updateStatus } = useRoles()
   const [updating, setUpdating] = useState<string | null>(null)
 
   useEffect(() => {
@@ -42,7 +40,7 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
 
   const onArchive = async (role_id: string) => {
     setUpdating(role_id)
-    const { error } = await updateRoleStatus({
+    const { error } = await updateStatus({
       id: role_id,
       status: RoleStatus.Archived,
     })
@@ -54,10 +52,9 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
         severity: 'error',
       })
     }
-    router.refresh()
   }
 
-  const updateStatus = (index: number, newStatus: RoleStatus) => {
+  const update = (index: number, newStatus: RoleStatus) => {
     setRoles((prev) => {
       const prevArray = prev.slice(0)
       prevArray.splice(index, 1, { ...prev[index], status: newStatus })
@@ -68,23 +65,21 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
   const onStatusChange = async (value: boolean, role_id: string) => {
     const index = roles.findIndex((role) => role.id === role_id)
     const status = getStatus(value)
-    updateStatus(index, status)
+    update(index, status)
 
-    const { error } = await updateRoleStatus({
+    const { error } = await updateStatus({
       id: role_id,
       status,
     })
 
     if (error) {
-      updateStatus(index, getStatus(!value))
+      update(index, getStatus(!value))
       return toast({
         title: 'Error',
         description: error.message,
         severity: 'error',
       })
     }
-
-    router.refresh()
   }
 
   return (

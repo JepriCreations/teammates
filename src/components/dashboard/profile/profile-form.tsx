@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils'
 import { defaultSocialLinks, SOCIALS } from '@/lib/validations/global'
 import { ABOUT_MAX_LENGTH, profileSchema } from '@/lib/validations/profile'
 import { useProfile } from '@/hooks/use-profile'
+import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
 import { Divider } from '@/components/ui/divider'
 import { Form } from '@/components/ui/form'
@@ -28,7 +29,9 @@ interface ProfileFormProps {
 
 export const ProfileForm = ({ profile }: ProfileFormProps) => {
   const { t } = useDictionary()
-  const { mutation, isPending } = useProfile()
+  const { update, isPending } = useProfile()
+  const { toast } = useToast()
+
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -58,7 +61,20 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
         url: `mailto:${values.email ?? ''}`,
       }),
     }
-    mutation.update({ data: parsedValues })
+    const { error } = await update({ data: parsedValues })
+
+    if (error) {
+      return toast({
+        description: t('Profile.Errors.updating'),
+        severity: 'error',
+      })
+    }
+
+    toast({
+      title: t('General.success'),
+      description: t('Profile.success_update'),
+      severity: 'success',
+    })
   }
 
   return (

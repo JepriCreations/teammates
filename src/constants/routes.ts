@@ -26,10 +26,16 @@ export const ROUTES = {
 
 export const API_ROUTES = {
   PROFILES: '/api/profiles',
+  APPLICATIONS: '/api/applications',
+  PROJECTS: '/api/projects',
+  LIKES: '/api/projects/likes',
+  ROLES: '/api/roles',
 }
 
 export const PARAMS_KEYS = {
   WORK_MODE: 'wm',
   EXPERIENCE: 'exp',
   REWARDS: 'rew',
+  CATEGORY: 'ca',
+  PAGE: 'page',
 }

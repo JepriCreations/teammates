@@ -78,7 +78,7 @@ export function parseFormData(formData: FormData) {
   for (const key of formData.keys()) {
     const value = formData.get(key)
 
-    if (value === null || value === undefined) {
+    if (value === 'null' || value === 'undefined') {
       continue
     }
 

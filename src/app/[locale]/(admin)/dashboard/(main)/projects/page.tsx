@@ -49,7 +49,14 @@ const UserProjectsFeed = async ({ locale }: ProjectsFeedProps) => {
   const { t } = await getDictionary(locale, 'Projects')
   const { data, error } = await fetchUserProjects()
 
-  if (error) return <Error error={error} />
+  if (error)
+    return (
+      <div className="col-span-full">
+        <div className="mx-auto max-w-4xl">
+          <Error error={error} />
+        </div>
+      </div>
+    )
 
   if (data.length === 0)
     return (

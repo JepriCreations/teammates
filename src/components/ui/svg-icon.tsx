@@ -5,16 +5,16 @@ export interface SVGIconProps extends React.SVGAttributes<SVGElement> {
   size?: string | number
 }
 
-export const SVGIcon = ({ className, size = 24, ...rest }: SVGIconProps) => {
+export type SvgIconType = typeof SVGIcon
+
+export const SVGIcon = ({ className, size, ...rest }: SVGIconProps) => {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
       viewBox="0 0 24 24"
       fill="none"
       aria-labelledby="title"
-      className={cn('shrink-0', className)}
+      className={cn('shrink-0', !size && 'h-6 w-6', className)}
+      {...(size && { width: size, height: size })}
       {...rest}
     />
   )

@@ -18,18 +18,17 @@ export const ApplicationStateButton = ({
   const { update, isPending } = useApplication()
 
   const onClick = async () => {
-    update({
+    const { error } = await update({
       status: ApplicationStatus.Rejected,
       role_id,
       user_id,
     })
-      .then(() => {
-        //TODO: handle success
-      })
-      .catch((error) => {
-        console.log({ error })
-        //TODO: handle error
-      })
+
+    if (error) {
+      console.log({ error })
+    }
+
+    // TODO: Handle success and error
   }
 
   return (

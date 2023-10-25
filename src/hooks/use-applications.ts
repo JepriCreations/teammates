@@ -1,57 +1,46 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { API_ROUTES } from '@/constants/routes'
 import { z } from 'zod'
 
 import { ApplicationUpdate } from '@/types/collections'
 import { fetcher } from '@/lib/fetcher'
 import { applicationSchema } from '@/lib/validations/application'
 
-const URL = `${location.origin}/api/applications`
-
 export const useApplication = () => {
   const router = useRouter()
   const [isPending, setIsPending] = useState(false)
 
-  const insert = async (values: z.infer<typeof applicationSchema>) => {
-    try {
-      setIsPending(true)
-
-      const { error } = await fetcher.post({
-        url: URL,
+  const create = async (values: z.infer<typeof applicationSchema>) => {
+    setIsPending(true)
+    return fetcher
+      .post({
+        url: location.origin + API_ROUTES.APPLICATIONS,
         data: values,
       })
-
-      if (error) {
-        throw error
-      }
-
-      router.refresh()
-    } catch (error: any) {
-      throw error
-    } finally {
-      setIsPending(false)
-    }
+      .then((resp) => {
+        if (!resp.error) {
+          router.refresh()
+        }
+        setIsPending(false)
+        return resp
+      })
   }
 
   const update = async (values: ApplicationUpdate) => {
-    try {
-      setIsPending(true)
-
-      const { error } = await fetcher.patch({
-        url: URL,
+    setIsPending(true)
+    return fetcher
+      .patch({
+        url: location.origin + API_ROUTES.APPLICATIONS,
         data: values,
       })
-
-      if (error) {
-        throw error
-      }
-
-      router.refresh()
-    } catch (error: any) {
-      throw error
-    } finally {
-      setIsPending(false)
-    }
+      .then((resp) => {
+        if (!resp.error) {
+          router.refresh()
+        }
+        setIsPending(false)
+        return resp
+      })
   }
 
   const remove = async ({
@@ -61,24 +50,20 @@ export const useApplication = () => {
     user_id: string
     role_id: string
   }) => {
-    try {
-      setIsPending(true)
-      const { error } = await fetcher.delete({
-        url: URL,
+    setIsPending(true)
+    return fetcher
+      .delete({
+        url: location.origin + API_ROUTES.APPLICATIONS,
         body: { user_id, role_id },
       })
-
-      if (error) {
-        throw error
-      }
-
-      router.refresh()
-    } catch (error) {
-      throw error
-    } finally {
-      setIsPending(false)
-    }
+      .then((resp) => {
+        if (!resp.error) {
+          router.refresh()
+        }
+        setIsPending(false)
+        return resp
+      })
   }
 
-  return { insert, update, remove, isPending }
+  return { create, update, remove, isPending }
 }

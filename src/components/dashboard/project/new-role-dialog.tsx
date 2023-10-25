@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -37,9 +36,8 @@ export const NewRoleDialog = ({
 }: NewRoleDialogProps) => {
   const { toast } = useToast()
   const { t } = useDictionary()
-  const router = useRouter()
   const [open, setOpen] = useState(false)
-  const { addRoles, isPending } = useRoles()
+  const { create, isPending } = useRoles()
 
   const form = useForm<z.infer<typeof roleSchema>>({
     resolver: zodResolver(roleSchema),
@@ -48,7 +46,7 @@ export const NewRoleDialog = ({
 
   const onSubmit = async (values: z.infer<typeof roleSchema>) => {
     if (projectId) {
-      const { error } = await addRoles(projectId, [values])
+      const { error } = await create(projectId, [values])
       if (error) {
         return toast({
           title: 'Error',
@@ -58,7 +56,6 @@ export const NewRoleDialog = ({
       }
       setOpen(false)
     }
-    router.refresh()
   }
 
   const handleDialogState = (value: boolean) => {

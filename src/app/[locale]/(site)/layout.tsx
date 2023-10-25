@@ -15,12 +15,12 @@ export default async function SiteLayout({
   const {
     data: { session },
   } = await supabase.auth.getSession()
-  const { t } = await getDictionary(locale, 'Menus')
+  const { t } = await getDictionary(locale)
 
   return (
     <>
-      <Appbar t={t} session={session} />
-      <main className=" px-3 py-24 md:container">{children}</main>
+      <Appbar t={t} loggedIn={Boolean(session)} />
+      <main className="py-24 md:container">{children}</main>
     </>
   )
 }

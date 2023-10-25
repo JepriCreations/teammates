@@ -19,9 +19,14 @@ export default async function RoleApplications({
   const { t } = await getDictionary(params.locale)
   const { error, data } = await fetchRoleApplications(params.role_id)
 
-  if (error) return <Error error={error} />
-
-  if (!data) return null
+  if (error)
+    return (
+      <div className="space-y-6 px-4 pb-6 md:px-12">
+        <div className="mx-auto w-full max-w-4xl">
+          <Error error={error} />
+        </div>
+      </div>
+    )
 
   const roleData = { ...data, applications: data?.applications.length ?? 0 }
 
@@ -60,7 +65,11 @@ export default async function RoleApplications({
                       .map((item) => {
                         const Icon = linksIcons[item.name as LinksIconsType]
                         return (
-                          <IconButton asChild variant="outlined">
+                          <IconButton
+                            key={item.name}
+                            asChild
+                            variant="outlined"
+                          >
                             <a href={item.url} target="_blank">
                               <Icon />
                             </a>

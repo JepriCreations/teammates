@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 import { ROUTES } from '@/constants/routes'
 
 import { ApplicationStatus } from '@/types/collections'
-import { isPostgresError, PostgresError } from '@/lib/errors'
+import { newError, PostgresError } from '@/lib/errors'
 import { createServerClient } from '@/lib/supabase-server'
 
 export const fetchRoleApplications = async (roleId: string) => {
@@ -48,11 +48,6 @@ export const fetchRoleApplications = async (roleId: string) => {
 
     return { data }
   } catch (error: any) {
-    if (isPostgresError(error)) {
-      console.log({ error })
-      return { error }
-    }
-
-    return { error }
+    return { error: newError(error) }
   }
 }

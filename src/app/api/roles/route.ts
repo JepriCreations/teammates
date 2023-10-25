@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { PostgresError } from '@/lib/errors'
+import { newError, PostgresError } from '@/lib/errors'
 import { insertRoles, updateRoleStatus } from '@/lib/mutations/roles'
 import { rolesSchema, updateRoleStatusSchema } from '@/lib/validations/role'
 
@@ -15,18 +15,15 @@ export async function POST(request: Request) {
         path: error.path,
         message: error.message,
       }))
-      console.log({ payloadErrors: errors })
-      throw new PostgresError(
-        'The form validation has not passed. Check that all the fields have valid values.'
-      )
+      throw new PostgresError('The validation has not passed.', {
+        details: JSON.stringify(errors),
+      })
     }
 
     const result = await insertRoles(body)
     return NextResponse.json(result)
-  } catch (error: any) {
-    return NextResponse.json({
-      error: new PostgresError(error.message),
-    })
+  } catch (error) {
+    return NextResponse.json({ error: newError(error) })
   }
 }
 
@@ -41,17 +38,14 @@ export async function PATCH(request: Request) {
         path: error.path,
         message: error.message,
       }))
-      console.log({ payloadErrors: errors })
-      throw new PostgresError(
-        'The form validation has not passed. Check that all the fields have valid values.'
-      )
+      throw new PostgresError('The validation has not passed.', {
+        details: JSON.stringify(errors),
+      })
     }
 
     const result = await updateRoleStatus(body)
     return NextResponse.json(result)
-  } catch (error: any) {
-    return NextResponse.json({
-      error: new PostgresError(error.message),
-    })
+  } catch (error) {
+    return NextResponse.json({ error: newError(error) })
   }
 }

@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation'
 import { ROUTES } from '@/constants/routes'
 
-import { isPostgresError, PostgresError } from '@/lib/errors'
+import { newError, PostgresError } from '@/lib/errors'
 import { createServerClient } from '@/lib/supabase-server'
 
 export const fetchUserProfile = async () => {
@@ -39,13 +39,8 @@ export const fetchUserProfile = async () => {
         provider: user.app_metadata.provider,
       },
     }
-  } catch (error: any) {
-    if (isPostgresError(error)) {
-      console.log({ error })
-      return { error }
-    }
-
-    return { error }
+  } catch (error) {
+    return { error: newError(error) }
   }
 }
 
@@ -92,13 +87,8 @@ export const fetchUserApplications = async () => {
     }
 
     return { data }
-  } catch (error: any) {
-    if (isPostgresError(error)) {
-      console.log({ error })
-      return { error }
-    }
-
-    return { error }
+  } catch (error) {
+    return { error: newError(error) }
   }
 }
 
@@ -142,12 +132,7 @@ export const fetchUserLikes = async () => {
     })
 
     return { data: projects }
-  } catch (error: any) {
-    if (isPostgresError(error)) {
-      console.log({ error })
-      return { error }
-    }
-
-    return { error }
+  } catch (error) {
+    return { error: newError(error) }
   }
 }

@@ -113,6 +113,7 @@ const RemoveProjectDialog = ({
 }) => {
   const { t } = useDictionary('Projects')
   const { remove, isRemoving } = useProjects()
+  const { toast } = useToast()
 
   const form = useForm({
     defaultValues: {
@@ -120,11 +121,17 @@ const RemoveProjectDialog = ({
     },
   })
 
-  const handleRemove = ({ name }: { name: string }) => {
+  const handleRemove = async ({ name }: { name: string }) => {
     if (name !== projectName) {
       return form.setError('name', { message: t('errors.incorrect_name') })
     }
-    remove(projectId)
+    const { error } = await remove(projectId)
+    if (error) {
+      return toast({
+        description: t('errors.removing'),
+        severity: 'error',
+      })
+    }
   }
 
   return (

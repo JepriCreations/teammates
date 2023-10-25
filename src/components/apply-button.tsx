@@ -18,37 +18,36 @@ export const ApplyButton = ({
   const { user } = useAuth()
   const { toast } = useToast()
   const { t } = useDictionary()
-  const { insert, isPending } = useApplication()
+  const { create, isPending } = useApplication()
 
   const handleOnClick = async () => {
-    insert({ project_id, role_id })
-      .then(() => {
-        return toast({
-          description: t('Project.application_sent'),
-          severity: 'success',
-        })
-      })
-      .catch((error) => {
-        let error_description = t('Project.Errors.sending_application')
+    const { error } = await create({ project_id, role_id })
 
-        switch (error.code) {
-          case ERROR_CODES.DUPLICATE_APPLICATION: {
-            error_description = t('Project.Errors.duplicate_application')
-            break
-          }
-          case ERROR_CODES.UNAUTHENTICATED: {
-            error_description = t('Project.Errors.unauthenticated')
-            break
-          }
-          default:
-            break
+    if (error) {
+      let error_description = t('Project.Errors.sending_application')
+
+      switch (error.code) {
+        case ERROR_CODES.DUPLICATE_APPLICATION: {
+          error_description = t('Project.Errors.duplicate_application')
+          break
         }
-
-        return toast({
-          description: error_description,
-          severity: 'error',
-        })
+        case ERROR_CODES.UNAUTHENTICATED: {
+          error_description = t('Project.Errors.unauthenticated')
+          break
+        }
+        default:
+          break
+      }
+      return toast({
+        description: error_description,
+        severity: 'error',
       })
+    }
+
+    return toast({
+      description: t('Project.application_sent'),
+      severity: 'success',
+    })
   }
 
   return (

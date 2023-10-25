@@ -1,10 +1,10 @@
 import axios, { AxiosRequestConfig } from 'axios'
 
-import { RequestError } from '@/lib/errors'
+import { ErrorType, newError } from '@/lib/errors'
 
 type FetcherResponse<T> =
   | { data: T; error?: undefined }
-  | { data?: undefined; error: RequestError }
+  | { data?: undefined; error: ErrorType }
 
 type FetcherOptions = {
   url: string
@@ -24,9 +24,7 @@ const request = async <T = any>({
   options,
   data,
   body,
-}: FetcherOptions): Promise<
-  { data: T; error?: undefined } | { data?: undefined; error: RequestError }
-> => {
+}: FetcherOptions): Promise<FetcherResponse<T>> => {
   try {
     const axiosConfig: AxiosRequestConfig = {
       ...options,
@@ -54,12 +52,16 @@ const request = async <T = any>({
       axiosConfig.data = body
     }
 
-    const response = await axios(axiosConfig)
+    const { data: responseData } = await axios(axiosConfig)
 
-    return { data: response.data }
+    if (responseData.error) {
+      return { error: responseData.error }
+    }
+
+    return { data: responseData?.data ?? responseData }
   } catch (error: any) {
     const errorData = error.response?.data
-    return { error: errorData }
+    return { error: newError(errorData) }
   }
 }
 

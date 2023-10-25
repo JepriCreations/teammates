@@ -148,7 +148,7 @@ const SelectTrigger = React.forwardRef<
         <SelectValue id="select-value" placeholder={placeholder} />
         {children}
         <SelectPrimitive.Icon className="absolute right-2 top-2/4 grid -translate-y-2/4 place-items-center text-onSurfaceVariant/70 transition-transform group-disabled:text-onSurface/38 group-data-[state=open]:rotate-180">
-          <Icons.angleDownSmall className="h-full w-full" />
+          <Icons.angleDownSmall className="h-5 w-5" />
         </SelectPrimitive.Icon>
       </SelectPrimitive.Trigger>
       {hasLabel && (

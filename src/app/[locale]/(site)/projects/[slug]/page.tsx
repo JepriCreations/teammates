@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { notFound } from 'next/navigation'
 import { linksIcons, LinksIconsType } from '@/constants/links'
 import { ROUTES } from '@/constants/routes'
 
@@ -24,13 +25,20 @@ export default async function ProjectPage({
   const { t } = await getDictionary(locale)
   const { data: project, error } = await fetchProjectBySlug(slug)
 
-  if (!project || error) return <Error error={error} />
+  if (error)
+    return (
+      <div className="mx-auto max-w-4xl px-3">
+        <Error error={error} />
+      </div>
+    )
+
+  if (!project) return notFound()
 
   const links: LinkType[] = JSON.parse(JSON.stringify(project.links))
   const filteredLinks = links.filter((link) => link.url !== '')
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto max-w-4xl px-3">
       <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <section className="space-y-4 md:col-span-2">
           <Card className="bg-surfaceContainerHighest/50 p-4">
