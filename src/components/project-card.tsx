@@ -1,15 +1,16 @@
+'use client'
+
 import Image from 'next/image'
 import { ROUTES } from '@/constants/routes'
 
 import { ExperienceLevel, Role } from '@/types/collections'
-import { getDictionary } from '@/lib/dictionaries'
 import { formatDate } from '@/lib/utils'
 import { Card } from '@/components/ui/card'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
-
-import { LinkCard } from './link-card'
-import { RoleIcon } from './role-icons'
+import { LinkCard } from '@/components/link-card'
+import { useDictionary } from '@/components/providers/dictionary-provider'
+import { RoleIcon } from '@/components/role-icons'
 
 interface ProjectCardProps {
   slug: string
@@ -19,10 +20,9 @@ interface ProjectCardProps {
   updated_at: string
   icon_url: string | null
   roles: Partial<Role>[]
-  locale: string
 }
 
-export const ProjectCard = async ({
+export const ProjectCard = ({
   slug,
   name,
   summary,
@@ -30,9 +30,8 @@ export const ProjectCard = async ({
   updated_at,
   icon_url,
   roles,
-  locale,
 }: ProjectCardProps) => {
-  const { t } = await getDictionary(locale)
+  const { t } = useDictionary()
 
   return (
     <LinkCard href={ROUTES.PROJECT(slug)}>

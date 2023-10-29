@@ -12,6 +12,7 @@ import { DevToolbar } from '@/components/dev-toolbar'
 import { DictionaryProvider } from '@/components/providers/dictionary-provider'
 import { SupabaseAuthProvider } from '@/components/providers/supabase-auth-provider'
 import { SupabaseProvider } from '@/components/providers/supabase-provider'
+import { SwrProvider } from '@/components/providers/swr-provider'
 import { ThemeProvider } from '@/components/providers/theme-provider'
 
 export const metadata: Metadata = {
@@ -57,11 +58,13 @@ export default async function RootLayout({
       <body className="min-h-[100dvh] max-w-[100hv] overflow-x-hidden bg-background font-sans text-body-md text-onSurface antialiased selection:bg-primary/30">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <DictionaryProvider dict={dict} defaultDict={defaultDict}>
-            <SupabaseProvider>
-              <SupabaseAuthProvider serverSession={session}>
-                {children}
-              </SupabaseAuthProvider>
-            </SupabaseProvider>
+            <SwrProvider>
+              <SupabaseProvider>
+                <SupabaseAuthProvider serverSession={session}>
+                  {children}
+                </SupabaseAuthProvider>
+              </SupabaseProvider>
+            </SwrProvider>
           </DictionaryProvider>
           <DevToolbar />
           <Toaster />

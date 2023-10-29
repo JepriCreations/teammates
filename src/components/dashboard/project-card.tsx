@@ -42,13 +42,13 @@ export const ProjectCard = ({
           </span>
         </div>
         <p className="muted text-sm">{`${openRoles} open roles`}</p>
-        <div className="flex items-end justify-between pt-8">
-          <p className={cn(isPublic ? 'text-success' : 'muted')}>
+        <div className="flex items-end justify-end pt-8">
+          <p className={cn(isPublic ? 'text-end text-success' : 'muted')}>
             {isPublic ? t('public') : t('hidden')}
           </p>
-          <span className="muted text-end text-sm">
+          {/* <span className="muted text-end text-sm">
             {formatDate(updated_at)}
-          </span>
+          </span> */}
         </div>
       </div>
     </LinkCard>

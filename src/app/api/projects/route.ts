@@ -1,6 +1,7 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 import { newError, PostgresError } from '@/lib/errors'
+import { fetchProjects } from '@/lib/fetching/projects'
 import {
   createProject,
   removeProject,
@@ -11,6 +12,19 @@ import {
   createProjectSchema,
   updateProjectSchema,
 } from '@/lib/validations/project'
+
+export async function GET(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams
+    const queryString = searchParams.get('query')
+    const query = queryString ? JSON.parse(queryString) : null
+    const { data, error } = await fetchProjects(query)
+    if (error) throw error
+    return NextResponse.json(data)
+  } catch (error) {
+    return NextResponse.json({ error: newError(error) })
+  }
+}
 
 export async function POST(request: Request) {
   try {

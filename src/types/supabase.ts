@@ -380,6 +380,21 @@ export interface Database {
           roles: Json
         }[]
       }
+      get_projects_count: {
+        Args: {
+          public_projects?: boolean
+          country?: string
+          search?: string
+          work_mode_filter?: string[]
+          experience?: string[]
+          rewards_filter?: string[]
+          roles_filter?: string[]
+          category?: string
+        }
+        Returns: {
+          count: number
+        }[]
+      }
       increment: {
         Args: {
           table_name: string

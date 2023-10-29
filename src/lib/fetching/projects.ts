@@ -9,7 +9,18 @@ import { updateProjectViews } from '@/lib/mutations/projects'
 import { createServerClient } from '@/lib/supabase-server'
 import { DEBUG } from '@/lib/utils'
 
-const LIMIT = 10
+const LIMIT = 15
+
+export type FetchProjectParams = {
+  search?: string
+  work_mode?: string[]
+  experience?: string[]
+  rewards?: string[]
+  roles?: string[]
+  country?: string
+  category?: string
+  page?: number
+}
 
 export const fetchProjects = async ({
   search,
@@ -20,16 +31,7 @@ export const fetchProjects = async ({
   country,
   category,
   page = 0,
-}: {
-  search?: string
-  work_mode?: string[]
-  experience?: string[]
-  rewards?: string[]
-  roles?: string[]
-  country?: string
-  category?: string
-  page?: number
-}) => {
+}: FetchProjectParams) => {
   try {
     const supabase = createServerClient()
 
@@ -51,14 +53,27 @@ export const fetchProjects = async ({
       { count: 'exact' }
     )
 
+    const countProjectsPromise = supabase
+      .rpc('get_projects_count', {
+        search,
+        work_mode_filter: work_mode,
+        experience,
+        rewards_filter: rewards,
+        roles_filter: roles,
+        country,
+        category: category !== '' ? category : undefined,
+      })
+      .single()
+
     const totalProjects = supabase
       .from('projects')
       .select('id, public, roles(status)', { count: 'exact', head: true })
       .match(matchingObject)
 
-    const [projectsData, countData] = await Promise.all([
+    const [projectsData, countData, countProjects] = await Promise.all([
       projectsPromise,
       totalProjects,
+      countProjectsPromise,
     ])
 
     const error = projectsData.error || countData.error
@@ -88,14 +103,10 @@ export const fetchProjects = async ({
       return { ...project, roles }
     })
 
-    const isLast = projects.length <= LIMIT
-
-    if (projects.length > LIMIT) projects.splice(-1, 1)
-
-    let projectCount = projectsData.count ?? 0
-    projectCount = projectCount > LIMIT ? LIMIT : projectCount
-
+    let projectCount = countProjects.data?.count ?? 0
     const totalNumberOfProjects = countData.count ?? 0
+    const isLast = (page + 1) * LIMIT >= projectCount
+    const nextPage = isLast ? null : page + 1
 
     // console.dir(
     //   { projects, count: projectsData.count, totalCount: totalNumberOfProjects },
@@ -107,6 +118,7 @@ export const fetchProjects = async ({
         projects,
         projectCount,
         totalNumberOfProjects,
+        nextPage,
         isLast,
       },
     }

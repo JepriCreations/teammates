@@ -10,7 +10,7 @@ type FetcherOptions = {
   url: string
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'HEAD'
   options?: AxiosRequestConfig & {
-    next: { tags?: string[]; revalidate?: false | 0 | number }
+    next?: { tags?: string[]; revalidate?: false | 0 | number }
   }
   data?: any
   body?: any

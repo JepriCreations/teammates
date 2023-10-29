@@ -186,7 +186,8 @@
     "success_update": "The project has been updated.",
     "summary": "Summary",
     "summary_description": "Summarize what your project aims to achieve in one line.",
-    "views": "Views"
+    "views": "Views",
+    "load_more": "Load more"
   },
   "Roles": {
     "add_role": "Add role",

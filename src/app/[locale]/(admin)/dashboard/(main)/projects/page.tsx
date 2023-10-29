@@ -85,7 +85,7 @@ const UserProjectsFeed = async ({ locale }: ProjectsFeedProps) => {
   return data.map((project) => <ProjectCard t={t} {...project} />)
 }
 
-export const LoadingProjects = () => {
+const LoadingProjects = () => {
   return new Array(3)
     .fill('')
     .map((_, index) => <ProjectCardSkeleton key={index} />)
