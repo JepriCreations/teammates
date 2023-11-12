@@ -151,10 +151,6 @@ export const ProjectInputs = ({
                       >
                         <Dropzone.Preview>
                           {form.getValues('file') !== undefined || icon_url ? (
-                            /**
-                             * use of <img/> instead of next <Image/> to avoid caching
-                             * and always show the last updated icon
-                             */
                             <img
                               src={
                                 form.getValues('file')

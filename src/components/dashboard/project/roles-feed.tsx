@@ -160,16 +160,12 @@ export const RolesFeed = ({ projectId, data }: RolesFeed) => {
                   </div>
 
                   <div className="flex justify-between">
-                    <Button
-                      asChild={applications > 0}
-                      variant="text"
-                      disabled={applications === 0}
-                    >
+                    <Button asChild={applications > 0} variant="text">
                       <Link href={ROUTES.APPLICATIONS(projectId, id)}>
                         {`${applications} ${
-                          applications > 1
-                            ? t('Roles.applications')
-                            : t('Roles.application')
+                          applications !== 1
+                            ? t('Roles.pending_applications')
+                            : t('Roles.pending_application')
                         }`}
                       </Link>
                     </Button>

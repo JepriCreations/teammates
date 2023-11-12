@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import { CircularProgress } from '@/components/ui/circular-progress'
 
 const buttonVariants = cva(
-  'relative select-none group w-fit overflow-hidden text-label-lg font-medium rounded-2xl transition outline-none disabled:pointer-events-none disabled:text-onSurface/38 disabled:shadow-none',
+  'relative block select-none group w-fit overflow-hidden text-label-lg font-medium rounded-2xl transition outline-none disabled:pointer-events-none disabled:text-onSurface/38 disabled:shadow-none',
   {
     variants: {
       size: {

@@ -137,12 +137,12 @@ export const fetchProjectBySlug = async (slug: string) => {
     const { data: projectData, error } = await supabase
       .from('projects')
       .select(
-        `id, updated_at, name, summary, categories, icon_url, description, links, location->>city, location->>country,
-  roles(id, name, exp_level, rewards, work_mode, status, description)`
+        `id, updated_at, name, summary, categories, icon_url, description, links, location->>city, location->>country`
       )
-      .eq('slug', slug)
-      .eq('public', true)
-      .eq('roles.status', RoleStatus.Open)
+      .match({
+        slug,
+        public: true,
+      })
       .single()
 
     if (error) {
@@ -162,14 +162,6 @@ export const fetchProjectBySlug = async (slug: string) => {
       .eq('project_id', projectData.id)
       .single()
 
-    const similarProjectsPromise = supabase
-      .from('projects')
-      .select('slug, name, categories, icon_url')
-      .eq('public', true)
-      .overlaps('categories', projectData.categories)
-      .neq('slug', slug)
-      .limit(4)
-
     const userLikesPromise =
       user &&
       supabase
@@ -178,9 +170,8 @@ export const fetchProjectBySlug = async (slug: string) => {
         .match({ user_id: user.id, project_id: projectData.id })
         .single()
 
-    const [likes, similarProjects, userLikes] = await Promise.all([
+    const [likes, userLikes] = await Promise.all([
       likesPromise,
-      similarProjectsPromise,
       userLikesPromise,
     ])
 
@@ -188,10 +179,64 @@ export const fetchProjectBySlug = async (slug: string) => {
       ...projectData,
       likes: likes.data?.likes_count ?? 0,
       liked: Boolean(userLikes?.count && userLikes.count > 0),
-      similarProjects: similarProjects.data ?? [],
     }
 
     if (!DEBUG) updateProjectViews(data.id)
+
+    return { data }
+  } catch (error) {
+    return { error: newError(error) }
+  }
+}
+
+export const fetchSimilarProjects = async ({
+  slug,
+  categories,
+}: {
+  slug: string
+  categories: string[]
+}) => {
+  try {
+    const supabase = createServerClient()
+    const { data, error } = await supabase
+      .from('projects')
+      .select('slug, name, categories, icon_url')
+      .eq('public', true)
+      .overlaps('categories', categories)
+      .neq('slug', slug)
+      .limit(4)
+
+    if (error) {
+      throw new PostgresError('Has been an error retrieving the projects.', {
+        details: error.message,
+      })
+    }
+
+    return { data }
+  } catch (error) {
+    return { error: newError(error) }
+  }
+}
+
+export const fetchProjectRolesBySlug = async ({ slug }: { slug: string }) => {
+  try {
+    const supabase = createServerClient()
+
+    const { data, error } = await supabase
+      .from('roles')
+      .select(
+        `id, name, exp_level, rewards, work_mode, status, description,
+        projects!inner(slug, public)`
+      )
+      .eq('status', 'open')
+      .eq('projects.slug', slug)
+      .eq('projects.public', true)
+
+    if (error) {
+      throw new PostgresError('Has been an error retrieving the projects.', {
+        details: error.message,
+      })
+    }
 
     return { data }
   } catch (error) {
@@ -453,7 +498,7 @@ export const fetchProjectRoles = async (projectId: string) => {
     const roles = data.roles.map((role) => ({
       ...role,
       applications: role.applications.filter(
-        (ap) => ap.status !== ApplicationStatus.Rejected
+        (ap) => ap.status === ApplicationStatus.StandBy
       ).length,
     }))
 

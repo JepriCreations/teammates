@@ -26,7 +26,7 @@ export default async function Projects({ params: { locale } }: ProjectsProps) {
             <UserProjectsFeed locale={locale} />
           </Suspense>
         </div>
-        <div className="fixed bottom-4 right-4 mb-20 md:bottom-8 md:right-8 md:mb-0">
+        <div className="fixed bottom-4 right-4 z-50 mb-20 md:bottom-8 md:right-8 md:mb-0">
           <Fab asChild>
             <Link href={ROUTES.NEW_PROJECT} className="block">
               <FabIcon>

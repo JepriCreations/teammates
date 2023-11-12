@@ -17,6 +17,7 @@ export const ROUTES = {
   CONTACT: '/contact',
   PRIVACY: '/privacy',
   BLOG: '/blog',
+  POSTS: '/blog/posts',
   ABOUT: '/about',
   PROJECT: (slug: string) => `/projects/${slug}`,
 

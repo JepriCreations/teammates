@@ -1,25 +1,31 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+
 import { ApplicationStatus } from '@/types/collections'
 import { useApplication } from '@/hooks/use-applications'
-import { Button } from '@/components/ui/button'
-import { useDictionary } from '@/components/providers/dictionary-provider'
+import { Button, ButtonProps } from '@/components/ui/button'
 
-interface ApplicationStateButtonProps {
+interface ApplicationStateButtonProps extends ButtonProps {
+  text: string
   role_id: string
   user_id: string
+  status: ApplicationStatus
 }
 
 export const ApplicationStateButton = ({
+  text,
   role_id,
   user_id,
+  status,
+  ...props
 }: ApplicationStateButtonProps) => {
-  const { t } = useDictionary()
+  const router = useRouter()
   const { update, isPending } = useApplication()
 
   const onClick = async () => {
     const { error } = await update({
-      status: ApplicationStatus.Rejected,
+      status,
       role_id,
       user_id,
     })
@@ -28,12 +34,13 @@ export const ApplicationStateButton = ({
       console.log({ error })
     }
 
+    router.refresh()
     // TODO: Handle success and error
   }
 
   return (
-    <Button variant="outlined" onClick={onClick} loading={isPending}>
-      {t('Applications.discard')}
+    <Button onClick={onClick} loading={isPending} {...props}>
+      {text}
     </Button>
   )
 }

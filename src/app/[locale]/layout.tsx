@@ -4,7 +4,7 @@ import { Metadata } from 'next'
 
 import { siteConfig } from '@/config/site'
 import { getDictionary } from '@/lib/dictionaries'
-import { fontEmoji, fontSans } from '@/lib/fonts'
+import { fontSans } from '@/lib/fonts'
 import { createServerClient } from '@/lib/supabase-server'
 import { cn } from '@/lib/utils'
 import { Toaster } from '@/components/ui/toaster'
@@ -21,10 +21,6 @@ export const metadata: Metadata = {
     template: `%s - ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
-  ],
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon-16x16.png',
@@ -52,10 +48,10 @@ export default async function RootLayout({
     <html
       lang={params.locale}
       suppressHydrationWarning
-      className={cn(fontSans.variable, fontEmoji.variable)}
+      className={cn(fontSans.variable, 'antialiased')}
     >
       <head />
-      <body className="min-h-[100dvh] max-w-[100hv] overflow-x-hidden bg-background font-sans text-body-md text-onSurface antialiased selection:bg-primary/30">
+      <body className="min-h-[100dvh] w-full max-w-[100vw] overflow-x-hidden bg-background font-sans text-body-md text-onSurface selection:bg-primary/30">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <DictionaryProvider dict={dict} defaultDict={defaultDict}>
             <SwrProvider>

@@ -5,7 +5,7 @@ import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
 
 import { cn } from '@/lib/utils'
 
-const RadioGroup = React.forwardRef<
+const RadioGroupRoot = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
 >(({ className, ...props }, ref) => {
@@ -17,7 +17,7 @@ const RadioGroup = React.forwardRef<
     />
   )
 })
-RadioGroup.displayName = RadioGroupPrimitive.Root.displayName
+RadioGroupRoot.displayName = RadioGroupPrimitive.Root.displayName
 
 const RadioGroupItem = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Item>,
@@ -32,12 +32,16 @@ const RadioGroupItem = React.forwardRef<
       )}
       {...props}
     >
-      <RadioGroupPrimitive.Indicator className="flex items-center justify-center data-[state=checked]:animate-in data-[state=unchecked]:animate-out data-[state=checked]:zoom-in-0 data-[state=unchecked]:zoom-out-0 data-[state=unchecked]:duration-100">
+      <RadioGroupPrimitive.Indicator className="flex items-center justify-center data-[state=unchecked]:duration-100 data-[state=checked]:animate-in data-[state=unchecked]:animate-out data-[state=checked]:zoom-in-0 data-[state=unchecked]:zoom-out-0">
         <span className="h-2.5 w-2.5 rounded-full bg-primary group-disabled:bg-outline" />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   )
 })
 RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName
+
+const RadioGroup = Object.assign(RadioGroupRoot, {
+  Item: RadioGroupItem,
+})
 
 export { RadioGroup, RadioGroupItem }

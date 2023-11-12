@@ -1,5 +1,3 @@
-import { ROUTES } from '@/constants/routes'
-
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
@@ -14,6 +12,5 @@ export const siteConfig = {
   ],
   links: {
     website: 'teammates.mov',
-    github: ROUTES.GITHUB,
   },
 }

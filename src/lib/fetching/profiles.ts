@@ -3,6 +3,7 @@
 import { redirect } from 'next/navigation'
 import { ROUTES } from '@/constants/routes'
 
+import { ApplicationStatus } from '@/types/collections'
 import { newError, PostgresError } from '@/lib/errors'
 import { createServerClient } from '@/lib/supabase-server'
 
@@ -44,7 +45,11 @@ export const fetchUserProfile = async () => {
   }
 }
 
-export const fetchUserApplications = async () => {
+export const fetchUserApplications = async ({
+  status,
+}: {
+  status?: ApplicationStatus
+}) => {
   try {
     const supabase = createServerClient()
 
@@ -56,12 +61,18 @@ export const fetchUserApplications = async () => {
       redirect(ROUTES.LOGIN)
     }
 
-    const { data: fetchData, error } = await supabase
+    const query = supabase
       .from('applications')
       .select(
         '*, project:projects(slug, name, summary, location->>city, location->>country), role:roles(name, exp_level, work_mode, rewards)'
       )
       .eq('user_id', user.id)
+
+    if (status) {
+      query.eq('status', status)
+    }
+
+    const { data: fetchData, error } = await query
       .order('created_at', { ascending: false })
       .order('created_at_time', { ascending: false })
 

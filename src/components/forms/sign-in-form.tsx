@@ -57,6 +57,7 @@ export const SignInForm = () => {
           fullWidth
           onClick={signInWithGoogle}
           icon={<Icons.google />}
+          disabled={Boolean(isAuthenticating) || submitted}
           loading={isAuthenticating === 'google'}
         >
           Google
@@ -67,6 +68,7 @@ export const SignInForm = () => {
           fullWidth
           onClick={signInWithGithub}
           icon={<Icons.github />}
+          disabled={Boolean(isAuthenticating) || submitted}
           loading={isAuthenticating === 'github'}
         >
           Github

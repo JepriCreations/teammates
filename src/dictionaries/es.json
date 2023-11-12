@@ -1,23 +1,71 @@
 {
+  "About": {
+    "title": "La misión del proyecto Teammates"
+  },
+  "Applications": {
+    "about": "Acerca de",
+    "delete": "Eliminar aplicación",
+    "discard": "Desechar",
+    "Errors": {
+      "removing": "Ha habido un error al eliminar la aplicación."
+    },
+    "grant": "Conceder",
+    "links": "Enlaces",
+    "no_applications": "No hay aplicaciones con el estado seleccionado.",
+    "nothing_to_show": "Cuando solicite un puesto en el proyecto, aparecerá aquí.",
+    "reject": "Rechazar",
+    "Status": {
+      "granted": "Otorgada",
+      "rejected": "Rechazado",
+      "standby": "Pendiente"
+    },
+    "view_project": "Ir al proyecto"
+  },
   "Auth": {
     "an_account_will_be_created": "Se creará una cuenta si no tienes una.",
+    "description": "No necesitas una contraseña.\nSe le enviará un correo electrónico con un enlace mágico para iniciar sesión.",
     "discover": "Descubrir proyectos",
+    "email": "Correo electrónico",
     "illustrations_by": "Ilustraciones por %0",
     "login_with": "Inicia sesión con",
+    "or": "o",
     "privacy": "Política de privacidad",
+    "sign_out": "desconectar",
+    "signInSubmit": "Iniciar sesión con enlace mágico",
+    "submitted_description": "Te hemos enviado un correo electrónico con el enlace mágico. Consultar su correo electrónico",
+    "submitted_title": "Enviado",
     "subtitle": "¡Descubre el poder de la colaboración y conecta con tu equipo soñado!",
     "welcome": "Te damos la bienvenida"
   },
+  "Blog": {
+    "back_to_blog": "Volver a todas las publicaciones"
+  },
   "Categories": {
+    "agriculture": "Agricultura y ganadería",
     "art": "Arte",
-    "health": "Salud",
-    "literature": "Literatura",
+    "clear": "Limpiar",
+    "education": "Educación y aprendizaje",
+    "entertainment": "Entretenimiento y medios",
+    "environment": "Medio Ambiente y Sostenibilidad",
+    "fashion": "Moda y belleza",
+    "finance": "Finanzas y tecnología financiera",
+    "food": "Comida y Culinaria",
+    "health": "Salud y Bienestar",
+    "lifestyle": "Hogar y estilo de vida",
+    "music": "Música y audio",
+    "nonprofit": "Impacto social y organizaciones sin fines de lucro",
+    "retail": "Venta minorista y comercio electrónico",
     "science": "Ciencia",
-    "technology": "Tecnología"
+    "sports": "Deportes",
+    "technology": "Tecnología",
+    "travel": "Viajes y Aventura"
   },
   "Dashboard": {
     "account": "Cuenta",
+    "applications": "Aplicaciones",
     "details": "Detalles",
+    "discover": "Descubrir",
+    "likes": "Gustos",
     "overview": "Vista general",
     "preferences": "Configuración",
     "profile": "Perfil",
@@ -26,28 +74,58 @@
     "statistics": "Estadísticas"
   },
   "Errors": {
-    "another_try": "darle otra oportunidad",
-    "something_went_wrong": "¡Oh, no! Algo salió mal..."
+    "another_try": "Darle otra oportunidad",
+    "file_invalid_type": "El formato del archivo no es válido.",
+    "file_too_large": "El tamaño del archivo está por encima del máximo.",
+    "file_too_small": "El tamaño del archivo está por debajo del mínimo.",
+    "something_went_wrong": "¡Oh, no! Algo salió mal...",
+    "too_many_files": "Demasiados archivos."
   },
   "General": {
     "cancel": "Cancelar",
+    "click_to_upload": "Haga clic para cargar",
     "continue": "Continuar",
+    "created_at": "Creado en",
+    "or_darg": "o arrastrar y soltar.",
+    "page_not_found": "La página que estás buscando no existe.",
     "save": "Guardar",
     "save_changes": "Guardar cambios",
     "saving": "Guardando",
+    "show_less": "Mostrar menos",
+    "show_more": "Mostrar más",
     "success": "¡Éxito!",
     "than_last_month": "que el mes pasado",
     "ups": "Ups, ha habido un error."
+  },
+  "Likes": {
+    "nothing_to_show": "Los proyectos que te gusten aparecerán aquí."
   },
   "Menus": {
     "about": "Acerca de",
     "blog": "Blog",
     "dashboard": "Panel de control",
     "discover": "Descubrir",
-    "login": "Iniciar sesión"
+    "explore": "Explorar",
+    "login": "Iniciar sesión",
+    "profile": "Perfil",
+    "projects": "Proyectos"
+  },
+  "Profile": {
+    "about": "Acerca de",
+    "about_placeholder": "¡Cuéntanos acerca de tí! Comparte tus pasiones, habilidades y lo que te motiva. Este es tu espacio para brindarles a los propietarios de proyectos una idea de quién eres y cómo puedes contribuir a sus proyectos. No dudes en mencionar tus proyectos, intereses y cualquier experiencia relevante.",
+    "email": "Correo electrónico",
+    "Errors": {
+      "updating": "Ha habido un error al actualizar tu perfil."
+    },
+    "links": "Enlaces",
+    "name": "Nombre",
+    "nationality": "Nacionalidad",
+    "select_nationality": "Selecciona tu nacionalidad",
+    "social_links": "Vínculos sociales",
+    "success_update": "Tu perfil ha sido actualizado."
   },
   "Project": {
-    "application_button": "me interesa",
+    "application_button": "Me interesa",
     "application_sent": "Tu solicitud ha sido enviada.",
     "available_roles": "Postula al puesto que mejor se adapte a tu experiencia.",
     "Errors": {
@@ -55,9 +133,15 @@
       "sending_application": "Hubo un error al enviar tu solicitud.",
       "unauthenticated": "Debes iniciar sesión para enviar una solicitud."
     },
+    "location": "Ubicación",
+    "no_links": "Actualmente no hay enlaces.",
     "no_roles_available": "Actualmente este proyecto no tiene roles disponibles.",
+    "no_similar_projects": "No hay proyectos similares.",
     "open_roles": "Abrir roles",
     "project_description": "Acerca de %0",
+    "similar_projects": "Proyectos similares",
+    "social": "Social",
+    "the_project_has_been_removed": "El proyecto ha sido eliminado.",
     "you_must_login": "Para enviar una solicitud, primero debes iniciar sesión"
   },
   "Projects": {
@@ -70,17 +154,17 @@
     "city": "Ciudad",
     "city_description": "Especialmente útil cuando su proyecto requiere compañeros de equipo cerca tuya.",
     "country": "País",
-    "nothing_found": "No se ha encontrado nada.",
     "create_new_project": "Crear nuevo proyecto",
     "danger_zone": "Zona peligrosa",
     "description": "Descripción",
     "description_placeholder": "Elabora una descripción cautivadora y concisa que muestre el núcleo de tu proyecto. Transmite claramente el propósito, los objetivos y los requisitos específicos de tu proyecto para atraer a posibles compañeros de equipo. Una descripción bien escrita ayudará a otros a visualizarse uniéndose a tu proyecto y contribuir con sus habilidades y pasión. Al proporcionar un resumen claro y atractivo, aumenta la probabilidad de encontrar personas con ideas afines ansiosas por colaborar y dar vida a tu proyecto.",
     "details": "Detalles del proyecto",
     "disabled": "Desactivado",
-    "errors": {
-      "duplicate_name": "El nombre ya existe, por favor, utiliza otro.",
+    "Errors": {
+      "duplicate_name": "El nombre ya existe, utilice otro.",
       "incorrect_name": "El nombre del proyecto es incorrecto.",
-      "saving": "Ha habido un error al guardar los datos.",
+      "removing": "Ha habido un error al eliminar el proyecto.",
+      "saving": "Ha habido un error al guardar datos.",
       "updating": "Ha habido un error al actualizar el proyecto."
     },
     "hidden": "Oculto",
@@ -88,10 +172,14 @@
     "icon_description": "La imagen del icono debe tener una relación de aspecto de 1/1 para que se vea mejor. Los formatos permitidos son .png, .jpg, .webp",
     "likes": "Likes",
     "links": "Enlaces",
+    "load_more": "Carga más",
     "location": "Ubicación",
     "name": "Nombre del proyecto",
     "new_project": "Nuevo proyecto",
     "new_project_description": "Libera el poder de la colaboración: encuentra compañeros de equipo con ideas afines para elevar tu proyecto y hacer que tu visión sea un éxito rotundo.",
+    "no_projects": "Esto parece muy vacío.\nCrea tu primer proyecto.",
+    "no_projects_to_show": "No hay proyectos para mostrar.",
+    "nothing_found": "No se ha encontrado nada.",
     "optional": "opcional",
     "project_details": "Detalles del proyecto",
     "project_roles": "roles del proyecto",
@@ -102,8 +190,8 @@
     "remove_project": "Quitar proyecto",
     "remove_title": "¡Atención!",
     "search_category": "Buscar categoría...",
-    "select_country": "Selecciona un país...",
     "select_categories": "Seleccionar categorías",
+    "select_country": "Selecciona un país...",
     "show_danger_zone": "Mostrar zona de peligro",
     "success_create": "El proyecto ha sido creado.",
     "success_update": "El proyecto ha sido actualizado.",
@@ -112,44 +200,75 @@
     "views": "Puntos de vista"
   },
   "Roles": {
+    "actor": "Actor",
     "add_role": "Agregar rol",
+    "announcer": "Locutor",
+    "application": "Solicitud",
+    "applications": "Solicitudes",
+    "archive": "Archivar",
+    "coach": "Entrenador",
+    "composer": "Compositor",
     "content_creator": "Creador de contenido",
-    "designer": "Diseñador",
-    "errors": {
-      "removing": "Ha habido un error al quitar el rol.",
+    "customer_support": "Atención al cliente",
+    "developer": "Desarrollador",
+    "director": "Director",
+    "Errors": {
+      "removing": "Ha habido un error al eliminar el rol.",
       "saving": "Ha habido un error al guardar los nuevos roles."
     },
     "experience_level": "Nivel de experiencia",
+    "graphic_designer": "Diseñador gráfico",
+    "guide": "Guía",
+    "illustrator": "Ilustrador",
+    "instructor": "Instructor",
+    "investor_manager": "Gerente de Inversiones",
+    "legal_counsel": "Consejero legal",
     "Levels": {
-      "entry": "Entrada",
+      "entry": "Básico",
       "expert": "Experto",
       "intermediate": "Intermedio"
     },
+    "makeup_artist": "Maquillador/a",
+    "marketer": "Comercializador/a",
+    "musician": "Músico",
     "new_role": "Nuevo rol",
     "new_role_description": "Completa tu proyecto con el Perfect Fit: Define el Rol que tu equipo necesita.",
     "no_role_found": "No se encontró ningún rol",
     "no_roles_created": "Aún no se han creado roles.",
     "omit": "Omitir por ahora",
-    "rewards": "Recompensas",
+    "other": "Otro",
+    "pending_application": "Solicitud pendiente",
+    "pending_applications": "Solicitudes pendientes",
+    "photographer": "Fotógrafo",
+    "product_manager": "Gerente de producto",
     "Rewards": {
       "contract": "Contrato",
       "contract_description": "Un puesto de contrato en la empresa.",
       "credit": "Crédito",
-      "credit_description": "Claramente créditos al aport.",
+      "credit_description": "Créditos claramente visibles.",
       "percent": "Porcentaje",
       "percent_description": "Un porcentaje acordado de la empresa."
     },
-    "role": "Role",
+    "rewards": "Recompensas",
+    "role": "Rol",
     "role_description": "Descripción del rol",
+    "role_details": "Detalles del rol",
+    "sales": "Ventas",
     "save_roles": "Guardar roles",
     "search_role": "Buscar rol...",
-    "select_a_role": "Seleccione una función",
-    "select_level": "Seleccione un nivel",
+    "select_a_role": "Selecciona un rol",
+    "select_level": "Selecciona un nivel",
+    "singer": "Cantante",
+    "sound_producer": "Productor de sonido",
     "Status": {
+      "archived": "Archivado",
       "closed": "Cerrado",
       "open": "Abierto"
     },
+    "teacher": "Maestro",
     "the_roles_has_been_added": "Los roles se han agregado al proyecto.",
+    "video_producer": "Productor de vídeo",
+    "voice_actor": "Doblador",
     "work_mode": "Modo de trabajo",
     "Workmode": {
       "presential": "Presencial",
@@ -157,6 +276,10 @@
     }
   },
   "Site": {
+    "footer": "Construir por %0. Alojado en %1. Código disponible en %2.",
+    "no_results": "No pudimos encontrar ningún proyecto.",
+    "results": "resultados",
+    "search_placeholder": "Buscar proyectos...",
     "subtitle": "La plataforma de referencia para conectar visionarios y cultivar el éxito. Adéntrate en un mundo de colaboración e innovación.",
     "title": "Encuentra el siguiente proyecto del que formar parte."
   },

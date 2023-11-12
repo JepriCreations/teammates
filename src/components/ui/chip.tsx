@@ -19,7 +19,7 @@ const ChipRoot = React.forwardRef<HTMLButtonElement, ButtonChipProps>(
           ref={ref}
           data-selected={selected}
           className={cn(
-            'group relative h-8 overflow-hidden rounded-xs border border-outline px-2 disabled:pointer-events-none disabled:border-onSurface/12',
+            'group relative flex h-8 overflow-hidden rounded-xs border border-outline px-2 disabled:pointer-events-none disabled:border-onSurface/12',
             selected &&
               'border-0 bg-secondaryContainer disabled:bg-onSurfaceVariant/12',
             className

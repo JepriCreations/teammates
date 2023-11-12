@@ -2,7 +2,7 @@ import { PARAMS_KEYS } from '@/constants/routes'
 
 import { getDictionary, Translator } from '@/lib/dictionaries'
 import { fetchProjects } from '@/lib/fetching/projects'
-import { CategoriesFilter } from '@/components/categories_filter'
+import { CategoriesFilter } from '@/components/categories-filter'
 import { ProjectFilters } from '@/components/project-filters'
 import { ProjectsFeed } from '@/components/projects-feed'
 import { SearchBar } from '@/components/search-bar'

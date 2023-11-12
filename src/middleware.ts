@@ -6,4 +6,4 @@ import { intlMiddleware } from '@/middlewares/intlMiddleware'
 const middlewares = [apiMiddleware, intlMiddleware, authMiddleware]
 export default chain(middlewares)
 
-export const config = { matcher: ['/((?!_next|favicon.*).*)'] }
+export const config = { matcher: ['/((?!_next|favicon.*|assets).*)'] }

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { COUNTRIES } from '@/constants/countries'
 import { ROUTES } from '@/constants/routes'
 
-import { ExperienceLevel } from '@/types/collections'
+import { ApplicationStatus, ExperienceLevel } from '@/types/collections'
 import { getDictionary } from '@/lib/dictionaries'
 import { fetchUserApplications } from '@/lib/fetching/profiles'
 import { formatDate } from '@/lib/utils'
@@ -17,34 +17,56 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { Skeleton } from '@/components/ui/skeleton'
+import { ApplicationsStatusNav } from '@/components/dashboard/applications-status-nav'
 import { ApplicationDropdownMenu } from '@/components/dashboard/applications/application-actions'
 import { Error } from '@/components/error'
 import { RoleIcon } from '@/components/role-icons'
 
 interface PageProps {
   params: { locale: string }
+  searchParams: { [key: string]: string | undefined }
 }
 
-export default function ApplicationsTab({ params }: PageProps) {
+export default function ApplicationsTab({ params, searchParams }: PageProps) {
+  const statusFilter =
+    (searchParams.status as ApplicationStatus) ?? ApplicationStatus.StandBy
+
   return (
-    <section className="z-0 mx-auto w-full max-w-2xl grow overflow-auto px-3 py-6">
-      <Suspense fallback={<Loading />}>
-        <ApplicationsFeed locale={params.locale} />
+    <section className="z-0 mx-auto w-full max-w-2xl grow space-y-3 overflow-auto px-3 py-6">
+      <ApplicationsStatusNav status={statusFilter} />
+      <Suspense fallback={<Loading />} key={statusFilter}>
+        <ApplicationsFeed locale={params.locale} status={statusFilter} />
       </Suspense>
     </section>
   )
 }
 
-const ApplicationsFeed = async ({ locale }: { locale: string }) => {
+const ApplicationsFeed = async ({
+  locale,
+  status,
+}: {
+  locale: string
+  status?: ApplicationStatus
+}) => {
   const { t } = await getDictionary(locale)
-  const { error, data } = await fetchUserApplications()
+  const { error, data } = await fetchUserApplications({ status })
 
   if (error) return <Error error={error} />
+
+  if (status && data.length === 0) {
+    return (
+      <div>
+        <p className="muted balance mt-8 text-body-lg">
+          {t('Applications.no_applications')}
+        </p>
+      </div>
+    )
+  }
 
   if (data.length === 0) {
     return (
       <div>
-        <p className="muted balance text-center text-body-lg">
+        <p className="muted balance mt-8 text-body-lg">
           {t('Applications.nothing_to_show')}
         </p>
       </div>

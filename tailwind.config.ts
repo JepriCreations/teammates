@@ -95,7 +95,6 @@ const config = {
       },
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
-        emoji: ['var(--emoji)'],
       },
       fontSize: {
         'display-lg': ['3.56rem', { lineHeight: '4rem' }],
@@ -193,7 +192,7 @@ const config = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
 } satisfies Config
 
 export default config

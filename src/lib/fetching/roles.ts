@@ -7,7 +7,44 @@ import { ApplicationStatus } from '@/types/collections'
 import { newError, PostgresError } from '@/lib/errors'
 import { createServerClient } from '@/lib/supabase-server'
 
-export const fetchRoleApplications = async (roleId: string) => {
+export const fetchRole = async ({ role_id }: { role_id: string }) => {
+  try {
+    const supabase = createServerClient()
+    const { error, data } = await supabase
+      .from('roles')
+      .select(`*, applications(count)`)
+      .eq('id', role_id)
+      .single()
+
+    if (error) {
+      throw new PostgresError('Has been an error retrieving the roles.', {
+        details: error.message,
+      })
+    }
+
+    // Hack for a Supabase Bug recognizing count
+    const applicationsCount = data.applications[0] as unknown as {
+      count: number
+    }
+
+    const role = {
+      ...data,
+      applications: applicationsCount.count,
+    }
+
+    return { data: role }
+  } catch (error) {
+    return { error: newError(error) }
+  }
+}
+
+export const fetchRoleApplications = async ({
+  role_id,
+  status,
+}: {
+  role_id: string
+  status?: ApplicationStatus
+}) => {
   try {
     const supabase = createServerClient()
 
@@ -19,12 +56,18 @@ export const fetchRoleApplications = async (roleId: string) => {
       redirect(ROUTES.LOGIN)
     }
 
-    const { data: rol, error } = await supabase
-      .from('roles')
-      .select('*, applications(*, profile:profiles(name, about, links))')
-      .eq('id', roleId)
-      .neq('applications.status', ApplicationStatus.Rejected)
-      .single()
+    const query = supabase
+      .from('applications')
+      .select('*, profile:profiles(name, about, links)')
+      .eq('role_id', role_id)
+
+    if (status) {
+      query.eq('status', status)
+    }
+
+    const { data, error } = await query.order('created_at', {
+      ascending: false,
+    })
 
     if (error) {
       throw new PostgresError('Has been an error retrieving the roles.', {
@@ -32,22 +75,8 @@ export const fetchRoleApplications = async (roleId: string) => {
       })
     }
 
-    const sortApplication = rol.applications.sort((a, b) => {
-      const dateA = new Date(a.created_at)
-      const dateB = new Date(b.created_at)
-      if (dateA.getTime() !== dateB.getTime()) {
-        return dateA.getTime() - dateB.getTime()
-      } else {
-        const timeA = new Date(a.created_at_time)
-        const timeB = new Date(b.created_at_time)
-        return timeA.getTime() - timeB.getTime()
-      }
-    })
-
-    const data = { ...rol, applications: sortApplication }
-
     return { data }
-  } catch (error: any) {
+  } catch (error) {
     return { error: newError(error) }
   }
 }
