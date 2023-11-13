@@ -18,7 +18,7 @@ export default async function Home({
   params: { locale },
   searchParams,
 }: HomeProps) {
-  const { t } = await getDictionary(locale, 'Site')
+  const { t } = await getDictionary(locale)
   const search = searchParams.search as string
   const work_mode = searchParams[PARAMS_KEYS.WORK_MODE] as string | string[]
   const experience = searchParams[PARAMS_KEYS.EXPERIENCE] as string | string[]
@@ -29,9 +29,11 @@ export default async function Home({
     <>
       <section className="px-3 pt-8">
         <div className="space-y-6 text-center">
-          <h1 className="balance mx-auto max-w-3xl font-bold">{t('title')}</h1>
+          <h1 className="balance mx-auto max-w-3xl font-bold">
+            {t('Site.title')}
+          </h1>
           <p className="balance mx-auto max-w-2xl text-body-lg text-outline">
-            {t('subtitle')}
+            {t('Site.subtitle')}
           </p>
         </div>
       </section>
@@ -39,7 +41,7 @@ export default async function Home({
         <div className="px-3">
           <SearchBar
             defaultValue={search}
-            placeholder={t('search_placeholder')}
+            placeholder={t('Site.search_placeholder')}
           />
         </div>
         <div>
@@ -102,6 +104,6 @@ const ProjectsCount = async ({
   return (
     <p className="muted grow px-3 text-right text-body-sm">{`${
       data.projectCount
-    } / ${data.totalNumberOfProjects} ${t('results')}`}</p>
+    } / ${data.totalNumberOfProjects} ${t('Site.results')}`}</p>
   )
 }
