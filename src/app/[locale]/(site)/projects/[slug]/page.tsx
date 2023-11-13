@@ -273,37 +273,49 @@ const OpenRoles = async ({
             <div className="my-6 grid grid-cols-3 gap-4">
               {/* Experience level */}
               <div className="rounded-md bg-primaryContainer/50 p-4 text-center text-onPrimaryContainer">
-                <div className="wi-full mb-1 flex flex-col items-center justify-center gap-2 opacity-60 sm:flex-row">
+                <div className="mb-1 flex w-full flex-col items-center justify-center gap-2 opacity-60 sm:flex-row">
                   {RoleIcon.experienceLevelIcon(
                     role.exp_level as ExperienceLevel
                   )}
-                  <p className="text-label-lg font-medium">
+                  <p className="balance text-label-lg font-medium">
                     {t('Roles.experience_level')}
                   </p>
                 </div>
-                <p>{t(`Roles.Levels.${role.exp_level}`)}</p>
+                <div className="w-full overflow-hidden">
+                  <p className="truncate">
+                    {t(`Roles.Levels.${role.exp_level}`)}
+                  </p>
+                </div>
               </div>
               {/* Rewards */}
               <div className="rounded-md bg-secondaryContainer/50 p-4 text-center text-onSecondaryContainer">
-                <div className="wi-full mb-1 flex flex-col items-center justify-center gap-2 opacity-60 sm:flex-row">
+                <div className="mb-1 flex w-full flex-col items-center justify-center gap-2 opacity-60 sm:flex-row">
                   {RoleIcon.rewardIcon(role.rewards)}
-                  <p className="text-label-lg font-medium">
+                  <p className="balance text-label-lg font-medium">
                     {t('Roles.rewards')}
                   </p>
                 </div>
-                <p>
-                  {role.rewards.map((r) => t(`Roles.Rewards.${r}`)).join(', ')}
-                </p>
+                <div className="w-full overflow-hidden">
+                  <p>
+                    {role.rewards
+                      .map((r) => t(`Roles.Rewards.${r}`))
+                      .join(', ')}
+                  </p>
+                </div>
               </div>
               {/* Work mode */}
               <div className="rounded-md bg-tertiaryContainer/50 p-4 text-center text-onTertiaryContainer">
-                <div className="wi-full mb-1 flex flex-col items-center justify-center gap-2 opacity-60 sm:flex-row">
+                <div className="mb-1 flex w-full flex-col items-center justify-center gap-2 opacity-60 sm:flex-row">
                   {RoleIcon.workModeIcon(role.work_mode)}
-                  <p className="text-label-lg font-medium">
+                  <p className="balance text-label-lg font-medium">
                     {t('Roles.work_mode')}
                   </p>
                 </div>
-                <p>{t(`Roles.Workmode.${role.work_mode}`)}</p>
+                <div className="w-full overflow-hidden">
+                  <p className="truncate">
+                    {t(`Roles.Workmode.${role.work_mode}`)}
+                  </p>
+                </div>
               </div>
             </div>
 

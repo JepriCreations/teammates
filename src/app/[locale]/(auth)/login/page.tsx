@@ -16,11 +16,11 @@ export default async function Login({ params: { locale } }: LoginProps) {
 
   return (
     <>
-      <div className="mx-auto flex h-16 w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-3 sm:px-6">
-        <Link href={ROUTES.HOME}>
+      <div className="mx-auto mb-4 flex h-16 w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-3 sm:px-6">
+        <Link href={ROUTES.HOME} className="mx-auto sm:mx-0">
           <Logo />
         </Link>
-        <Button asChild variant="tonal">
+        <Button asChild variant="tonal" className="hidden sm:block">
           <Link href={ROUTES.HOME}>{t('discover')}</Link>
         </Button>
       </div>

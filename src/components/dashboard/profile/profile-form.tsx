@@ -19,6 +19,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Combobox } from '@/components/combobox'
 import { Icons } from '@/components/icons'
 import { useDictionary } from '@/components/providers/dictionary-provider'
+import { useAuth } from '@/components/providers/supabase-auth-provider'
 
 interface ProfileFormProps {
   profile: Omit<Partial<Profile>, 'links'> & {
@@ -31,6 +32,7 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
   const { t } = useDictionary()
   const { update, isPending } = useProfile()
   const { toast } = useToast()
+  const { signOut, isAuthenticating } = useAuth()
 
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
@@ -78,7 +80,7 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
   }
 
   return (
-    <>
+    <div className="space-y-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
           <Form.Field
@@ -230,6 +232,19 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
           </Button>
         </form>
       </Form>
-    </>
+      <section className="block space-y-6 md:hidden">
+        <Divider />
+        <Button
+          icon={<Icons.logout />}
+          disabled={Boolean(isAuthenticating) || isPending}
+          loading={Boolean(isAuthenticating)}
+          variant="brutalist"
+          onClick={signOut}
+          className="mx-auto block"
+        >
+          {t('Auth.sign_out')}
+        </Button>
+      </section>
+    </div>
   )
 }

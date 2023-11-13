@@ -14,7 +14,7 @@ export default async function SiteLayout({ children }: DashboardLayoutProps) {
       <div className="flex flex-col md:pl-24">
         <DashboardAppbar>
           <Logo />
-          <section className="flex grow items-center justify-end">
+          <section className="flex grow items-center justify-end gap-1">
             <ModeToggle />
           </section>
         </DashboardAppbar>
