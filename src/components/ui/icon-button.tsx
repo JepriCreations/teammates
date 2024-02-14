@@ -2,7 +2,6 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
-import { Icons } from '@/components/icons'
 
 import { CircularProgress } from './circular-progress'
 

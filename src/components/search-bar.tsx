@@ -10,8 +10,6 @@ import { IconButton } from '@/components/ui/icon-button'
 import { SearchBar as UISearchBar } from '@/components/ui/search-bar'
 import { Icons } from '@/components/icons'
 
-import { TextField } from './ui/text-field'
-
 const formSchema = z.object({
   search: z.string(),
 })

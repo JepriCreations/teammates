@@ -3,14 +3,12 @@
 import { usePathname } from 'next/navigation'
 import { ROUTES } from '@/constants/routes'
 
+import { IconButton } from '@/components/ui/icon-button'
 import { NavigationBar } from '@/components/ui/navigation-bar'
+import { Tooltip } from '@/components/ui/tooltip'
 import { Icons } from '@/components/icons'
 import { useDictionary } from '@/components/providers/dictionary-provider'
-
-import { ModeToggle } from '../mode-toggle'
-import { useAuth } from '../providers/supabase-auth-provider'
-import { IconButton } from '../ui/icon-button'
-import { Tooltip } from '../ui/tooltip'
+import { useAuth } from '@/components/providers/supabase-auth-provider'
 
 export const Sidebar = () => {
   const { signOut, isAuthenticating } = useAuth()

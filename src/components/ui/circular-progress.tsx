@@ -21,11 +21,14 @@ const CircularProgress = React.forwardRef<HTMLDivElement, ProgressProps>(
         ref={ref}
         data-state={state}
         className={cn(
-          'group inline-block aspect-square h-12 shrink-0 -rotate-90 text-primary data-[state=indeterminate]:animate-progress-spin',
+          'group inline-block aspect-square h-12 shrink-0 text-primary',
           className
         )}
       >
-        <svg className="block h-full w-full" viewBox="22 22 44 44">
+        <svg
+          className="block h-full w-full -rotate-90 group-data-[state=indeterminate]:animate-progress-spin"
+          viewBox="22 22 44 44"
+        >
           <circle
             className="stroke-current transition-[stroke-dashoffset] duration-300 group-data-[state=indeterminate]:animate-circular-progress"
             cx="44"
