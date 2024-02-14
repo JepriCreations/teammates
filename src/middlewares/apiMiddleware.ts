@@ -6,6 +6,7 @@ import {
 } from 'next/server'
 
 const whiteList = ['/api/auth/callback']
+const appUrl = ['http://localhost:3080', 'https://teammates.buildbuddy.one', 'https://teammates.mov']
 
 export function apiMiddleware(middleware: NextMiddleware) {
   return async (req: NextRequest, event: NextFetchEvent) => {
@@ -14,11 +15,7 @@ export function apiMiddleware(middleware: NextMiddleware) {
     const referer = req.headers.get('referer')
 
     if (pathname.startsWith(`/api/`) && !whiteList.includes(pathname)) {
-      const appUrl =
-        process.env.NODE_ENV === 'development'
-          ? 'http://localhost:3080'
-          : (process.env.APP_URL as string)
-      if (!referer?.includes(appUrl)) {
+      if(!referer || !appUrl.includes(referer)){
         return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
       }
     }
