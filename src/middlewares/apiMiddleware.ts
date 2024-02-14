@@ -15,7 +15,7 @@ export function apiMiddleware(middleware: NextMiddleware) {
     const referer = req.headers.get('referer')
 
     if (pathname.startsWith(`/api/`) && !whiteList.includes(pathname)) {
-      if(!referer || !appUrl.includes(referer)){
+      if(!referer || !appUrl.some((url) => referer.startsWith(url))) {
         return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
       }
     }
