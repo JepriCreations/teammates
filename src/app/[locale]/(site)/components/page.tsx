@@ -19,14 +19,15 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form'
+import { Icon } from '@/components/ui/icon'
 import { IconButton } from '@/components/ui/icon-button'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { SearchBar } from '@/components/ui/search-bar'
-import { Select } from '@/components/ui/select'
+import { FilledSelect, OutlinedSelect } from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Switch } from '@/components/ui/switch'
-import { TextField } from '@/components/ui/text-field'
+import { FilledTextField, OutlinedTextField } from '@/components/ui/text-field'
 import { Textarea } from '@/components/ui/textarea'
 import { Combobox } from '@/components/combobox'
 import { Icons } from '@/components/icons'
@@ -377,191 +378,103 @@ export default function ComponentPage() {
           {/* Filled examples */}
           <div className="mb-12 space-y-4">
             <p className="text-title-lg">Filled</p>
-            <TextField label="Email" type="email" placeholder="Your email" />
-            <TextField
-              disabled
-              label="Disabled email"
-              type="email"
-              placeholder="Your email"
-              error="Required"
-            />
-            <TextField
-              disabled
-              label="Disabled email"
-              type="email"
-              placeholder="Your email"
-              value="Disabled with value"
-              readOnly
-            />
-            <TextField type="email" placeholder="No label" />
-            <TextField
-              type="email"
-              placeholder="Label with error"
-              error="Required"
-              label="Email"
-            />
-            <TextField
-              leadingIcon={<Icons.github />}
-              placeholder="Github username"
-              label="Github"
-            />
-            <TextField
-              leadingIcon={<Icons.github />}
-              placeholder="Github username"
-              label="Github"
-              disabled
-            />
-            <TextField placeholder="Your salary" label="Amount" suffix="$" />
-            <TextField
-              placeholder="Your salary"
-              label="Amount"
-              suffix="$"
-              disabled
-            />
-            <TextField
-              placeholder="Your place"
-              label="Location"
-              trailingIcon={<Icons.search />}
-            />
-            <TextField
-              placeholder="Your place"
-              label="Location"
-              error="Required"
-              trailingIcon={<Icons.pin />}
-            />
-            <TextField
-              placeholder="Your place"
-              label="Location"
-              trailingIcon={<Icons.search />}
-              disabled
-            />
+            <FilledTextField>
+              <FilledTextField.Input type="email" placeholder="Your email" />
+              <FilledTextField.Label>Email</FilledTextField.Label>
+            </FilledTextField>
+            <FilledTextField>
+              <FilledTextField.Input
+                disabled
+                type="email"
+                placeholder="Your email"
+              />
+              <FilledTextField.Label>Disabled Email</FilledTextField.Label>
+            </FilledTextField>
+            <FilledTextField error>
+              <FilledTextField.Input type="email" placeholder="Your email" />
+              <FilledTextField.Label>Error Email</FilledTextField.Label>
+            </FilledTextField>
+            <FilledTextField>
+              <FilledTextField.Input
+                disabled
+                value="your_email@mail.com"
+                type="email"
+                placeholder="Your email"
+                readOnly
+              />
+              <FilledTextField.Label>Email</FilledTextField.Label>
+            </FilledTextField>
+            <FilledTextField>
+              <FilledTextField.Input
+                type="email"
+                placeholder="Email with no label"
+              />
+            </FilledTextField>
+            <FilledTextField>
+              <FilledTextField.Decoration>
+                <Icon symbol="email" />
+              </FilledTextField.Decoration>
+              <FilledTextField.Input type="email" placeholder="Your email" />
+              <FilledTextField.Label>Email</FilledTextField.Label>
+            </FilledTextField>
+            <FilledTextField>
+              <FilledTextField.Input type="email" placeholder="Your email" />
+              <FilledTextField.Label>Email</FilledTextField.Label>
+              <FilledTextField.Decoration>
+                <Icon symbol="email" />
+              </FilledTextField.Decoration>
+            </FilledTextField>
           </div>
 
           {/* Outlined Examples */}
           <div className="mb-12 space-y-4">
             <p className="text-title-lg">Outline</p>
-            <TextField
-              variant="outlined"
-              label="Email"
-              type="email"
-              placeholder="Your email"
-            />
-            <TextField
-              variant="outlined"
-              disabled
-              label="Disabled email"
-              type="email"
-              placeholder="Your email"
-              error="Required"
-            />
-            <TextField
-              variant="outlined"
-              disabled
-              label="Disabled email"
-              type="email"
-              placeholder="Your email"
-              value="email@mail.com"
-              readOnly
-            />
-
-            <TextField
-              variant="outlined"
-              disabled
-              label="Disabled email"
-              type="email"
-              placeholder="Your email"
-              error="Required"
-              value="email@mail.com"
-              readOnly
-            />
-
-            <TextField
-              variant="outlined"
-              type="email"
-              placeholder="No label"
-              disabled
-            />
-
-            <TextField variant="outlined" type="email" placeholder="No label" />
-
-            <TextField
-              variant="outlined"
-              type="email"
-              placeholder="No label with error"
-              error="Required"
-            />
-
-            <TextField
-              variant="outlined"
-              type="email"
-              placeholder="Label with error"
-              error="Required"
-              label="Email"
-            />
-
-            <TextField
-              variant="outlined"
-              type="email"
-              placeholder="Label with error"
-              error="Required"
-              label="Email"
-              value="incorrect@email"
-              readOnly
-            />
-            <TextField
-              variant="outlined"
-              leadingIcon={<Icons.github />}
-              placeholder="Github username"
-              label="Github"
-            />
-            <TextField
-              variant="outlined"
-              leadingIcon={<Icons.github />}
-              placeholder="Github username"
-              label="Github"
-              disabled
-            />
-            <TextField
-              variant="outlined"
-              placeholder="Your salary"
-              label="Amount"
-              suffix="$"
-            />
-            <TextField
-              variant="outlined"
-              placeholder="Your salary"
-              label="Amount"
-              suffix="$"
-              disabled
-            />
-            <TextField
-              variant="outlined"
-              placeholder="Your place"
-              label="Location"
-              trailingIcon={<Icons.search />}
-            />
-            <TextField
-              variant="outlined"
-              placeholder="Your place"
-              label="Location"
-              error="Required"
-              trailingIcon={<Icons.pin />}
-            />
-            <TextField
-              variant="outlined"
-              placeholder="Your place"
-              label="Location"
-              trailingIcon={<Icons.search />}
-              disabled
-            />
-
-            <TextField
-              variant="outlined"
-              rightSection={<Button variant="tonal">Subscribe</Button>}
-              placeholder="With right section"
-              label="Right section"
-              className="pr-[125px]"
-            />
+            <OutlinedTextField>
+              <OutlinedTextField.Input type="email" placeholder="Your email" />
+              <OutlinedTextField.Label>Email</OutlinedTextField.Label>
+            </OutlinedTextField>
+            <OutlinedTextField>
+              <OutlinedTextField.Input
+                disabled
+                type="email"
+                placeholder="Your email"
+              />
+              <OutlinedTextField.Label>Disabled Email</OutlinedTextField.Label>
+            </OutlinedTextField>
+            <OutlinedTextField error>
+              <OutlinedTextField.Input type="email" placeholder="Your email" />
+              <OutlinedTextField.Label>Error Email</OutlinedTextField.Label>
+            </OutlinedTextField>
+            <OutlinedTextField>
+              <OutlinedTextField.Input
+                disabled
+                value="your_email@mail.com"
+                type="email"
+                placeholder="Your email"
+                readOnly
+              />
+              <OutlinedTextField.Label>Email</OutlinedTextField.Label>
+            </OutlinedTextField>
+            <OutlinedTextField>
+              <OutlinedTextField.Input
+                type="email"
+                placeholder="Email with no label"
+              />
+            </OutlinedTextField>
+            <OutlinedTextField>
+              <OutlinedTextField.Decoration>
+                <Icon symbol="email" />
+              </OutlinedTextField.Decoration>
+              <OutlinedTextField.Input type="email" placeholder="Your email" />
+              <OutlinedTextField.Label>Email</OutlinedTextField.Label>
+            </OutlinedTextField>
+            <OutlinedTextField>
+              <OutlinedTextField.Input type="email" placeholder="Your email" />
+              <OutlinedTextField.Label>Email</OutlinedTextField.Label>
+              <OutlinedTextField.Decoration>
+                <Icon symbol="email" />
+              </OutlinedTextField.Decoration>
+            </OutlinedTextField>
           </div>
           {/* Filled Textarea examples */}
           <div className="mb-12 space-y-4">
@@ -638,183 +551,91 @@ export default function ComponentPage() {
         <div className="grid grid-cols-2 gap-6">
           {/* Filled examples */}
           <div className="mb-12 space-y-4">
-            <Select>
-              <Select.Trigger
-                id="framework"
-                placeholder="Select a framework"
-                label="Framework Select"
-              />
-              <Select.Content position="popper">
+            <FilledSelect>
+              <FilledSelect.Trigger id="framework">
+                <FilledSelect.Value placeholder="Select a framework" />
+                <FilledSelect.Label>Framework Select</FilledSelect.Label>
+              </FilledSelect.Trigger>
+              <FilledSelect.Content>
                 {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
-                  <Select.Item key={value} value={value}>
+                  <FilledSelect.Item key={value} value={value}>
                     {value}
-                  </Select.Item>
+                  </FilledSelect.Item>
                 ))}
-              </Select.Content>
-            </Select>
+              </FilledSelect.Content>
+            </FilledSelect>
 
-            <Select error="Required">
-              <Select.Trigger
-                id="framework"
-                placeholder="Select a framework"
-                label="Framework Select"
-              />
-              <Select.Content position="popper">
+            <FilledSelect>
+              <FilledSelect.Trigger error>
+                <FilledSelect.Value placeholder="Select a framework" />
+                <FilledSelect.Label>Framework Select</FilledSelect.Label>
+              </FilledSelect.Trigger>
+              <FilledSelect.Content>
                 {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
-                  <Select.Item key={value} value={value}>
+                  <FilledSelect.Item key={value} value={value}>
                     {value}
-                  </Select.Item>
+                  </FilledSelect.Item>
                 ))}
-              </Select.Content>
-            </Select>
+              </FilledSelect.Content>
+            </FilledSelect>
 
-            <Select error="Required">
-              <Select.Trigger
-                id="framework"
-                placeholder="Error with no label"
-              />
-              <Select.Content position="popper">
+            <FilledSelect value="Next.js">
+              <FilledSelect.Trigger disabled>
+                <FilledSelect.Value placeholder="Select a framework" />
+                <FilledSelect.Label>Framework Select</FilledSelect.Label>
+              </FilledSelect.Trigger>
+              <FilledSelect.Content>
                 {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
-                  <Select.Item key={value} value={value}>
+                  <FilledSelect.Item key={value} value={value}>
                     {value}
-                  </Select.Item>
+                  </FilledSelect.Item>
                 ))}
-              </Select.Content>
-            </Select>
-
-            <Select>
-              <Select.Trigger
-                id="framework"
-                placeholder="Select a framework no label"
-              />
-              <Select.Content position="popper">
-                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
-                  <Select.Item key={value} value={value}>
-                    {value}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select>
-
-            <Select disabled>
-              <Select.Trigger
-                id="framework"
-                placeholder="Select a framework"
-                label="Framework Select"
-              />
-              <Select.Content position="popper">
-                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
-                  <Select.Item key={value} value={value}>
-                    {value}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select>
-
-            <Select disabled defaultValue="Next.js">
-              <Select.Trigger
-                id="framework"
-                placeholder="Select a framework"
-                label="Disabled with value"
-              />
-              <Select.Content position="popper">
-                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
-                  <Select.Item key={value} value={value}>
-                    {value}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select>
+              </FilledSelect.Content>
+            </FilledSelect>
           </div>
           {/* Outlined examples */}
           <div className="mb-12 space-y-4">
-            <Select variant="outlined">
-              <Select.Trigger
-                id="framework"
-                placeholder="Select a framework"
-                label="Framework Select"
-              />
-              <Select.Content position="popper">
+            <OutlinedSelect>
+              <OutlinedSelect.Trigger id="framework">
+                <OutlinedSelect.Value placeholder="Select a framework" />
+                <OutlinedSelect.Label>Framework Select</OutlinedSelect.Label>
+              </OutlinedSelect.Trigger>
+              <OutlinedSelect.Content>
                 {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
-                  <Select.Item key={value} value={value}>
+                  <OutlinedSelect.Item key={value} value={value}>
                     {value}
-                  </Select.Item>
+                  </OutlinedSelect.Item>
                 ))}
-              </Select.Content>
-            </Select>
+              </OutlinedSelect.Content>
+            </OutlinedSelect>
 
-            <Select variant="outlined" error="required">
-              <Select.Trigger
-                id="framework"
-                placeholder="Select a framework"
-                label="Framework Select"
-              />
-              <Select.Content position="popper">
+            <OutlinedSelect>
+              <OutlinedSelect.Trigger error>
+                <OutlinedSelect.Value placeholder="Select a framework" />
+                <OutlinedSelect.Label>Framework Select</OutlinedSelect.Label>
+              </OutlinedSelect.Trigger>
+              <OutlinedSelect.Content>
                 {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
-                  <Select.Item key={value} value={value}>
+                  <OutlinedSelect.Item key={value} value={value}>
                     {value}
-                  </Select.Item>
+                  </OutlinedSelect.Item>
                 ))}
-              </Select.Content>
-            </Select>
+              </OutlinedSelect.Content>
+            </OutlinedSelect>
 
-            <Select variant="outlined" error="Required">
-              <Select.Trigger
-                id="framework"
-                placeholder="Error with no label"
-              />
-              <Select.Content position="popper">
+            <OutlinedSelect value="Next.js">
+              <OutlinedSelect.Trigger disabled>
+                <OutlinedSelect.Value placeholder="Select a framework" />
+                <OutlinedSelect.Label>Framework Select</OutlinedSelect.Label>
+              </OutlinedSelect.Trigger>
+              <OutlinedSelect.Content>
                 {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
-                  <Select.Item key={value} value={value}>
+                  <OutlinedSelect.Item key={value} value={value}>
                     {value}
-                  </Select.Item>
+                  </OutlinedSelect.Item>
                 ))}
-              </Select.Content>
-            </Select>
-
-            <Select variant="outlined">
-              <Select.Trigger
-                id="framework"
-                placeholder="Select a framework no label"
-              />
-              <Select.Content position="popper">
-                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
-                  <Select.Item key={value} value={value}>
-                    {value}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select>
-
-            <Select variant="outlined" disabled>
-              <Select.Trigger
-                id="framework"
-                placeholder="Select a framework"
-                label="Framework Select"
-              />
-              <Select.Content position="popper">
-                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
-                  <Select.Item key={value} value={value}>
-                    {value}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select>
-
-            <Select variant="outlined" disabled defaultValue="Next.js">
-              <Select.Trigger
-                id="framework"
-                placeholder="Select a framework"
-                label="Disabled with value"
-              />
-              <Select.Content position="popper">
-                {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map((value) => (
-                  <Select.Item key={value} value={value}>
-                    {value}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select>
+              </OutlinedSelect.Content>
+            </OutlinedSelect>
           </div>
 
           {/* Combobox examples */}
@@ -991,11 +812,13 @@ export default function ComponentPage() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <TextField
-                      label="Username"
-                      placeholder="Your user name"
-                      {...field}
-                    />
+                    <FilledTextField>
+                      <FilledTextField.Input
+                        placeholder="Your user name"
+                        {...field}
+                      />
+                      <FilledTextField.Label>Username</FilledTextField.Label>
+                    </FilledTextField>
                   </FormControl>
                   <FormDescription>
                     This is your public display name.
@@ -1056,7 +879,7 @@ export default function ComponentPage() {
             </Card.Description>
           </Card.Header>
           <Card.Content>
-            <form>
+            {/* <form>
               <div className="grid w-full items-center gap-4">
                 <Select>
                   <Select.Trigger
@@ -1092,7 +915,7 @@ export default function ComponentPage() {
                   </Select.Content>
                 </Select>
               </div>
-            </form>
+            </form> */}
           </Card.Content>
           <Card.Footer className="flex justify-between">
             <Button variant="text">Cancel</Button>

@@ -1,4 +1,5 @@
 import '@/styles/globals.css'
+import 'material-symbols/rounded.css'
 
 import { Metadata } from 'next'
 

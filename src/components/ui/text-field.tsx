@@ -92,7 +92,7 @@ const FilledTextfieldLabel = React.forwardRef<
     ref={ref}
     className={cn(
       commonStyle,
-      'left-0 top-0 h-fit w-full pl-4 pt-2 peer-placeholder-shown/input:leading-[2.5] peer-has-[*]/icon:left-9',
+      'left-0 top-0 h-fit w-full pl-4 pt-2 peer-placeholder-shown/input:leading-[2.2] peer-has-[*]/icon:left-9',
       className
     )}
     {...props}

@@ -1,19 +1,21 @@
 'use client'
 
 import * as React from 'react'
-import { VariantProps } from 'class-variance-authority'
 
 import { createSafeContext } from '@/lib/createSafeContext'
 import { cn } from '@/lib/utils'
 import { useControllableState } from '@/hooks/use-controllable-state'
 import { Command } from '@/components/ui/command'
+import { Icon } from '@/components/ui/icon'
 import { Label } from '@/components/ui/label'
 import { Popover } from '@/components/ui/popover'
 import {
-  selectLabelVariants,
-  selectTriggerVariants,
+  filledSelectLabelStyle,
+  filledSelectTriggerStyle,
+  outlinedSelectLabelStyle,
+  outlineSelectTriggerStyle,
+  selectIconStyle,
 } from '@/components/ui/select'
-import { Icons } from '@/components/icons'
 
 interface ComboboxContextValue {
   isSelected: (value: any) => boolean
@@ -41,7 +43,7 @@ interface ComboboxCommonProps<TValue> {
   placeholder?: string
   search?: string
   value?: TValue | null
-  variant?: VariantProps<typeof selectTriggerVariants>['variant']
+  variant?: 'filled' | 'outlined'
   error?: string
 }
 
@@ -78,13 +80,23 @@ export interface ComboboxTriggerProps {
   label?: string
   error?: string
   placeholder?: string
-  variant?: VariantProps<typeof selectTriggerVariants>['variant']
+  variant?: 'filled' | 'outlined'
+}
+
+const selectStyles = {
+  outlined: outlineSelectTriggerStyle,
+  filled: filledSelectTriggerStyle,
+}
+
+const labelStyles = {
+  outlined: outlinedSelectLabelStyle,
+  filled: filledSelectLabelStyle,
 }
 
 const Trigger = ({
   label,
   error,
-  variant,
+  variant = 'filled',
   children,
   className,
   placeholder,
@@ -100,22 +112,16 @@ const Trigger = ({
         data-label={hasLabel ? '' : undefined}
         data-placeholder={hasPlaceholder ? '' : undefined}
         aria-invalid={isInvalid}
-        className={cn(
-          selectTriggerVariants({ variant, className }),
-          'text-start'
-        )}
+        className={cn(selectStyles[variant], className)}
       >
         {children}
-        <div
-          aria-label="Combobox Icon"
-          className="absolute right-2 top-2/4 grid -translate-y-2/4 place-items-center text-onSurfaceVariant/70 transition-transform group-disabled:text-onSurface/38 group-data-[state=open]:rotate-180"
-        >
-          <Icons.angleDownSmall className={cn('h-5 w-5')} />
+        <div aria-label="Combobox Icon" className={selectIconStyle}>
+          <Icon symbol="expand_more" />
         </div>
+        {hasLabel && (
+          <Label className={cn(labelStyles[variant])}>{label}</Label>
+        )}
       </Popover.Trigger>
-      {hasLabel && (
-        <Label className={cn(selectLabelVariants({ variant }))}>{label}</Label>
-      )}
     </div>
   )
 }
@@ -215,14 +221,14 @@ export const ComboboxRoot = <TValue,>({
       >
         <span id="select-value">
           {renderValue() ?? (
-            <span className="text-body-md text-onSurfaceVariant/50">
+            <span className="text-body-md text-onSurfaceVariant/50 group-has-[label]/input:group-data-[state=closed]/input:text-transparent">
               {placeholder}
             </span>
           )}
         </span>
       </Trigger>
       <Popover.Content
-        className="-mt-1 w-full min-w-[var(--radix-popover-trigger-width)] p-0"
+        className="-mt-4 w-full min-w-[var(--radix-popover-trigger-width)] p-0"
         align="start"
       >
         <Command filter={filterFn} shouldFilter={shouldFilter}>
@@ -261,9 +267,7 @@ type ComboboxType = typeof ComboboxRoot & {
   Item: typeof ComboboxItem
 }
 
-export const ComboboxItem = <
-  TValue extends Parameters<ComboboxType>[0]['value'],
->({
+const ComboboxItem = <TValue extends Parameters<ComboboxType>[0]['value']>({
   children,
   className,
   value,
@@ -279,22 +283,19 @@ export const ComboboxItem = <
     <Command.Item
       className={cn('', className)}
       role="option"
+      data-active={context.isSelected(value) ? true : undefined}
       onSelect={() => {
         context.onSelect(value)
         onSelect?.(value)
       }}
     >
-      <span className="mr-2 h-5 w-5">
-        {context.isSelected(value) && (
-          <Icons.check className="h-full w-full animate-in zoom-in-50" />
-        )}
-      </span>
       {children}
     </Command.Item>
   )
 }
 
-const Combobox = ComboboxRoot as ComboboxType
-Combobox.Item = ComboboxItem
+const Combobox = Object.assign(ComboboxRoot, {
+  Item: ComboboxItem,
+})
 
-export { Combobox }
+export { Combobox, ComboboxItem }
