@@ -4,7 +4,6 @@ import { useSearchParams } from 'next/navigation'
 import { CATEGORIES, CATEGORIES_ICONS } from '@/constants/projects'
 import { PARAMS_KEYS } from '@/constants/routes'
 
-import { fontEmoji } from '@/lib/fonts'
 import { useSetSearchParams } from '@/hooks/use-set-search-params'
 import { useDictionary } from '@/components/providers/dictionary-provider'
 
@@ -49,7 +48,7 @@ export const CategoryItem = ({
   onClick,
 }: {
   label: string
-  icon: string
+  icon: number
   checked?: boolean
   onClick: () => void
 }) => {
@@ -59,11 +58,13 @@ export const CategoryItem = ({
       className="group flex h-[124px] w-28 shrink-0 flex-col items-center justify-between rounded-sm border border-transparent px-2 py-4 outline-none transition-all hover:bg-onSurface/5 focus:bg-onSurface/5 active:scale-95 data-[state=unchecked]:border-outline data-[state=checked]:bg-secondaryContainer"
       onClick={onClick}
     >
-      <span
-        className={`${fontEmoji.className} text-4xl drop-shadow-xl transition-all group-data-[state=checked]:drop-shadow-sm`}
-      >
-        {icon}
-      </span>
+      <img
+        loading="lazy"
+        src="/assets/categories_sprite.webp"
+        alt={label}
+        className="inline-block h-14 w-14 scale-75 bg-no-repeat object-cover"
+        style={{ objectPosition: `0px ${icon * 56 * -1}px` }}
+      />
       <p className="balance text-label-md text-onSurface group-data-[state=checked]:text-onSecondaryContainer">
         {label}
       </p>
