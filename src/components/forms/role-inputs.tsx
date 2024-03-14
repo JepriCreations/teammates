@@ -23,7 +23,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Select } from '@/components/ui/select'
+import { FilledSelect } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { Combobox } from '@/components/combobox'
 import { useDictionary } from '@/components/providers/dictionary-provider'
@@ -84,25 +84,27 @@ export const RoleInputs = ({ form, categories, disabled }: RoleInputsProps) => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Select
+                <FilledSelect
                   disabled={disabled}
                   onValueChange={(value) =>
                     field.onChange(value as ExperienceLevel)
                   }
                   value={field.value}
                 >
-                  <Select.Trigger
-                    placeholder={t('select_level')}
-                    label={t('experience_level')}
-                  />
-                  <Select.Content>
+                  <FilledSelect.Trigger>
+                    <FilledSelect.Value placeholder={t('select_level')} />
+                    <FilledSelect.Label>
+                      {t('experience_level')}
+                    </FilledSelect.Label>
+                  </FilledSelect.Trigger>
+                  <FilledSelect.Content>
                     {EXPERIENCE_LEVEL(t).map(({ value, label }) => (
-                      <Select.Item key={value} value={value}>
+                      <FilledSelect.Item key={value} value={value}>
                         {label}
-                      </Select.Item>
+                      </FilledSelect.Item>
                     ))}
-                  </Select.Content>
-                </Select>
+                  </FilledSelect.Content>
+                </FilledSelect>
               </FormControl>
               <FormMessage />
             </FormItem>

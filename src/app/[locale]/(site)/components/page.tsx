@@ -879,43 +879,43 @@ export default function ComponentPage() {
             </Card.Description>
           </Card.Header>
           <Card.Content>
-            {/* <form>
+            <form>
               <div className="grid w-full items-center gap-4">
-                <Select>
-                  <Select.Trigger
-                    id="framework"
-                    placeholder="Select a framework"
-                    label="Framework Select"
-                  />
-                  <Select.Content position="popper">
+                <FilledSelect>
+                  <FilledSelect.Trigger id="framework">
+                    <FilledSelect.Value placeholder="Select a framework" />
+                    <FilledSelect.Label>Framework Select</FilledSelect.Label>
+                  </FilledSelect.Trigger>
+                  <FilledSelect.Content position="popper">
                     {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map(
                       (value) => (
-                        <Select.Item key={value} value={value}>
+                        <FilledSelect.Item key={value} value={value}>
                           {value}
-                        </Select.Item>
+                        </FilledSelect.Item>
                       )
                     )}
-                  </Select.Content>
-                </Select>
+                  </FilledSelect.Content>
+                </FilledSelect>
 
-                <Select variant="outlined">
-                  <Select.Trigger
-                    id="framework"
-                    placeholder="Select a framework"
-                    label="Framework Select"
-                  />
-                  <Select.Content position="popper">
+                <OutlinedSelect>
+                  <OutlinedSelect.Trigger id="framework-outlined">
+                    <OutlinedSelect.Value placeholder="Select a framework" />
+                    <OutlinedSelect.Label>
+                      Framework Select
+                    </OutlinedSelect.Label>
+                  </OutlinedSelect.Trigger>
+                  <OutlinedSelect.Content position="popper">
                     {['Next.js', 'SvelteKit', 'Astro', 'Nuxt.js'].map(
                       (value) => (
-                        <Select.Item key={value} value={value}>
+                        <OutlinedSelect.Item key={value} value={value}>
                           {value}
-                        </Select.Item>
+                        </OutlinedSelect.Item>
                       )
                     )}
-                  </Select.Content>
-                </Select>
+                  </OutlinedSelect.Content>
+                </OutlinedSelect>
               </div>
-            </form> */}
+            </form>
           </Card.Content>
           <Card.Footer className="flex justify-between">
             <Button variant="text">Cancel</Button>
