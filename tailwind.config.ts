@@ -17,6 +17,9 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['var(--font-sans)', ...fontFamily.sans],
+      },
       colors: {
         primary: 'hsl(var(--primary))',
         onPrimary: 'hsl(var(--onPrimary))',
@@ -92,9 +95,6 @@ const config = {
         md: 'calc(var(--radius) - 4px)',
         sm: 'calc(var(--radius) - 6px)',
         xs: 'calc(var(--radius) - 8px)',
-      },
-      fontFamily: {
-        sans: ['var(--font-sans)', ...fontFamily.sans],
       },
       fontSize: {
         'display-lg': ['3.56rem', { lineHeight: '4rem' }],
