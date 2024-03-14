@@ -4,6 +4,8 @@
 
 @layer base {
   :root {
+    --font-symbols: 'Material Symbols Rounded';
+
     --primary: 189 100% 24%;
     --onPrimary: 0 0% 100%;
     --primaryContainer: 194 100% 84%;
@@ -144,6 +146,26 @@
     line-height: theme(fontSize.title-lg);
   }
 
+  i {
+    font-family: var(--font-symbols);
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'liga';
+
+    user-select: none;
+    background-repeat: no-repeat;
+    display: inline-block;
+    overflow: hidden;
+  }
+
   input[type='search']::-webkit-search-decoration,
   input[type='search']::-webkit-search-cancel-button,
   input[type='search']::-webkit-search-results-button,
@@ -178,6 +200,27 @@
   .scrollbar-hidden {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+  }
+
+  .font-regular {
+    font-variation-settings:
+      'GRAD' 0,
+      'FILL' 0;
+  }
+  .font-emphasis {
+    font-variation-settings:
+      'GRAD' 200,
+      'FILL' 0;
+  }
+  .font-filled {
+    font-variation-settings:
+      'GRAD' 0,
+      'FILL' 1;
+  }
+  .font-filled-emphasis {
+    font-variation-settings:
+      'GRAD' 200,
+      'FILL' 1;
   }
 }
 
