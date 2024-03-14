@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { ROUTES } from '@/constants/routes'
 
 import { ExperienceLevel, Role } from '@/types/collections'
@@ -38,10 +39,13 @@ export const ProjectCard = ({
         <div className="flex items-center gap-3">
           <div className="relative h-10 w-10 overflow-hidden rounded-xs border border-outline/12 bg-onSurface/10">
             {icon_url && (
-              <img
+              <Image
+                fill
+                loading="lazy"
                 src={icon_url ?? ''}
                 alt={name}
                 className="h-full w-full object-contain"
+                sizes="(max-width: 768px) 38px"
               />
             )}
           </div>

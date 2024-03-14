@@ -46,6 +46,7 @@ export default async function Post({
               src={post.coverImage}
               fill
               className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
         </section>

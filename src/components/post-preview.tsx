@@ -22,6 +22,7 @@ export const PostPreview = ({ post }: { post: Items }) => {
               src={post.coverImage}
               className="object-cover"
               fill
+              sizes="(max-width: 768px) 100vw, 45vw"
             />
           </div>
         )}
@@ -31,7 +32,7 @@ export const PostPreview = ({ post }: { post: Items }) => {
           </p>
           <div className="space-y-3">
             <DateFormatter dateString={post.date} />
-            <p className="muted text-body-md font-thin">{post.excerpt}</p>
+            <p className="muted text-body-md">{post.excerpt}</p>
           </div>
         </div>
       </Link>

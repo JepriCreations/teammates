@@ -271,9 +271,13 @@ export const ComboboxItem = <
 }: ComboboxItemProps<TValue>) => {
   const context = useComboboxContext()
 
+  if (!context) {
+    return null
+  }
+
   return (
     <Command.Item
-      className={className}
+      className={cn('', className)}
       role="option"
       onSelect={() => {
         context.onSelect(value)

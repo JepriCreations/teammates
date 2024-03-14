@@ -9,7 +9,7 @@ import { Alert } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Divider } from '@/components/ui/divider'
 import { Form } from '@/components/ui/form'
-import { TextField } from '@/components/ui/text-field'
+import { OutlinedTextField } from '@/components/ui/text-field'
 import { Icons } from '@/components/icons'
 import { useDictionary } from '@/components/providers/dictionary-provider'
 import { useAuth } from '@/components/providers/supabase-auth-provider'
@@ -89,13 +89,16 @@ export const SignInForm = () => {
             render={({ field }) => (
               <Form.Item>
                 <Form.Control>
-                  <TextField
-                    variant="outlined"
-                    label={t('Auth.email')}
-                    type="email"
-                    disabled={Boolean(isAuthenticating) || submitted}
-                    {...field}
-                  />
+                  <OutlinedTextField>
+                    <OutlinedTextField.Input
+                      type="email"
+                      disabled={Boolean(isAuthenticating) || submitted}
+                      {...field}
+                    />
+                    <OutlinedTextField.Label>
+                      {t('Auth.email')}
+                    </OutlinedTextField.Label>
+                  </OutlinedTextField>
                 </Form.Control>
                 <Form.Message />
 

@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import Image from 'next/image'
 import { COUNTRIES } from '@/constants/countries'
 import { ROUTES } from '@/constants/routes'
 
@@ -50,7 +51,12 @@ const LikesFeed = async ({ locale }: { locale: string }) => {
         <LinkCard href={ROUTES.PROJECT(slug)} key={slug}>
           <CardHeader className="flex-row gap-x-3">
             <div className="relative aspect-square h-16 shrink-0 overflow-hidden rounded-md bg-surface shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1)] transition-shadow group-hover:shadow-none">
-              <img className="h-full w-full" src={icon_url ?? ''} alt={name} />
+              <Image
+                fill
+                className="h-full w-full"
+                src={icon_url ?? ''}
+                alt={name}
+              />
             </div>
             <div className="grow overflow-hidden">
               <CardTitle>{name}</CardTitle>

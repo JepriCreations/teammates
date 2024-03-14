@@ -3,7 +3,7 @@ import { extendTailwindMerge } from 'tailwind-merge'
 
 export const DEBUG = process.env.NODE_ENV === 'development'
 
-export const twMerge = extendTailwindMerge({
+const tailwindMergeConfig = {
   classGroups: {
     'font-size': [
       {
@@ -26,6 +26,12 @@ export const twMerge = extendTailwindMerge({
         ],
       },
     ],
+  },
+}
+
+export const twMerge = extendTailwindMerge({
+  extend: {
+    ...tailwindMergeConfig,
   },
 })
 

@@ -1,217 +1,210 @@
 import * as React from 'react'
-import { forwardRef } from 'react'
-import { cva, type VariantProps } from 'class-variance-authority'
+import * as LabelPrimitive from '@radix-ui/react-label'
 
 import { cn } from '@/lib/utils'
-import { IconButton } from '@/components/ui/icon-button'
-import { Label } from '@/components/ui/label'
-import { SVGIconProps } from '@/components/ui/svg-icon'
-import { Icons } from '@/components/icons'
 
-const textFieldVariants = cva(
-  'peer/input relative z-0 h-14 w-full grow rounded-[calc(var(--radius)-10px)] px-4 text-body-md text-onSurface caret-primary outline-none outline-0 transition-[color,border] placeholder:text-onSurfaceVariant/50 focus:outline-0 disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-onSurface/38 aria-[invalid=true]:caret-error data-[label]:placeholder:opacity-0 data-[label]:focus:placeholder:opacity-100',
-  {
-    variants: {
-      variant: {
-        filled:
-          'pb-2 pt-3 bg-surfaceContainer border-b-2 border-onSurfaceVariant/12 hover:border-b-[3px] focus:border-b-[3px] focus:border-primary aria-[invalid=true]:border-error disabled:!border-onSurface/12 disabled:bg-surfaceContainer/38 data-[label]:pt-5',
-        outlined: [
-          'rounded-tl-[calc(min(var(--radius)-10px,6px))] border border-outline data-[label]:border-t-transparent bg-transparent py-2',
-
-          'focus:border-2 focus:border-primary focus:data-[label]:border-t-transparent',
-
-          'placeholder-shown:border-t-outline placeholder-shown:data-[label]:border-t-outline',
-
-          'aria-[invalid=true]:border-2 aria-[invalid=true]:border-error aria-[invalid=true]:placeholder-shown:border-t-error aria-[invalid=true]:data-[label]:border-t-transparent aria-[invalid=true]:data-[label]:placeholder-shown:border-t-error aria-[invalid=true]:data-[label]:focus:border-t-transparent',
-
-          'disabled:border-onSurface/12 disabled:border-t-transparent disabled:placeholder-shown:border-t-onSurface/12',
-
-          'disabled:aria-[invalid=true]:border disabled:aria-[invalid=true]:border-onSurface/12 disabled:aria-[invalid=true]:border-t-transparent disabled:aria-[invalid=true]:placeholder-shown:border-t-onSurface/12 disabled:aria-[invalid=true]:data-[label]:placeholder-shown:border-t-onSurface/12 disabled:placeholder-shown:data-[label]:border-t-onSurface/12',
-        ],
-      },
-    },
-    defaultVariants: {
-      variant: 'filled',
-    },
-  }
-)
-
-const filledLabel = [
-  'h-fit w-full left-0 top-0 pl-4 pt-2 peer-placeholder-shown/input:leading-[2.5]',
-  'peer-[]/leading:before:mr-9',
-]
+const commonStyle =
+  'pointer-events-none absolute z-10 flex select-none text-label-sm font-normal leading-tight text-onSurfaceVariant duration-200 peer-placeholder-shown/input:text-body-lg peer-placeholder-shown/input:text-onSurfaceVariant/70 peer-focus/input:text-label-sm peer-focus/input:leading-tight peer-focus/input:text-primary peer-disabled/input:!text-onSurfaceVariant/38 group-data-[invalid]/container:text-error'
 
 const outlinedLabel = [
-  'h-full w-full left-0 top-[-6px] peer-placeholder-shown/input:leading-[4.2]',
-  'peer-placeholder-shown/input:peer-[]/leading:before:mr-9 peer-focus/input:peer-[]/leading:before:mr-1',
+  'h-full w-full left-0 top-[-6px] mr-1 peer-placeholder-shown/input:leading-[3.8]',
+  'peer-focus/input:before:mr-1 peer-has-[*]/icon:peer-placeholder-shown/input:before:mr-9 peer-has-[*]/icon:peer-focus/input:before:mr-1',
 
-  /** Before */
-  'before:pointer-events-none before:mr-1 before:mt-[6px] before:box-border before:block before:h-1.5 before:w-3.5 before:rounded-tl-[calc(var(--radius)-10px)] before:border-l before:border-t before:border-outline before:transition-all',
+  /** Before **/
+  'before:pointer-events-none before:mr-1 before:mt-[6px] before:box-border before:block before:h-full before:w-3.5 before:rounded-l-sm before:border-outline before:duration-200 before:transition-all before:border-t before:border-l',
 
   'peer-placeholder-shown/input:before:border-transparent',
 
   'peer-focus/input:before:border-primary peer-focus/input:before:border-l-2 peer-focus/input:before:border-t-2',
 
-  'peer-aria-[invalid=true]/input:before:border-error peer-aria-[invalid=true]/input:before:border-l-2 peer-aria-[invalid=true]/input:before:border-t-2',
+  'group-data-[invalid]/container:before:border-error group-data-[invalid]/container:before:border-l-2 group-data-[invalid]/container:before:border-t-2',
 
-  'peer-disabled/input:before:border-t-onSurface/12 peer-disabled/input:before:border-l-onSurface/4 peer-disabled/input:peer-placeholder-shown/input:before:border-transparent',
+  'peer-disabled/input:before:border-t-onSurface/12 peer-disabled/input:before:border-l-onSurface/12 peer-disabled/input:peer-placeholder-shown/input:before:border-transparent',
 
-  'peer-disabled/input:peer-aria-[invalid=true]/input:before:border-l peer-disabled/input:peer-aria-[invalid=true]/input:before:border-t peer-disabled/input:peer-aria-[invalid=true]/input:before:border-l-onSurface/4 peer-disabled/input:peer-aria-[invalid=true]/input:before:border-t-onSurface/12 peer-disabled/input:peer-aria-[invalid=true]/input:peer-placeholder-shown/input:before:border-transparent',
-
-  /** After */
-  'after:h-full after:pointer-events-none after:ml-1 after:mt-[6px] after:box-border after:block after:flex-grow after:rounded-r-[calc(var(--radius)-10px)] after:border-r after:border-t after:border-outline after:transition-all',
+  /** After **/
+  'after:h-full after:pointer-events-none after:ml-1 after:mt-[6px] after:box-border after:block after:flex-grow after:rounded-r-sm after:border-r after:border-t after:border-outline duration-200 after:transition-all',
 
   'peer-placeholder-shown/input:after:border-transparent',
 
   'peer-focus/input:after:border-primary peer-focus/input:after:border-r-2 peer-focus/input:after:border-t-2',
 
-  'peer-aria-[invalid=true]/input:after:border-error peer-aria-[invalid=true]/input:after:border-r-2 peer-aria-[invalid=true]/input:after:border-t-2',
+  'group-data-[invalid]/container:after:border-error group-data-[invalid]/container:after:border-r-2 group-data-[invalid]/container:after:border-t-2',
 
-  'peer-disabled/input:after:border-t-onSurface/12 peer-disabled/input:after:border-r-onSurface/4 peer-disabled/input:peer-placeholder-shown/input:after:border-transparent',
-
-  'peer-disabled/input:peer-aria-[invalid=true]/input:after:border-r peer-disabled/input:peer-aria-[invalid=true]/input:after:border-t peer-disabled/input:peer-aria-[invalid=true]/input:after:border-r-onSurface/4 peer-disabled/input:peer-aria-[invalid=true]/input:after:border-t-onSurface/12 peer-disabled/input:peer-aria-[invalid=true]/input:peer-placeholder-shown/input:after:border-transparent',
+  'peer-disabled/input:after:border-t-onSurface/12 peer-disabled/input:after:border-r-onSurface/12 peer-disabled/input:peer-placeholder-shown/input:after:border-transparent',
 ]
 
-const textFieldLabelVariants = cva(
-  'pointer-events-none absolute z-10 flex select-none text-label-sm leading-tight text-onSurfaceVariant transition-all peer-focus/input:text-label-sm peer-focus/input:leading-tight peer-focus/input:text-primary peer-disabled/input:text-onSurface/38 peer-placeholder-shown/input:text-body-md peer-placeholder-shown/input:text-onSurfaceVariant/70 peer-disabled/input:!text-onSurfaceVariant/38 peer-aria-[invalid=true]/input:text-error',
-  {
-    variants: {
-      variant: {
-        filled: filledLabel,
-        outlined: outlinedLabel,
-      },
-    },
-    defaultVariants: {
-      variant: 'filled',
-    },
-  }
-)
+const FilledTextFieldRoot = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & { error?: boolean }
+>(({ className, error, ...props }, ref) => (
+  <div
+    ref={ref}
+    data-invalid={error ? '' : undefined}
+    className={cn(
+      'group/container relative z-0 flex w-full items-center rounded-sm bg-surfaceContainer px-2',
 
-export interface TextFieldProps
-  extends React.InputHTMLAttributes<HTMLInputElement>,
-    VariantProps<typeof textFieldVariants> {
-  leadingIcon?: React.ReactElement<SVGIconProps>
-  trailingIcon?: React.ReactElement<SVGIconProps>
-  rightSection?: React.ReactElement
-  label?: string
-  suffix?: string
-  error?: string
-  trailingIconAction?: () => void
+      'before:absolute before:inset-0 before:z-[-1] before:rounded-sm before:border-b before:border-onSurfaceVariant/12 before:transition-[color,border]',
+
+      'focus-within:before:border-b-[2px] focus-within:before:border-primary',
+
+      'has-[:disabled]:bg-surfaceContainer/38 has-[:disabled]:before:border-onSurface/12',
+
+      Boolean(error) && 'before:border-error focus-within:before:border-error',
+      className
+    )}
+    {...props}
+  />
+))
+FilledTextFieldRoot.displayName = 'FilledTextFieldRoot'
+
+const OutlinedTextFieldRoot = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & { error?: boolean }
+>(({ className, error, ...props }, ref) => (
+  <div
+    ref={ref}
+    data-invalid={error ? '' : undefined}
+    className={cn(
+      'group/container relative z-0 flex w-full items-center bg-transparent px-2',
+
+      'before:absolute before:inset-0 before:z-[-1] before:rounded-sm before:border before:border-outline before:transition-[color,border]',
+
+      'focus-within:before:border-2 focus-within:before:border-primary',
+
+      'has-[label]:has-[:placeholder-shown]:before:border-outline has-[label]:before:border-t-transparent has-[label]:focus-within:before:border-b-primary has-[label]:focus-within:before:border-t-transparent',
+
+      'has-[:disabled]:before:border-onSurface/12 has-[:disabled]:has-[:placeholder-shown]:before:border-onSurface/12 has-[label]:has-[:disabled]:before:border-transparent has-[:disabled]:before:border-t-transparent has-[label]:has-[:disabled]:before:border-b-onSurface/12 has-[label]:has-[:disabled]:before:border-t-transparent',
+
+      Boolean(error) &&
+        'before:border-2 before:border-error has-[label]:has-[:placeholder-shown]:before:border-error has-[label]:focus-within:before:border-b-error',
+      className
+    )}
+    {...props}
+  />
+))
+OutlinedTextFieldRoot.displayName = 'OutlinedTextFieldRoot'
+
+const FilledTextfieldLabel = React.forwardRef<
+  React.ElementRef<typeof LabelPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <LabelPrimitive.Root
+    ref={ref}
+    className={cn(
+      commonStyle,
+      'left-0 top-0 h-fit w-full pl-4 pt-2 peer-placeholder-shown/input:leading-[2.5] peer-has-[*]/icon:left-9',
+      className
+    )}
+    {...props}
+  />
+))
+FilledTextfieldLabel.displayName = 'FilledTextfieldLabel'
+
+const OutlinedTextfieldLabel = React.forwardRef<
+  React.ElementRef<typeof LabelPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <LabelPrimitive.Root
+    ref={ref}
+    className={cn(commonStyle, outlinedLabel, className)}
+    {...props}
+  />
+))
+OutlinedTextfieldLabel.displayName = 'OutlinedTextfieldLabel'
+
+const FilledTextFieldInput = React.forwardRef<
+  HTMLInputElement,
+  React.InputHTMLAttributes<HTMLInputElement>
+>(({ className, placeholder = '', ...props }, ref) => {
+  return (
+    <input
+      ref={ref}
+      placeholder={placeholder}
+      className={cn(
+        'peer/input h-14 grow bg-transparent px-2 text-body-lg text-onSurface caret-primary outline-none transition-opacity placeholder:text-onSurfaceVariant/50 focus:outline-0 disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-onSurface/38 group-has-[label]/container:pt-2 group-has-[:focus]/container:placeholder:opacity-100 group-has-[label]/container:placeholder:opacity-0 group-data-[invalid]/container:caret-error',
+        className
+      )}
+      {...props}
+    />
+  )
+})
+
+FilledTextFieldInput.displayName = 'FilledTextFieldInput'
+
+const OutlinedTextFieldInput = React.forwardRef<
+  HTMLInputElement,
+  React.InputHTMLAttributes<HTMLInputElement>
+>(({ className, placeholder = '', ...props }, ref) => {
+  return (
+    <input
+      ref={ref}
+      placeholder={placeholder}
+      className={cn(
+        'peer/input h-14 grow bg-transparent px-2 text-body-lg text-onSurface caret-primary outline-none transition-opacity placeholder:text-onSurfaceVariant/50 focus:outline-0 disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-onSurface/38 group-has-[label]/container:placeholder:opacity-0 group-has-[label]/container:focus:placeholder:opacity-100 group-data-[invalid]/container:caret-error',
+        className
+      )}
+      {...props}
+    />
+  )
+})
+
+OutlinedTextFieldInput.displayName = 'OutlinedTextFieldInput'
+
+const InputDecoration = React.forwardRef<
+  HTMLSpanElement,
+  React.HTMLAttributes<HTMLSpanElement>
+>(({ className, ...props }, ref) => {
+  return (
+    <span
+      ref={ref}
+      className={cn(
+        'peer/icon grid h-full shrink-0 place-items-center pl-1 pr-2 text-onSurfaceVariant/70 peer-first-of-type/input:pl-2 peer-first-of-type/input:pr-1 group-has-[:disabled]/container:text-onSurface/38',
+        className
+      )}
+      {...props}
+    />
+  )
+})
+
+InputDecoration.displayName = 'InputDecoration'
+
+const SupportingText = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => {
+  return (
+    <p
+      ref={ref}
+      className={cn('mt-1 px-4 text-body-sm text-onSurfaceVariant', className)}
+      {...props}
+    />
+  )
+})
+SupportingText.displayName = 'SupportingText'
+
+const FilledTextField = Object.assign(FilledTextFieldRoot, {
+  Label: FilledTextfieldLabel,
+  Input: FilledTextFieldInput,
+  Decoration: InputDecoration,
+  SupportingText,
+})
+
+const OutlinedTextField = Object.assign(OutlinedTextFieldRoot, {
+  Label: OutlinedTextfieldLabel,
+  Input: OutlinedTextFieldInput,
+  Decoration: InputDecoration,
+  SupportingText,
+})
+
+export {
+  FilledTextField,
+  OutlinedTextField,
+  FilledTextFieldRoot,
+  OutlinedTextFieldRoot,
+  FilledTextfieldLabel,
+  OutlinedTextfieldLabel,
+  FilledTextFieldInput,
+  OutlinedTextFieldInput,
+  InputDecoration,
+  SupportingText,
 }
-
-const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
-  (
-    {
-      className,
-      name,
-      leadingIcon,
-      trailingIcon,
-      rightSection,
-      label,
-      suffix,
-      variant = 'filled',
-      disabled,
-      type,
-      error,
-      trailingIconAction,
-      placeholder = '',
-      ...props
-    },
-    ref
-  ) => {
-    const id = React.useId()
-    const inputId = name ?? id
-    const hasLeadingIcon = !!leadingIcon
-    const hasTrailingIcon = !!trailingIcon
-    const hasLabel = !!label
-    const hasSuffix = !!suffix
-    const isInvalid = !!error
-
-    return (
-      <div
-        aria-label="TextField Container"
-        className="relative w-full min-w-[200px]"
-      >
-        <input
-          ref={ref}
-          id={inputId}
-          name={inputId}
-          type={type}
-          aria-invalid={isInvalid}
-          data-label={hasLabel ? '' : undefined}
-          disabled={disabled}
-          className={cn(
-            textFieldVariants({ variant, className }),
-            hasLeadingIcon && 'pl-[52px]',
-            (hasTrailingIcon || hasSuffix) && 'pr-[52px]'
-          )}
-          placeholder={placeholder}
-          {...props}
-        />
-
-        {hasLeadingIcon && (
-          <div
-            aria-label="TextField Leading Icon"
-            className="peer/leading absolute left-1 top-2/4 grid h-11 w-11 -translate-y-2/4 place-items-center text-onSurfaceVariant/70 peer-disabled/input:text-onSurface/38"
-          >
-            {React.cloneElement(leadingIcon as React.ReactElement<any>, {
-              className: cn('w-6 h-6', leadingIcon.props?.className),
-            })}
-          </div>
-        )}
-
-        {label && (
-          <Label
-            aria-label="TextField Label"
-            htmlFor={inputId}
-            className={cn(textFieldLabelVariants({ variant }))}
-          >
-            {label}
-          </Label>
-        )}
-
-        {hasSuffix && (
-          <span
-            aria-label="TextField Suffix"
-            className={cn(
-              'suffix absolute right-1 top-2/4 grid h-11 w-11 -translate-y-2/4 select-none place-items-center text-onSurfaceVariant/70 transition-transform peer-disabled/input:text-onSurface/38',
-              variant === 'filled' &&
-                'translate-y-[-40%] peer-placeholder-shown/input:-translate-y-2/4'
-            )}
-          >
-            {suffix}
-          </span>
-        )}
-
-        {rightSection && (
-          <div className="absolute right-2 top-2/4 grid -translate-y-2/4 place-items-center text-onSurfaceVariant/70 transition-transform peer-disabled/input:text-onSurface/38">
-            {rightSection}
-          </div>
-        )}
-
-        {!rightSection && hasTrailingIcon && (
-          <IconButton
-            disabled={disabled}
-            variant="standard"
-            className="absolute right-1 top-2/4 m-0 grid -translate-y-2/4 place-items-center text-onSurfaceVariant/70"
-            onClick={(e) => {
-              e.preventDefault()
-              trailingIconAction && trailingIconAction()
-            }}
-          >
-            {isInvalid ? (
-              <Icons.error className="text-error" />
-            ) : (
-              React.cloneElement(trailingIcon as React.ReactElement<any>, {
-                className: cn('w-6 h-6', trailingIcon.props?.className),
-              })
-            )}
-          </IconButton>
-        )}
-      </div>
-    )
-  }
-)
-TextField.displayName = 'TextField'
-
-export { TextField, textFieldVariants, textFieldLabelVariants }

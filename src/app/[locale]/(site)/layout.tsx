@@ -53,10 +53,10 @@ export default async function SiteLayout({
       </main>
       <footer className="flex items-center justify-center px-6 py-4 md:container sm:justify-between">
         <a
-          href="https://teammates.mov"
+          href="https://teammates.buildbuddy.one"
           className="block text-onSurface opacity-50 transition-opacity hover:opacity-100"
         >
-          teammates.mov
+          teammates.buildbuddy.one
         </a>
         <nav className="hidden sm:block">
           <ul className="flex gap-4">

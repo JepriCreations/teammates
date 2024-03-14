@@ -11,6 +11,6 @@ export const siteConfig = {
     },
   ],
   links: {
-    website: 'teammates.mov',
+    website: 'teammates.buildbuddy.one',
   },
 }

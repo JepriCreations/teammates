@@ -20,7 +20,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Switch } from '@/components/ui/switch'
-import { TextField } from '@/components/ui/text-field'
+import { FilledTextField } from '@/components/ui/text-field'
 import { ProjectForm } from '@/components/forms/new-project/project-form'
 import { useDictionary } from '@/components/providers/dictionary-provider'
 
@@ -155,12 +155,16 @@ const RemoveProjectDialog = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <TextField
-                      disabled={isRemoving}
-                      placeholder={projectName}
-                      label={t('name')}
-                      {...field}
-                    />
+                    <FilledTextField>
+                      <FilledTextField.Input
+                        disabled={isRemoving}
+                        placeholder={projectName}
+                        {...field}
+                      />
+                      <FilledTextField.Label>
+                        label={t('name')}
+                      </FilledTextField.Label>
+                    </FilledTextField>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -14,7 +14,7 @@ import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
 import { Divider } from '@/components/ui/divider'
 import { Form } from '@/components/ui/form'
-import { TextField } from '@/components/ui/text-field'
+import { OutlinedTextField } from '@/components/ui/text-field'
 import { Textarea } from '@/components/ui/textarea'
 import { Combobox } from '@/components/combobox'
 import { Icons } from '@/components/icons'
@@ -89,11 +89,16 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
             render={({ field }) => (
               <Form.Item>
                 <Form.Control>
-                  <TextField
-                    label={t('Profile.name')}
-                    disabled={isPending}
-                    {...field}
-                  />
+                  <OutlinedTextField>
+                    <OutlinedTextField.Input
+                      autoComplete="off"
+                      disabled={isPending}
+                      {...field}
+                    />
+                    <OutlinedTextField.Label>
+                      {t('Profile.name')}
+                    </OutlinedTextField.Label>
+                  </OutlinedTextField>
                 </Form.Control>
                 <Form.Message />
               </Form.Item>
@@ -142,11 +147,11 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
                     label={t('Profile.nationality')}
                     placeholder={t('Profile.select_nationality')}
                     displayValue={(country: string) =>
-                      COUNTRIES[country as keyof typeof COUNTRIES]?.name ??
+                      COUNTRIES[country as keyof typeof COUNTRIES]?.name ||
                       COUNTRIES[field.value as keyof typeof COUNTRIES]?.name
                     }
                     defaultValue={
-                      COUNTRIES[field.value as keyof typeof COUNTRIES]?.name ??
+                      COUNTRIES[field.value as keyof typeof COUNTRIES]?.name ||
                       ''
                     }
                     onValueChange={(newValue) => {
@@ -179,26 +184,33 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
               render={({ field: { value, onChange, ...field } }) => (
                 <Form.Item>
                   <Form.Control nested index={index}>
-                    <TextField
-                      disabled={isPending}
-                      label={name}
-                      leadingIcon={<Icon />}
-                      value={
-                        value.find((link) => link.name === name)?.url || ''
-                      }
-                      onChange={(event) => {
-                        const { value: val } = event.target
+                    <OutlinedTextField>
+                      <OutlinedTextField.Decoration>
+                        <Icon />
+                      </OutlinedTextField.Decoration>
+                      <OutlinedTextField.Input
+                        autoComplete="off"
+                        disabled={isPending}
+                        value={
+                          value.find((link) => link.name === name)?.url || ''
+                        }
+                        onChange={(event) => {
+                          const { value: val } = event.target
 
-                        let newValue = [...value]
-                        const index = newValue.findIndex((i) => i.name === name)
-                        newValue.splice(index, 1, {
-                          name,
-                          url: !val ? undefined : val,
-                        })
-                        onChange(newValue)
-                      }}
-                      {...field}
-                    />
+                          let newValue = [...value]
+                          const index = newValue.findIndex(
+                            (i) => i.name === name
+                          )
+                          newValue.splice(index, 1, {
+                            name,
+                            url: !val ? undefined : val,
+                          })
+                          onChange(newValue)
+                        }}
+                        {...field}
+                      />
+                      <OutlinedTextField.Label>{name}</OutlinedTextField.Label>
+                    </OutlinedTextField>
                   </Form.Control>
                   <Form.Message nested index={index} />
                 </Form.Item>
@@ -211,12 +223,15 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
             render={({ field }) => (
               <Form.Item>
                 <Form.Control>
-                  <TextField
-                    disabled={isPending}
-                    label={t('Profile.email')}
-                    leadingIcon={<Icons.email />}
-                    {...field}
-                  />
+                  <OutlinedTextField>
+                    <OutlinedTextField.Decoration>
+                      <Icons.email />
+                    </OutlinedTextField.Decoration>
+                    <OutlinedTextField.Input disabled={isPending} {...field} />
+                    <OutlinedTextField.Label>
+                      {t('Profile.email')}
+                    </OutlinedTextField.Label>
+                  </OutlinedTextField>
                 </Form.Control>
                 <Form.Message />
               </Form.Item>

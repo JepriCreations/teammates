@@ -24,7 +24,7 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form'
-import { TextField } from '@/components/ui/text-field'
+import { FilledTextField } from '@/components/ui/text-field'
 import { Textarea } from '@/components/ui/textarea'
 import { Combobox } from '@/components/combobox'
 import { Icons } from '@/components/icons'
@@ -69,11 +69,12 @@ export const ProjectInputs = ({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <TextField
-                    label={t('Projects.name')}
-                    disabled={disabled}
-                    {...field}
-                  />
+                  <FilledTextField>
+                    <FilledTextField.Input disabled={disabled} {...field} />
+                    <FilledTextField.Label>
+                      {t('Projects.name')}
+                    </FilledTextField.Label>
+                  </FilledTextField>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -85,11 +86,12 @@ export const ProjectInputs = ({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <TextField
-                    label={t('Projects.summary')}
-                    disabled={disabled}
-                    {...field}
-                  />
+                  <FilledTextField>
+                    <FilledTextField.Input disabled={disabled} {...field} />
+                    <FilledTextField.Label>
+                      {t('Projects.summary')}
+                    </FilledTextField.Label>
+                  </FilledTextField>
                 </FormControl>
                 <FormDescription className="flex gap-4">
                   {t('Projects.summary_description')}
@@ -316,11 +318,12 @@ export const ProjectInputs = ({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <TextField
-                    label={t('Projects.city')}
-                    disabled={disabled}
-                    {...field}
-                  />
+                  <FilledTextField>
+                    <FilledTextField.Input disabled={disabled} {...field} />
+                    <FilledTextField.Label>
+                      {t('Projects.city')}
+                    </FilledTextField.Label>
+                  </FilledTextField>
                 </FormControl>
                 <FormDescription>
                   {t('Projects.city_description')}
@@ -346,26 +349,32 @@ export const ProjectInputs = ({
               render={({ field: { value, onChange, ...field } }) => (
                 <FormItem>
                   <FormControl nested index={index}>
-                    <TextField
-                      disabled={disabled}
-                      label={name}
-                      leadingIcon={<Icon />}
-                      value={
-                        value.find((link) => link.name === name)?.url || ''
-                      }
-                      onChange={(event) => {
-                        const { value: val } = event.target
+                    <FilledTextField>
+                      <FilledTextField.Decoration>
+                        <Icon />
+                      </FilledTextField.Decoration>
+                      <FilledTextField.Input
+                        disabled={disabled}
+                        value={
+                          value.find((link) => link.name === name)?.url || ''
+                        }
+                        onChange={(event) => {
+                          const { value: val } = event.target
 
-                        let newValue = [...value]
-                        const index = newValue.findIndex((i) => i.name === name)
-                        newValue.splice(index, 1, {
-                          name,
-                          url: !val ? undefined : val,
-                        })
-                        onChange(newValue)
-                      }}
-                      {...field}
-                    />
+                          let newValue = [...value]
+                          const index = newValue.findIndex(
+                            (i) => i.name === name
+                          )
+                          newValue.splice(index, 1, {
+                            name,
+                            url: !val ? undefined : val,
+                          })
+                          onChange(newValue)
+                        }}
+                        {...field}
+                      />
+                      <FilledTextField.Label>{name}</FilledTextField.Label>
+                    </FilledTextField>
                   </FormControl>
                   <FormMessage nested index={index} />
                 </FormItem>
