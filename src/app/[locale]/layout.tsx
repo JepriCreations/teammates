@@ -52,7 +52,7 @@ export default async function RootLayout({
       className={cn(fontSans.variable, 'antialiased')}
     >
       <head />
-      <body className="min-h-[100dvh] w-full max-w-[100vw] overflow-x-hidden bg-background font-sans text-body-md text-onSurface selection:bg-primary/30">
+      <body className="min-h-screen bg-background font-sans text-body-md text-onSurface selection:bg-primary/30">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <DictionaryProvider dict={dict} defaultDict={defaultDict}>
             <SwrProvider>

@@ -36,9 +36,8 @@ export const Appbar = ({ t, loggedIn }: AppbarProps) => {
   }))
 
   return (
-    <>
-      <div className="fixed inset-x-0 top-0 z-40 sm:container">
-        <header className="width-before-scroll-bar relative bg-surface px-3 py-3">
+      <header className="sticky w-full top-0 z-40 sm:container">
+        <div className="relative bg-surface px-3 py-3">
           <nav className="flex items-center gap-3 sm:justify-between">
             {/* Visible only in small devices ----*/}
             <div className="mr-3 sm:hidden">
@@ -103,8 +102,7 @@ export const Appbar = ({ t, loggedIn }: AppbarProps) => {
               )}
             </div>
           </nav>
-        </header>
-      </div>
-    </>
+        </div>
+      </header>
   )
 }

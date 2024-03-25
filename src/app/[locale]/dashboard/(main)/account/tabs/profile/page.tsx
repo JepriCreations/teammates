@@ -30,7 +30,7 @@ const UserProfile = async () => {
 }
 
 const Loading = () => (
-  <div className="fixed inset-x-0 top-0 z-50">
-    <LinearProgress />
+  <div>
+    <LinearProgress className='fixed inset-x-0 top-0 z-50'/>
   </div>
 )
