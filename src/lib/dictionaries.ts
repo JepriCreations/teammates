@@ -1,5 +1,3 @@
-import 'server-only'
-
 import React from 'react'
 import reactStringReplace from 'react-string-replace'
 
@@ -26,44 +24,65 @@ export const getDictionary = async (locale: string, key?: string) => {
   const defaultDict = key ? defaultLocaleDict[key] : defaultLocaleDict
 
   const t: Translator = (key: string, replacements?: React.ReactNode[]) => {
-    const parts = key.split('.')
-    let translation = dict
-    let defaultTranslation = defaultDict
-
-    for (const part of parts) {
-      translation = translation?.[part]
-      defaultTranslation = defaultTranslation[part]
-
-      // If undefined, use the default dictionary
-      if (!translation) {
-        translation = defaultTranslation
-        continue
-      }
-    }
-
-    if (replacements && replacements.length > 0) {
-      replacements.forEach((replacement, index) => {
-        const placeholder = `%${index}`
-        if (typeof replacement === 'string') {
-          return (translation = translation.replace(placeholder, replacement))
-        }
-        if (React.isValidElement(replacement)) {
-          translation = reactStringReplace(translation, placeholder, () =>
-            React.cloneElement(replacement, { key: index })
-          )
-        }
-      })
-    }
-
-    const breakRegex = /(\n)/g
-    if (typeof translation === 'string' && translation.match(breakRegex)) {
-      translation = reactStringReplace(translation, breakRegex, () =>
-        React.createElement('br', { key: Math.random() })
-      )
-    }
-
-    return translation
+    return translator({
+      dict,
+      defaultDict,
+      key,
+      replacements,
+    })
   }
 
   return { dict, defaultDict, t }
+}
+
+export const translator = ({
+  dict,
+  defaultDict,
+  key,
+  replacements,
+  dictKey,
+}: {
+  dict: Dictionary
+  defaultDict: Dictionary
+  key: string
+  replacements?: React.ReactNode[] | string[]
+  dictKey?: string
+}) => {
+  const parts = key.split('.')
+  let translation = dictKey ? dict[dictKey] : dict
+  let defaultTranslation = dictKey ? defaultDict[dictKey] : defaultDict
+
+  for (const part of parts) {
+    translation = translation?.[part]
+    defaultTranslation = defaultTranslation?.[part]
+    // If undefined, use the default dictionary
+    if (!translation) {
+      translation = defaultTranslation
+      continue
+    }
+  }
+
+  if (replacements && replacements.length > 0) {
+    replacements.forEach((replacement, index) => {
+      const placeholder = `%${index}`
+
+      if (typeof replacement === 'string') {
+        return (translation = translation.replace(placeholder, replacement))
+      }
+      if (React.isValidElement(replacement)) {
+        translation = reactStringReplace(translation, placeholder, () =>
+          React.cloneElement(replacement, { key: index })
+        )
+      }
+    })
+  }
+
+  const breakRegex = /(\n)/g
+  if (typeof translation === 'string' && translation.match(breakRegex)) {
+    translation = reactStringReplace(translation, breakRegex, () =>
+      React.createElement('br', { key: Math.random() })
+    )
+  }
+
+  return translation
 }

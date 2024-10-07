@@ -10,7 +10,7 @@ import { createServerClient } from '@/lib/supabase-server'
 import { cn } from '@/lib/utils'
 import { Toaster } from '@/components/ui/toaster'
 import { DevToolbar } from '@/components/dev-toolbar'
-import { DictionaryProvider } from '@/components/providers/dictionary-provider'
+import { I18nProvider } from '@/components/providers/dictionary-provider'
 import { SupabaseAuthProvider } from '@/components/providers/supabase-auth-provider'
 import { SupabaseProvider } from '@/components/providers/supabase-provider'
 import { SwrProvider } from '@/components/providers/swr-provider'
@@ -54,7 +54,7 @@ export default async function RootLayout({
       <head />
       <body className="min-h-screen bg-background font-sans text-body-md text-onSurface selection:bg-primary/30">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <DictionaryProvider dict={dict} defaultDict={defaultDict}>
+          <I18nProvider dict={dict} defaultDict={defaultDict}>
             <SwrProvider>
               <SupabaseProvider>
                 <SupabaseAuthProvider serverSession={session}>
@@ -62,7 +62,7 @@ export default async function RootLayout({
                 </SupabaseAuthProvider>
               </SupabaseProvider>
             </SwrProvider>
-          </DictionaryProvider>
+          </I18nProvider>
           <DevToolbar />
           <Toaster />
         </ThemeProvider>
