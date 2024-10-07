@@ -37,14 +37,14 @@ export const ProjectCard = ({
     <LinkCard href={ROUTES.PROJECT(slug)}>
       <div className="space-y-3 p-4">
         <div className="flex items-center gap-3">
-          <div className="relative h-10 w-10 overflow-hidden rounded-xs border border-outline/12 bg-onSurface/10">
+          <div className="relative size-10 overflow-hidden rounded-xs border border-outline/12 bg-onSurface/10">
             {icon_url && (
               <Image
                 fill
-                loading="lazy"
                 src={icon_url ?? ''}
                 alt={name}
-                className="h-full w-full object-contain"
+                quality={50}
+                className="size-full object-contain"
                 sizes="(max-width: 768px) 38px"
               />
             )}
